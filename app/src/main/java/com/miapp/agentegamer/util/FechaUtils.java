@@ -9,41 +9,66 @@ import java.util.concurrent.TimeUnit;
 
 public class FechaUtils {
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private static final SimpleDateFormat FORMAT =
+            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-    public static long diasHasta(String fechaLanzamiento){
-        try{
-            Date fechajuego = FORMAT.parse(fechaLanzamiento);
-            Date hoy = new Date();
+    /**
+     * Devuelve el timestamp actual en milisegundos
+     */
+    public static long ahoraTimestamp() {
+        return System.currentTimeMillis();
+    }
 
-            long diff = fechajuego.getTime() - hoy.getTime();
-            long dias = TimeUnit.MICROSECONDS.toDays(diff);
+    /**
+     * Calcula los días hasta una fecha pasada como String (yyyy-MM-dd)
+     */
+    public static long diasHasta(String fechaLanzamiento) {
+        try {
+            Date fechaJuego = FORMAT.parse(fechaLanzamiento);
+            if (fechaJuego == null) return Long.MAX_VALUE;
 
-            return Math.max(dias, 0); //el return evita numeros negativos
-        } catch (ParseException e){
+            return diasHasta(fechaJuego.getTime());
+
+        } catch (ParseException e) {
             return Long.MAX_VALUE;
         }
     }
 
+    /**
+     * Calcula los días hasta una fecha en milisegundos
+     */
+    public static long diasHasta(long fechaMs) {
+        long hoy = System.currentTimeMillis();
+        long diff = fechaMs - hoy;
+        return TimeUnit.MILLISECONDS.toDays(diff);
+    }
+
+    /**
+     * Parsea una fecha yyyy-MM-dd a Date
+     */
     public static Date parseFecha(String fecha) {
-        try{
+        try {
             return FORMAT.parse(fecha);
         } catch (Exception e) {
             return null;
         }
     }
 
-    public static long ahoraTimestamp() {
-        return System.currentTimeMillis();
-    }
-
+    /**
+     * Devuelve la fecha de hoy en formato yyyy-MM-dd
+     */
     public static String hoy() {
         return FORMAT.format(new Date());
     }
 
+    /**
+     * Devuelve la fecha dentro de X días en formato yyyy-MM-dd
+     */
     public static String dentroDeDias(int dias) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, dias);
-        return FORMAT.format(calendar.getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, dias);
+        return FORMAT.format(cal.getTime());
     }
 }
+
+

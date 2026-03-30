@@ -1,3 +1,44 @@
 <resources>
     <string name="app_name">AgenteGamer</string>
+    <string name="game_image">Imagen del juego</string>
+    <string name="open_drawer">Abrir menú de navegación</string>
+    <string name="close_drawer">Cerrar menú de navegación</string>
+    <string name="nombre_actualizado">Nombre actualizado</string>
+    <string name="error_cargar_perfil">No se pudo cargar el perfil</string>
+    <string name="editar_nombre">Editar nombre</string>
+    <string name="error_actualizar_nombre">Error al actualizar nombre</string>
+    <string name="nombre_vacio">El nombre no puede estar vacío</string>
+    <string name="error_cargar_presupuesto">No se pudo cargar el presupuesto</string>
+    <string name="presupuesto_actualizado">Presupuesto actualizado</string>
+    <string name="error_actualizar_presupuesto">Error al actualizar presupuesto</string>
+    <string name="presupuesto_invalido">Presupuesto inválido</string>
+    <string name="impacto_recomendado">✔ Recomendados: %d</string>
+    <string name="impacto_ajustado">⚠ Ajustados: %d</string>
+    <string name="impacto_no_recomendado">✖ No recomendados: %d</string>
+    <string name="added_to_wishlist">Añadido a Wishlist (%1$.2f €)</string>
+
+    <!-- Login -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="btn_register">Registrarse</string>
+    <string name="error_empty_fields">Es necesario completar todos los campos</string>
+    <string name="error_login_network">Error de red. Revisa tu conexión e inténtalo de nuevo</string>
+    <string name="error_login_credentials">Email o contraseña incorrectos</string>
+    <string name="error_login_generic">Error al iniciar sesión</string>
+    <string name="loading">Cargando…</string>
+
+    <!-- Register -->
+    <string name="hint_nombre">Nombre</string>
+    <string name="hint_presupuesto">Presupuesto mensual (€)</string>
+    <string name="error_guardar_perfil">Error guardando perfil</string>
+    
+    <!-- Gastos -->
+    <string name="btn_agregar_gasto_prueba">Agregar gasto de prueba</string>
+    
+    <!-- Lanzamientos -->
+    <string name="proximos_lanzamientos">Próximos lanzamientos</string>
+    <string name="precio_estimado">Precio estimado: %1$.2f €</string>
+    <string name="lanzamiento_hoy">Hoy es el día de lanzamiento</string>
+    <string name="lanzamiento_en_dias">Lanzamiento en %d días</string>
 </resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_perfil"
+        android:title="Perfil del usuario"
+        android:icon="@android:drawable/sym_contact_card" />
+
+    <item
+        android:id="@+id/menu_juegos"
+        android:title="Juegos"
+        android:icon="@android:drawable/ic_menu_search" />
+
+    <item
+        android:id="@+id/menu_wishlist"
+        android:title="Wishlist"
+        android:icon="@android:drawable/ic_menu_agenda" />
+
+    <item
+        android:id="@+id/menu_gastos"
+        android:title="Gastos"
+        android:icon="@android:drawable/ic_menu_edit" />
+
+    <item
+        android:id="@+id/menu_lanzamientos"
+        android:title="Lanzamientos"
+        android:icon="@android:drawable/ic_menu_my_calendar" />
+
+    <item
+        android:id="@+id/menu_ajustes"
+        android:title="Ajustes"
+        android:icon="@android:drawable/ic_menu_manage" />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Cerrar sesión"
+        android:icon="@android:drawable/ic_lock_power_off" />
+</menu>

@@ -15,7 +15,7 @@ public class AgenteGamerApp extends Application {
         super.onCreate();
 
         PeriodicWorkRequest agenteWorker = new PeriodicWorkRequest.Builder(
-                AgenteFinancieroWorker.class,
+                SistemaFinancieroWorker.class,
                 24,
                 TimeUnit.HOURS
         ).build();

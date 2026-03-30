@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:name=".ui.worker.AgenteGamerApp"
+        android:name=".AgenteGamerApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -53,6 +53,14 @@
         </activity>
         <activity
             android:name=".ui.lanzamientos.LanzamientosActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".ui.perfil.PerfilActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".ui.ajustes.AjustesActivity"
             android:exported="false">
         </activity>
 

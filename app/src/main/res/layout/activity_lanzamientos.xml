@@ -9,7 +9,7 @@
         android:id="@+id/tvTitulo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Próximos lanzamientos"
+        android:text="@string/proximos_lanzamientos"
         android:textSize="20sp"
         android:textStyle="bold"
         android:padding="16dp"

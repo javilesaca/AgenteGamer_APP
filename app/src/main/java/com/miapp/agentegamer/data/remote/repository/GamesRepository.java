@@ -18,20 +18,29 @@ import retrofit2.Response;
 public class GamesRepository {
 
     private final GamesApiService apiService;
+    private final String apiKey;
     private final MutableLiveData<List<GameDto>> gamesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> cargando = new MutableLiveData<>();
     private int currentPage = 1;
     private boolean isLoading = false;
     private final List<GameDto> acumulado = new ArrayList<>();
 
-    public GamesRepository(){
+    public GamesRepository(String apiKey){
+        this.apiKey = apiKey;
         apiService = RetrofitClient.getInstance()
                 .create(GamesApiService.class);
     }
 
-    public LiveData<List<GameDto>> getGames(String apiKey) {
+    public LiveData<Boolean> getCargando() {
+        return cargando;
+    }
+
+    public LiveData<List<GameDto>> getGames() {
+        cargando.setValue(true);
         apiService.getGames(apiKey, "-rating", 10).enqueue(new Callback<GamesResponse>() {
             @Override
             public void onResponse(Call<GamesResponse> call, Response<GamesResponse> response) {
+                cargando.setValue(false);
                 if (response.isSuccessful() && response.body() != null) {
                     gamesLiveData.setValue(response.body().getResults());
                 }
@@ -39,6 +48,7 @@ public class GamesRepository {
 
             @Override
             public void onFailure(Call<GamesResponse> call, Throwable throwable) {
+                cargando.setValue(false);
                 gamesLiveData.setValue(null);
             }
         });
@@ -46,29 +56,7 @@ public class GamesRepository {
         return gamesLiveData;
     }
 
-/*    public LiveData<List<GameDto>> searchGames(String apiKey, String texto) {
-        MutableLiveData<List<GameDto>> data = new MutableLiveData<>();
-
-        apiService.searchGames(apiKey, texto, 20)
-                .enqueue(new Callback<GamesResponse>() {
-                    @Override
-                    public void onResponse(Call<GamesResponse> call, Response<GamesResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            data.setValue(response.body().getResults());
-                        } else {
-                            data.setValue(null);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<GamesResponse> call, Throwable t) {
-                        data.setValue(null);
-                    }
-                });
-        return data;
-    }*/
-
-    public LiveData<List<GameDto>> buscarJuegosPaginados(String apiKey, String query, boolean reset, MutableLiveData<Boolean> cargando) {
+    public LiveData<List<GameDto>> buscarJuegosPaginados(String query, boolean reset) {
         MutableLiveData<List<GameDto>> data = new MutableLiveData<>();
 
         if (isLoading) return data;

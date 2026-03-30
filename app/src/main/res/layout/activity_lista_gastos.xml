@@ -10,7 +10,7 @@
         android:id="@+id/btnAgregarPrueba"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Agregar gasto de prueba" />
+        android:text="@string/btn_agregar_gasto_prueba" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerGastos"

@@ -6,6 +6,29 @@
     android:layout_height="wrap_content"
     android:padding="12dp">
 
+    <!-- Imagen del juego -->
+    <ImageView
+        android:id="@+id/imgJuego"
+        android:layout_width="90dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Botón eliminar -->
+    <ImageButton
+        android:id="@+id/btnEliminar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_delete"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="@color/text_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nombre del juego -->
     <TextView
         android:id="@+id/tvNombreJuego"
         android:layout_width="0dp"
@@ -13,19 +36,26 @@
         android:text="Nombre del juego"
         android:textStyle="bold"
         android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toEndOf="@id/imgJuego"
+        app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+        app:layout_constraintTop_toTopOf="parent"/>
 
+    <!-- Precio -->
     <TextView
         android:id="@+id/tvPrecio"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Precio estimado: 60€"
-        app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/tvNombreJuego"
+        app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+        app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"/>
 
+    <!-- Recomendación -->
     <TextView
         android:id="@+id/tvRecomendacion"
         android:layout_width="0dp"
@@ -33,9 +63,9 @@
         android:text="Recomendación financiera"
         android:textStyle="italic"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/tvPrecio"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="6dp"/>
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toStartOf="@id/tvNombreJuego"
+        app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+        app:layout_constraintTop_toBottomOf="@id/tvPrecio"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

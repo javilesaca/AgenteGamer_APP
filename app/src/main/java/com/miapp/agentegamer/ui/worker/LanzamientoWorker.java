@@ -3,29 +3,36 @@ package com.miapp.agentegamer.ui.worker;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.hilt.work.HiltWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.miapp.agentegamer.data.model.WishlistEntity;
-import com.miapp.agentegamer.data.repository.WishlistRepository;
+import com.miapp.agentegamer.data.local.entity.WishlistEntity;
+import com.miapp.agentegamer.domain.repository.WishlistRepository;
 import com.miapp.agentegamer.util.NotificationHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
+
+@HiltWorker
 public class LanzamientoWorker extends Worker {
 
     private final WishlistRepository repo;
 
-    public LanzamientoWorker(@NonNull Context context, @NonNull WorkerParameters params) {
+    @AssistedInject
+    public LanzamientoWorker(
+            @Assisted @NonNull Context context,
+            @Assisted @NonNull WorkerParameters params,
+            WishlistRepository wishlistRepository) {
         super(context, params);
-        repo = new WishlistRepository(context);
+        this.repo = wishlistRepository;
     }
 
     @NonNull

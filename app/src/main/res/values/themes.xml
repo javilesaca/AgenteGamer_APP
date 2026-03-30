@@ -1,10 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ================= Theme ================= -->
+
     <style name="Theme.AgenteGamer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Colores opcionales -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@android:color/white</item>
+
+        <!-- Colores base -->
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryVariant">@color/background</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+
+        <item name="colorSecondary">@color/accent_green</item>
+        <item name="colorOnSecondary">@color/background</item>
+
+        <!-- Fondo general -->
+        <item name="android:colorBackground">@color/background</item>
+
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Ripple -->
+        <item name="colorControlHighlight">@color/surface_variant</item>
+
+        <!-- Cards -->
+        <item name="materialCardViewStyle">@style/Widget.AgenteGamer.Card</item>
+
     </style>
+
+    <!-- ================= Card style ================= -->
+
+    <style name="Widget.AgenteGamer.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="cardBackgroundColor">@color/surface</item>
+    </style>
+
+    <!-- ================= Text styles ================= -->
+
+    <style name="TextAppearance.AgenteGamer.Title" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:fontFamily">@font/manrope_bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.AgenteGamer.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/manrope_regular</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.AgenteGamer.Highlight" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:fontFamily">@font/manrope_medium</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
 </resources>

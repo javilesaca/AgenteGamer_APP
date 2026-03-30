@@ -1,41 +1,62 @@
 package com.miapp.agentegamer.data.model;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.PropertyName;
+
 public class UsuarioEntity {
-
-    private String uid;
     private String email;
-    private double presupuesto;
+    private String nombre;
 
-    // Constructor vacio necesario para Firebase
-    public UsuarioEntity(){}
+    @PropertyName("presupuestoMensual")
+    private Double presupuestoMensual;
 
-    public UsuarioEntity(String uid, String email, double presupuesto) {
-        this.uid = uid;
-        this.email = email;
-        this.presupuesto = presupuesto;
-    }
+    private Timestamp fechaCreacion;
+    private String rol;
 
-    public String getUid() {
-        return uid;
-    }
+    // Required empty constructor for Firestore
+    public UsuarioEntity() {}
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
+    // Getters
     public String getEmail() {
         return email;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    @PropertyName("presupuestoMensual")
+    public Double getPresupuestoMensual() {
+        return presupuestoMensual;
+    }
+
+    public Timestamp getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    // Setters
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public double getPresupuesto() {
-        return presupuesto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public void setPresupuesto(double presupuesto) {
-        this.presupuesto = presupuesto;
+    @PropertyName("presupuestoMensual")
+    public void setPresupuestoMensual(Double presupuestoMensual) {
+        this.presupuestoMensual = presupuestoMensual;
+    }
+
+    public void setFechaCreacion(Timestamp fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

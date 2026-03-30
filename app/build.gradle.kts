@@ -1,8 +1,12 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("com.google.dagger.hilt.android")
     // id("kotlin-android") // comentar porque no uso Kotlin
 }
+
 
 android {
     namespace = "com.miapp.agentegamer"
@@ -16,8 +20,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
+        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString() ?: throw GradleException("RAWG_API_KEY no definida")
+        buildConfigField ("String", "RAWG_API_KEY", "\"$rawgApiKey\"")
     }
-    
+
+    buildFeatures{
+        buildConfig = true
+    }
 
     buildTypes {
         release {
@@ -84,6 +95,14 @@ dependencies {
 
     //Firestore (para el presupuseto del usuario)
     implementation("com.google.firebase:firebase-firestore")
+
+    // Hilt - Inyección de Dependencias
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.51.1")
+
+    // Hilt Worker (WorkManager)
+    implementation("androidx.hilt:hilt-work:1.2.0")
+    annotationProcessor("androidx.hilt:hilt-compiler:1.2.0")
 
 }
 

@@ -10,8 +10,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miapp.agentegamer.R;
-import com.miapp.agentegamer.data.model.WishlistEntity;
-import com.miapp.agentegamer.viewmodel.WishlistViewModel;
+import com.miapp.agentegamer.data.local.entity.WishlistEntity;
+import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 
 public class DialogConfirmarCompraFragment extends DialogFragment {
 
@@ -59,10 +59,10 @@ public class DialogConfirmarCompraFragment extends DialogFragment {
                 .create();
           dialog.setOnShowListener(d -> {
               dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                      .setTextColor(ContextCompat.getColor(requireContext(), R.color.gris_confirmar));
+                      .setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary));
 
               dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                      .setTextColor(ContextCompat.getColor(requireContext(), R.color.gris_cancelar));
+                      .setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary));
           });
 
           return dialog;
