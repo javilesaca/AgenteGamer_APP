@@ -22,7 +22,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 
-        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString() ?: throw GradleException("RAWG_API_KEY no definida")
+        // Leer RAWG_API_KEY de múltiples fuentes (local.properties → variable de entorno)
+        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString() 
+            ?: System.getenv("RAWG_API_KEY")
+            ?: throw GradleException("RAWG_API_KEY no definida. Agregar a local.properties o variable de entorno")
+        
         buildConfigField ("String", "RAWG_API_KEY", "\"$rawgApiKey\"")
     }
 
@@ -71,8 +75,14 @@ dependencies {
 
     // Testing
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")  // Para InstantTaskExecutorRule
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    // Hilt testing (para tests con inyección de dependencias)
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.51.1")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")

@@ -9,8 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 public class FechaUtils {
 
-    private static final SimpleDateFormat FORMAT =
-            new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    // ThreadLocal para garantizar thread-safety de SimpleDateFormat
+    private static final ThreadLocal<SimpleDateFormat> FORMAT =
+            ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()));
 
     /**
      * Devuelve el timestamp actual en milisegundos
@@ -24,7 +25,7 @@ public class FechaUtils {
      */
     public static long diasHasta(String fechaLanzamiento) {
         try {
-            Date fechaJuego = FORMAT.parse(fechaLanzamiento);
+            Date fechaJuego = FORMAT.get().parse(fechaLanzamiento);
             if (fechaJuego == null) return Long.MAX_VALUE;
 
             return diasHasta(fechaJuego.getTime());
@@ -48,7 +49,7 @@ public class FechaUtils {
      */
     public static Date parseFecha(String fecha) {
         try {
-            return FORMAT.parse(fecha);
+            return FORMAT.get().parse(fecha);
         } catch (Exception e) {
             return null;
         }
@@ -58,7 +59,7 @@ public class FechaUtils {
      * Devuelve la fecha de hoy en formato yyyy-MM-dd
      */
     public static String hoy() {
-        return FORMAT.format(new Date());
+        return FORMAT.get().format(new Date());
     }
 
     /**
@@ -67,7 +68,7 @@ public class FechaUtils {
     public static String dentroDeDias(int dias) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_YEAR, dias);
-        return FORMAT.format(cal.getTime());
+        return FORMAT.get().format(cal.getTime());
     }
 }
 

@@ -9,14 +9,10 @@ import androidx.work.WorkerParameters;
 
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.domain.repository.WishlistRepository;
+import com.miapp.agentegamer.util.FechaUtils;
 import com.miapp.agentegamer.util.NotificationHelper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
@@ -60,19 +56,7 @@ public class LanzamientoWorker extends Worker {
         if (juego.getFechaLanzamiento() == null)
             return false;
 
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-            Date fechaLanzamiento = sdf.parse(juego.getFechaLanzamiento());
-            Date hoy = new Date();
-
-            long diffMillis = fechaLanzamiento.getTime() - hoy.getTime();
-            long dias = TimeUnit.MILLISECONDS.toDays(diffMillis);
-
-            return dias >= 0 && dias <= 7;
-        }catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
+        long dias = FechaUtils.diasHasta(juego.getFechaLanzamiento());
+        return dias >= 0 && dias <= 7;
     }
 }
