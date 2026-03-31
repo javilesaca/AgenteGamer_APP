@@ -346,9 +346,18 @@ public class MainActivity extends AppCompatActivity {
                                 gasto.getId()
                         )
                 );
+}
+
+            // Actualizar presupuesto restante en tiempo real
+            if (sistemaFinanciero != null) {
+                double presupuesto = sistemaFinanciero.getPresupuestoMensual();
+                double restante = presupuesto - total;
+                tvTotalGastos.setText(MoneyUtils.format(total));
+                tvPresupuesto.setText(MoneyUtils.format(presupuesto));
+                tvRestante.setText(MoneyUtils.format(restante));
             }
 
-            animarTotal(total);
+            animatorTotal(total);
 
             PieDataSet dataSet = new PieDataSet(entradas, "");
             dataSet.setColors(
