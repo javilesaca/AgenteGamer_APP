@@ -154,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void actualizarPresupuestoRestante() {
-        userRepository.obtenerPresupuesto(new UserRepository.OnPresupuestoCallback() {
-            @Override
-            public void onSuccess(double presupuesto) {
+        // Usar el mismo método reactivo que el observer
+        userRepository.getPresupuestoLiveData().observe(this, presupuesto -> {
+            if (presupuesto != null) {
                 gastoRepo.getTotalGastadoMesSync(totalGastado -> {
                     runOnUiThread(() -> {
                         double restante = presupuesto - totalGastado;
@@ -171,11 +171,6 @@ public class MainActivity extends AppCompatActivity {
                         toast.show();
                     });
                 });
-            }
-
-            @Override
-            public void onError() {
-                // No hacer nada en caso de error
             }
         });
     }
