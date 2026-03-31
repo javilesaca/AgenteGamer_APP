@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
                 tvRestante.setText(MoneyUtils.format(restante));
             }
 
-            animatorTotal(total);
+            animarTotal(total);
 
             PieDataSet dataSet = new PieDataSet(entradas, "");
             dataSet.setColors(
