@@ -15,9 +15,13 @@ import com.miapp.agentegamer.domain.usecase.ValidatePurchaseUseCase;
 import com.miapp.agentegamer.util.FechaUtils;
 import com.miapp.agentegamer.util.NotificationHelper;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
-import java.util.List;
 
 @HiltWorker
 public class SistemaFinancieroWorker extends Worker {
@@ -47,29 +51,53 @@ public class SistemaFinancieroWorker extends Worker {
     public Result doWork() {
         try {
             List<WishlistEntity> wishlist = wishlistRepo.getWishlistSync();
-            Double presupuesto = userRepository.getPresupuestoLiveData().getValue();
+
+            CompletableFuture<Double> presupuestoFuture = new CompletableFuture<>();
+            CompletableFuture<Double> totalGastadoFuture = new CompletableFuture<>();
+
+            userRepository.obtenerPresupuesto(new UserRepository.OnPresupuestoCallback() {
+                @Override
+                public void onSuccess(double presupuesto) {
+                    presupuestoFuture.complete(presupuesto);
+                }
+
+                @Override
+                public void onError() {
+                    presupuestoFuture.completeExceptionally(new RuntimeException("Failed to fetch presupuesto"));
+                }
+            });
+
+            gastoRepo.getTotalGastadoMesSync(totalGastado -> {
+                try {
+                    totalGastadoFuture.complete(totalGastado);
+                } catch (Exception e) {
+                    totalGastadoFuture.completeExceptionally(e);
+                }
+            });
+
+            Double presupuesto = presupuestoFuture.get(30, TimeUnit.SECONDS);
+            Double totalGastado = totalGastadoFuture.get(30, TimeUnit.SECONDS);
 
             if (presupuesto == null) {
                 return Result.failure();
             }
 
-            // Usar callback para obtener el total gastado de forma asíncrona
-            gastoRepo.getTotalGastadoMesSync(totalGastado -> {
-                for (WishlistEntity juego : wishlist) {
-                    String evaluacion = validatePurchaseUseCase.validate(juego, presupuesto, totalGastado);
+            for (WishlistEntity juego : wishlist) {
+                String evaluacion = validatePurchaseUseCase.validate(juego, presupuesto, totalGastado);
 
-                    if (!evaluacion.equals("✅ Compra recomendada")) {
-                        lanzarNotificacionNoComprar(juego);
-                        break;
-                    }
+                if (!evaluacion.equals("✅ Compra recomendada")) {
+                    lanzarNotificacionNoComprar(juego);
+                    break;
                 }
+            }
 
-                avisarLanzamientosProximos(wishlist);
-            });
+            avisarLanzamientosProximos(wishlist);
 
             return Result.success();
-        } catch (Exception e) {
+        } catch (TimeoutException e) {
             return Result.retry();
+        } catch (Exception e) {
+            return Result.failure();
         }
     }
 

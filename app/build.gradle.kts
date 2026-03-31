@@ -1,35 +1,36 @@
-import java.util.Properties
-
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
-    // id("kotlin-android") // comentar porque no uso Kotlin
 }
-
-
 android {
     namespace = "com.miapp.agentegamer"
     compileSdk = 36
-
     defaultConfig {
         applicationId = "com.miapp.agentegamer"
         minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Leer RAWG_API_KEY de múltiples fuentes
+        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString()
+            ?: System.getenv("RAWG_API_KEY")
+            ?: run {
+                val localFile = file("${project.rootDir}/local.properties")
+                if (localFile.exists()) {
+                    val content = localFile.readText()
+                    val match = Regex("RAWG_API_KEY\\s*=\\s*(.+)").find(content)
+                    match?.groupValues?.get(1)?.trim()
+                } else null
+            }
+                    ?: throw GradleException("RAWG_API_KEY no definida. Agregar a local.properties o variable de entorno")
 
-
-        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString() ?: throw GradleException("RAWG_API_KEY no definida")
-        buildConfigField ("String", "RAWG_API_KEY", "\"$rawgApiKey\"")
-    }
-
+                buildConfigField("String", "RAWG_API_KEY", "\"$rawgApiKey\"")
+            }
     buildFeatures{
         buildConfig = true
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -39,9 +40,6 @@ android {
             )
         }
     }
-
-
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -71,8 +69,14 @@ dependencies {
 
     // Testing
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")  // Para InstantTaskExecutorRule
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    // Hilt testing (para tests con inyección de dependencias)
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.51.1")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
