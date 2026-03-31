@@ -1,4 +1,5 @@
 import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -22,9 +23,17 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 
-        // Leer RAWG_API_KEY de múltiples fuentes (local.properties → variable de entorno)
-        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString() 
+        // Leer RAWG_API_KEY de múltiples fuentes (gradle.properties → variable de entorno → local.properties)
+        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString()
             ?: System.getenv("RAWG_API_KEY")
+            ?: run {
+                val localPropertiesFile = File(rootProject.projectDir, "local.properties")
+                if (localPropertiesFile.exists()) {
+                    val props = Properties()
+                    props.load(FileInputStream(localPropertiesFile))
+                    props.getProperty("RAWG_API_KEY")
+                } else null
+            }
             ?: throw GradleException("RAWG_API_KEY no definida. Agregar a local.properties o variable de entorno")
         
         buildConfigField ("String", "RAWG_API_KEY", "\"$rawgApiKey\"")

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -59,7 +60,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity {
 
     // UI
-    protected TextView tvRecomendacion, tvTotalGastos;
+    protected TextView tvRecomendacion, tvTotalGastos, tvPresupuesto, tvRestante;
     private View indicadorEstado;
     private PieChart pieChart;
 
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
+    // Quick Actions
+    private LinearLayout btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
 
     // MVVM
     private GastoViewModel gastoViewModel;
@@ -153,12 +157,40 @@ public class MainActivity extends AppCompatActivity {
 
         tvRecomendacion = findViewById(R.id.tvRecomendacion);
         tvTotalGastos = findViewById(R.id.tvTotalGastos);
+        tvPresupuesto = findViewById(R.id.tvPresupuesto);
+        tvRestante = findViewById(R.id.tvRestante);
         indicadorEstado = findViewById(R.id.viewIndicador);
         pieChart = findViewById(R.id.pieChart);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
         toolbar = findViewById(R.id.toolbar);
+
+        // Quick Actions
+        btnAddGasto = findViewById(R.id.btnAddGasto);
+        btnWishlist = findViewById(R.id.btnWishlist);
+        btnJuegos = findViewById(R.id.btnJuegos);
+        btnAjustes = findViewById(R.id.btnAjustes);
+
+        configurarQuickActions();
+    }
+
+    private void configurarQuickActions() {
+        btnAddGasto.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ListaGastosActivity.class));
+        });
+
+        btnWishlist.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ListaWishlistActivity.class));
+        });
+
+        btnJuegos.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ListaJuegosActivity.class));
+        });
+
+        btnAjustes.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, AjustesActivity.class));
+        });
     }
 
     /**
@@ -188,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView tvNombre = header.findViewById(R.id.tvNombreUsuario);
         TextView tvEmail = header.findViewById(R.id.tvEmailUsuario);
+        TextView tvFecha = header.findViewById(R.id.tvFechaCreacion);
+        TextView tvRol = header.findViewById(R.id.tvRol);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -198,6 +232,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UsuarioEntity usuario) {
                     tvNombre.setText(usuario.getNombre());
+                    tvRol.setText(usuario.getRol() != null ? usuario.getRol() : "Usuario");
+                    // Format fechaCreacion
+                    if (usuario.getFechaCreacion() != null) {
+                        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM yyyy", java.util.Locale.getDefault());
+                        String fechaStr = sdf.format(new java.util.Date(usuario.getFechaCreacion().getSeconds() * 1000));
+                        tvFecha.setText(fechaStr);
+                    }
                 }
 
                 @Override
@@ -208,10 +249,12 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         tvNombre.setText("Usuario desconocido");
                     }
+                    tvRol.setText("Usuario");
                 }
             });
         } else {
             tvNombre.setText("Usuario desconocido");
+            tvRol.setText("Usuario");
         }
     }
 
@@ -236,7 +279,10 @@ public class MainActivity extends AppCompatActivity {
                 // Actualizar el TextView con el presupuesto restante
                 gastoRepo.getTotalGastadoMesSync(totalGastado -> {
                     runOnUiThread(() -> {
-                        tvTotalGastos.setText(MoneyUtils.format(presupuesto - totalGastado));
+                        double restante = presupuesto - totalGastado;
+                        tvTotalGastos.setText(MoneyUtils.format(totalGastado));
+                        tvPresupuesto.setText(MoneyUtils.format(presupuesto));
+                        tvRestante.setText(MoneyUtils.format(restante));
                     });
                 });
             }
