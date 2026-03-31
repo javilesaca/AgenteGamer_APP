@@ -163,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
                         tvTotalGastos.setText(MoneyUtils.format(totalGastado));
                         tvPresupuesto.setText(MoneyUtils.format(presupuesto));
                         tvRestante.setText(MoneyUtils.format(restante));
+                        
+                        // DEBUG: Log para verificar valores
+                        android.util.Log.d("DEBUG_PRESUPUESTO", "onResume - Presupuesto: " + presupuesto + "€ | Total Gastado: " + totalGastado + "€ | Restante: " + restante + "€");
                     });
                 });
             }
@@ -366,6 +369,10 @@ public class MainActivity extends AppCompatActivity {
             tvTotalGastos.setText(MoneyUtils.format(total));
             tvPresupuesto.setText(MoneyUtils.format(presupuesto));
             tvRestante.setText(MoneyUtils.format(restante));
+            
+            // DEBUG: Log para verificar valores
+            android.util.Log.d("DEBUG_PRESUPUESTO", "Presupuesto: " + presupuesto + "€ | Total Gastado: " + total + "€ | Restante: " + restante + "€");
+            android.widget.Toast.makeText(this, "DEBUG - Presupuesto: " + presupuesto + "€ | Total: " + total + "€ | Restante: " + restante + "€", android.widget.Toast.LENGTH_LONG).show();
 
             animarTotal(total);
 
