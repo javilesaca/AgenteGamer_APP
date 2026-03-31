@@ -127,8 +127,9 @@ public class UserRepositoryImpl implements UserRepository {
                     Double presupuestoMensual = doc.getDouble("presupuestoMensual");
                     Double presupuesto = doc.getDouble("presupuesto");
                     
-                    // DEBUG: Log del valor leído
-                    android.util.Log.d("DEBUG_FIRESTORE", "presupuestoMensual=" + presupuestoMensual + " presupuesto=" + presupuesto);
+                    // DEBUG: Log del valor leído con ID de usuario
+                    String userId = user.getUid();
+                    android.util.Log.d("DEBUG_FIRESTORE", "userId=" + userId + " presupuestoMensual=" + presupuestoMensual + " presupuesto=" + presupuesto);
                     
                     // Usar presupuestoMensual si existe, sino presupuesto, sino 100
                     Double valorFinal = presupuestoMensual != null ? presupuestoMensual : 

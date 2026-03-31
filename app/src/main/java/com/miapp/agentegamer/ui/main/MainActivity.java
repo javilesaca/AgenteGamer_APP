@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
             tvRestante.setText(MoneyUtils.format(restante));
             
             // DEBUG: Update TextView visible siempre
-            tvDebug.setText("OBSERVER - P:" + presupuesto + " T:" + total + " R:" + restante);
+            tvDebug.setText("OBSERVER - P:" + presupuesto + " T:" + total + " R:" + restante + " (user: " + com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid().substring(0,8) + "...)");
 
             animarTotal(total);
 
