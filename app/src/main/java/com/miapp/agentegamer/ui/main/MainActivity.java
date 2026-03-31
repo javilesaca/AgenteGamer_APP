@@ -164,9 +164,11 @@ public class MainActivity extends AppCompatActivity {
                         tvPresupuesto.setText(MoneyUtils.format(presupuesto));
                         tvRestante.setText(MoneyUtils.format(restante));
                         
-                        // DEBUG: Mostrar valores en Toast visible
+                        // DEBUG: Mostrar valores en Toast visible (durará más)
                         String debugMsg = "onResume - P: " + presupuesto + "€ | T: " + totalGastado + "€ | R: " + restante + "€";
-                        android.widget.Toast.makeText(MainActivity.this, debugMsg, android.widget.Toast.LENGTH_LONG).show();
+                        android.widget.Toast toast = android.widget.Toast.makeText(MainActivity.this, debugMsg, android.widget.Toast.LENGTH_LONG);
+                        toast.setDuration(10000); // 10 segundos
+                        toast.show();
                     });
                 });
             }
@@ -371,9 +373,11 @@ public class MainActivity extends AppCompatActivity {
             tvPresupuesto.setText(MoneyUtils.format(presupuesto));
             tvRestante.setText(MoneyUtils.format(restante));
             
-            // DEBUG: Mostrar valores en Toast visible
+            // DEBUG: Mostrar valores en Toast visible (durará más)
             String debugMsg = "P: " + presupuesto + "€ | T: " + total + "€ | R: " + restante + "€";
-            android.widget.Toast.makeText(this, debugMsg, android.widget.Toast.LENGTH_LONG).show();
+            android.widget.Toast toast = android.widget.Toast.makeText(this, debugMsg, android.widget.Toast.LENGTH_LONG);
+            toast.setDuration(10000); // 10 segundos
+            toast.show();
 
             animarTotal(total);
 
