@@ -59,10 +59,13 @@ public class GastoRepositoryImpl implements GastoRepository {
     @Override
     public void getTotalGastadoMesSync(OnTotalGastadoCallback callback) {
         executorService.execute(() -> {
-            double total = gastoDao.getTotalGastadoMes(
-                    PeriodoFinancieroUtils.getMesActual(),
-                    PeriodoFinancieroUtils.getAnioActual()
-            );
+            int mes = PeriodoFinancieroUtils.getMesActual();
+            int anio = PeriodoFinancieroUtils.getAnioActual();
+            double total = gastoDao.getTotalGastadoMes(mes, anio);
+            
+            // DEBUG: Log para verificar el total
+            android.util.Log.d("DEBUG_GASTO", "Mes: " + mes + " | Año: " + anio + " | Total Gastado: " + total + "€");
+            
             callback.onSuccess(total);
         });
     }

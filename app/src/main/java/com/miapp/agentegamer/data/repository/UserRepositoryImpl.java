@@ -123,7 +123,15 @@ public class UserRepositoryImpl implements UserRepository {
                         return;
                     }
 
+                    // Intentar leer presupuestoMensual primero, luego presupuesto
                     Double presupuesto = doc.getDouble("presupuestoMensual");
+                    if (presupuesto == null) {
+                        presupuesto = doc.getDouble("presupuesto");
+                    }
+                    
+                    // DEBUG: Log del valor leído
+                    android.util.Log.d("DEBUG_FIRESTORE", "presupuestoMensual: " + doc.getDouble("presupuestoMensual") + " | presupuesto: " + doc.getDouble("presupuesto"));
+                    
                     presupuestoLiveData.setValue(
                             presupuesto != null ? presupuesto : 100.0
                     );
