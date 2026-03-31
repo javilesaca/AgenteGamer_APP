@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Quick Actions
     private LinearLayout btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
+    private TextView tvDebug;
 
     // MVVM
     private GastoViewModel gastoViewModel;
@@ -164,11 +165,8 @@ public class MainActivity extends AppCompatActivity {
                         tvPresupuesto.setText(MoneyUtils.format(presupuesto));
                         tvRestante.setText(MoneyUtils.format(restante));
                         
-                        // DEBUG: Mostrar valores en Toast visible (durará 1 minuto)
-                        String debugMsg = "ONRESUME:\nP: " + presupuesto + "€ | T: " + totalGastado + "€ | R: " + restante + "€";
-                        android.widget.Toast toast = android.widget.Toast.makeText(MainActivity.this, debugMsg, android.widget.Toast.LENGTH_LONG);
-                        toast.setDuration(60000); // 60 segundos
-                        toast.show();
+                        // DEBUG: Update TextView visible siempre
+                        tvDebug.setText("ONRESUME - P:" + presupuesto + " T:" + totalGastado + " R:" + restante);
                     });
                 });
             }
@@ -196,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
         btnWishlist = findViewById(R.id.btnWishlist);
         btnJuegos = findViewById(R.id.btnJuegos);
         btnAjustes = findViewById(R.id.btnAjustes);
+        
+        // Debug TextView
+        tvDebug = findViewById(R.id.tvDebug);
 
         configurarQuickActions();
     }
@@ -368,11 +369,8 @@ public class MainActivity extends AppCompatActivity {
             tvPresupuesto.setText(MoneyUtils.format(presupuesto));
             tvRestante.setText(MoneyUtils.format(restante));
             
-            // DEBUG: Mostrar valores en Toast visible (durará 1 minuto)
-            String debugMsg = "OBSERVER:\nP: " + presupuesto + " | T: " + total + " | R: " + restante;
-            android.widget.Toast toast = android.widget.Toast.makeText(this, debugMsg, android.widget.Toast.LENGTH_LONG);
-            toast.setDuration(60000); // 60 segundos
-            toast.show();
+            // DEBUG: Update TextView visible siempre
+            tvDebug.setText("OBSERVER - P:" + presupuesto + " T:" + total + " R:" + restante);
 
             animarTotal(total);
 
