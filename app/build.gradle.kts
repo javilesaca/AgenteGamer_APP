@@ -1,39 +1,36 @@
-import java.util.Properties
-
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
-    // id("kotlin-android") // comentar porque no uso Kotlin
 }
-
-
 android {
     namespace = "com.miapp.agentegamer"
     compileSdk = 36
-
     defaultConfig {
         applicationId = "com.miapp.agentegamer"
         minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-
-        // Leer RAWG_API_KEY de múltiples fuentes (local.properties → variable de entorno)
-        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString() 
+        // Leer RAWG_API_KEY de múltiples fuentes
+        val rawgApiKey = project.findProperty("RAWG_API_KEY")?.toString()
             ?: System.getenv("RAWG_API_KEY")
-            ?: throw GradleException("RAWG_API_KEY no definida. Agregar a local.properties o variable de entorno")
-        
-        buildConfigField ("String", "RAWG_API_KEY", "\"$rawgApiKey\"")
-    }
+            ?: run {
+                val localFile = file("${project.rootDir}/local.properties")
+                if (localFile.exists()) {
+                    val content = localFile.readText()
+                    val match = Regex("RAWG_API_KEY\\s*=\\s*(.+)").find(content)
+                    match?.groupValues?.get(1)?.trim()
+                } else null
+            }
+                    ?: throw GradleException("RAWG_API_KEY no definida. Agregar a local.properties o variable de entorno")
 
+                buildConfigField("String", "RAWG_API_KEY", "\"$rawgApiKey\"")
+            }
     buildFeatures{
         buildConfig = true
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -43,9 +40,6 @@ android {
             )
         }
     }
-
-
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
