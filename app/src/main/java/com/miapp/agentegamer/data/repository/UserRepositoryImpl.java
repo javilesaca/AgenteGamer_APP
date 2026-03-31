@@ -130,7 +130,7 @@ public class UserRepositoryImpl implements UserRepository {
                     }
                     
                     // DEBUG: Log del valor leído
-                    android.util.Log.d("DEBUG_FIRESTORE", "presupuestoMensual: " + doc.getDouble("presupuestoMensual") + " | presupuesto: " + doc.getDouble("presupuesto"));
+                    android.util.Log.d("DEBUG_FIRESTORE", "presupuestoMensual=" + doc.getDouble("presupuestoMensual") + " presupuesto=" + doc.getDouble("presupuesto"));
                     
                     presupuestoLiveData.setValue(
                             presupuesto != null ? presupuesto : 100.0

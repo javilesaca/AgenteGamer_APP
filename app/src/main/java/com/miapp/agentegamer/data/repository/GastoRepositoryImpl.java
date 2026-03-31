@@ -64,7 +64,7 @@ public class GastoRepositoryImpl implements GastoRepository {
             double total = gastoDao.getTotalGastadoMes(mes, anio);
             
             // DEBUG: Log para verificar el total
-            android.util.Log.d("DEBUG_GASTO", "Mes: " + mes + " | Año: " + anio + " | Total Gastado: " + total + "€");
+            android.util.Log.d("DEBUG_GASTO", "Mes: " + mes + " | Anio: " + anio + " | Total: " + total);
             
             callback.onSuccess(total);
         });

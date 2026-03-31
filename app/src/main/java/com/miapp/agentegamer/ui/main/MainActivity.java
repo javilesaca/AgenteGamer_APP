@@ -164,8 +164,9 @@ public class MainActivity extends AppCompatActivity {
                         tvPresupuesto.setText(MoneyUtils.format(presupuesto));
                         tvRestante.setText(MoneyUtils.format(restante));
                         
-                        // DEBUG: Log para verificar valores
-                        android.util.Log.d("DEBUG_PRESUPUESTO", "onResume - Presupuesto: " + presupuesto + "€ | Total Gastado: " + totalGastado + "€ | Restante: " + restante + "€");
+                        // DEBUG: Mostrar valores en Toast visible
+                        String debugMsg = "onResume - P: " + presupuesto + "€ | T: " + totalGastado + "€ | R: " + restante + "€";
+                        android.widget.Toast.makeText(MainActivity.this, debugMsg, android.widget.Toast.LENGTH_LONG).show();
                     });
                 });
             }
@@ -370,9 +371,9 @@ public class MainActivity extends AppCompatActivity {
             tvPresupuesto.setText(MoneyUtils.format(presupuesto));
             tvRestante.setText(MoneyUtils.format(restante));
             
-            // DEBUG: Log para verificar valores
-            android.util.Log.d("DEBUG_PRESUPUESTO", "Presupuesto: " + presupuesto + "€ | Total Gastado: " + total + "€ | Restante: " + restante + "€");
-            android.widget.Toast.makeText(this, "DEBUG - Presupuesto: " + presupuesto + "€ | Total: " + total + "€ | Restante: " + restante + "€", android.widget.Toast.LENGTH_LONG).show();
+            // DEBUG: Mostrar valores en Toast visible
+            String debugMsg = "P: " + presupuesto + "€ | T: " + total + "€ | R: " + restante + "€";
+            android.widget.Toast.makeText(this, debugMsg, android.widget.Toast.LENGTH_LONG).show();
 
             animarTotal(total);
 
