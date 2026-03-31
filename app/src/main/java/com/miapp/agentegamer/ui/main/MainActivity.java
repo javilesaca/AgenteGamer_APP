@@ -270,36 +270,14 @@ public class MainActivity extends AppCompatActivity {
      * y lo inyecta en el ViewModel.
      */
     private void cargarPresupuestoUsuario() {
-        userRepository.obtenerPresupuesto(new UserRepository.OnPresupuestoCallback() {
-            @Override
-            public void onSuccess(double presupuesto) {
+        // Usar LiveData para que se actualice automáticamente cuando cambie el presupuesto
+        userRepository.getPresupuestoLiveData().observe(this, presupuesto -> {
+            if (presupuesto != null) {
                 sistemaFinanciero = new SistemaFinanciero(presupuesto);
                 gastoViewModel.setSistemaFinanciero(sistemaFinanciero);
 
-                // Actualizar el TextView con el presupuesto restante
-                gastoRepo.getTotalGastadoMesSync(totalGastado -> {
-                    runOnUiThread(() -> {
-                        double restante = presupuesto - totalGastado;
-                        tvTotalGastos.setText(MoneyUtils.format(totalGastado));
-                        tvPresupuesto.setText(MoneyUtils.format(presupuesto));
-                        tvRestante.setText(MoneyUtils.format(restante));
-                    });
-                });
-            }
-
-            @Override
-            public void onError() {
-                // Presupuesto por defecto si falla Firestore
-                double presupuestoDefault = 100;
-                sistemaFinanciero = new SistemaFinanciero(presupuestoDefault);
-                gastoViewModel.setSistemaFinanciero(sistemaFinanciero);
-
-                // Actualizar el TextView con el presupuesto restante
-                gastoRepo.getTotalGastadoMesSync(totalGastado -> {
-                    runOnUiThread(() -> {
-                        tvTotalGastos.setText(MoneyUtils.format(presupuestoDefault - totalGastado));
-                    });
-                });
+                // Actualizar el TextView con el presupuesto
+                tvPresupuesto.setText(MoneyUtils.format(presupuesto));
             }
         });
     }
