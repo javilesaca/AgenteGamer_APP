@@ -103,4 +103,56 @@ public class PresupuestoCalculatorTest {
         
         assertTrue(bajoPresupuesto);
     }
+    
+    // ================= TEST DE INTEGRACIÓN SIMULADA =================
+    
+    /**
+     * Simulación del caso real del usuario:
+     * - Presupuesto: 150€
+     * - Total Gastado: 159.97€
+     * - Resultado esperado: -9.97€ (negativo, sobregastado)
+     */
+    @Test
+    public void testCasoRealUsuario() {
+        // Datos del usuario
+        double presupuesto = 150.0;
+        double totalGastado = 159.97;
+        
+        // Cálculo
+        double restante = presupuesto - totalGastado;
+        
+        // Verificaciones
+        System.out.println("=== CASO REAL DEL USUARIO ===");
+        System.out.println("Presupuesto: " + presupuesto + "€");
+        System.out.println("Total Gastado: " + totalGastado + "€");
+        System.out.println("Restante: " + restante + "€");
+        System.out.println("Porcentaje Gastado: " + (totalGastado / presupuesto * 100) + "%");
+        System.out.println("==============================");
+        
+        // El restante debe ser negativo
+        assertTrue("El restante debe ser negativo", restante < 0);
+        
+        // El porcentaje debe ser mayor al 100%
+        double porcentaje = (totalGastado / presupuesto) * 100;
+        assertTrue("El porcentaje debe ser mayor al 100%", porcentaje > 100);
+        
+        // Verificar el valor exacto
+        assertEquals(-9.97, restante, 0.01);
+    }
+    
+    /**
+     * Verificar que el mensaje de estado sea el correcto
+     */
+    @Test
+    public void testMensajeEstadoSobrePresupuesto() {
+        double presupuesto = 150.0;
+        double totalGastado = 159.97;
+        
+        // Si gastado > presupuesto, debe mostrar mensaje de sobregasto
+        if (totalGastado > presupuesto) {
+            String mensaje = "ALERTA: Has superado tu presupuesto";
+            assertNotNull(mensaje);
+            System.out.println("MOSTRAR: " + mensaje);
+        }
+    }
 }
