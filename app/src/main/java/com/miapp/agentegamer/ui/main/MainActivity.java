@@ -148,6 +148,30 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         configurarHeaderDrawer();
+        
+        // Actualizar presupuesto restante cada vez que se muestra la pantalla
+        actualizarPresupuestoRestante();
+    }
+    
+    private void actualizarPresupuestoRestante() {
+        userRepository.obtenerPresupuesto(new UserRepository.OnPresupuestoCallback() {
+            @Override
+            public void onSuccess(double presupuesto) {
+                gastoRepo.getTotalGastadoMesSync(totalGastado -> {
+                    runOnUiThread(() -> {
+                        double restante = presupuesto - totalGastado;
+                        tvTotalGastos.setText(MoneyUtils.format(totalGastado));
+                        tvPresupuesto.setText(MoneyUtils.format(presupuesto));
+                        tvRestante.setText(MoneyUtils.format(restante));
+                    });
+                });
+            }
+
+            @Override
+            public void onError() {
+                // No hacer nada en caso de error
+            }
+        });
     }
 
     /**
