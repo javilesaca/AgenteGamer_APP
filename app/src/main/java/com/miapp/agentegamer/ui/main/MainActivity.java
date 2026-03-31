@@ -278,6 +278,15 @@ public class MainActivity extends AppCompatActivity {
 
                 // Actualizar el TextView con el presupuesto
                 tvPresupuesto.setText(MoneyUtils.format(presupuesto));
+                
+                // También actualizar restante cuando cambie el presupuesto
+                gastoRepo.getTotalGastadoMesSync(totalGastado -> {
+                    runOnUiThread(() -> {
+                        double restante = presupuesto - totalGastado;
+                        tvTotalGastos.setText(MoneyUtils.format(totalGastado));
+                        tvRestante.setText(MoneyUtils.format(restante));
+                    });
+                });
             }
         });
     }
@@ -326,14 +335,13 @@ public class MainActivity extends AppCompatActivity {
                 );
 }
 
-            // Actualizar presupuesto restante en tiempo real
-            if (sistemaFinanciero != null) {
-                double presupuesto = sistemaFinanciero.getPresupuestoMensual();
-                double restante = presupuesto - total;
-                tvTotalGastos.setText(MoneyUtils.format(total));
-                tvPresupuesto.setText(MoneyUtils.format(presupuesto));
-                tvRestante.setText(MoneyUtils.format(restante));
-            }
+            // Calcular restante directamente: presupuesto - total gastado
+            double presupuesto = sistemaFinanciero != null ? sistemaFinanciero.getPresupuestoMensual() : 0;
+            double restante = presupuesto - total;
+            
+            tvTotalGastos.setText(MoneyUtils.format(total));
+            tvPresupuesto.setText(MoneyUtils.format(presupuesto));
+            tvRestante.setText(MoneyUtils.format(restante));
 
             animarTotal(total);
 
