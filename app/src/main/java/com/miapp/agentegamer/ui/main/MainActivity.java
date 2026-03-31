@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
             tvRestante.setText(MoneyUtils.format(restante));
             
             // DEBUG: Mostrar valores en Toast visible (durará 1 minuto)
-            String debugMsg = "OBSERVER:\nP: " + presupuesto + "€ | T: " + total + "€ | R: " + restante + "€\n\nsistemaFinanciero: " + (sistemaFinanciero != null ? "SI" : "NO");
+            String debugMsg = "OBSERVER:\nP: " + presupuesto + " | T: " + total + " | R: " + restante;
             android.widget.Toast toast = android.widget.Toast.makeText(this, debugMsg, android.widget.Toast.LENGTH_LONG);
             toast.setDuration(60000); // 60 segundos
             toast.show();

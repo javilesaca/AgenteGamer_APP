@@ -124,17 +124,17 @@ public class UserRepositoryImpl implements UserRepository {
                     }
 
                     // Intentar leer presupuestoMensual primero, luego presupuesto
-                    Double presupuesto = doc.getDouble("presupuestoMensual");
-                    if (presupuesto == null) {
-                        presupuesto = doc.getDouble("presupuesto");
-                    }
+                    Double presupuestoMensual = doc.getDouble("presupuestoMensual");
+                    Double presupuesto = doc.getDouble("presupuesto");
                     
                     // DEBUG: Log del valor leído
-                    android.util.Log.d("DEBUG_FIRESTORE", "presupuestoMensual=" + doc.getDouble("presupuestoMensual") + " presupuesto=" + doc.getDouble("presupuesto"));
+                    android.util.Log.d("DEBUG_FIRESTORE", "presupuestoMensual=" + presupuestoMensual + " presupuesto=" + presupuesto);
                     
-                    presupuestoLiveData.setValue(
-                            presupuesto != null ? presupuesto : 100.0
-                    );
+                    // Usar presupuestoMensual si existe, sino presupuesto, sino 100
+                    Double valorFinal = presupuestoMensual != null ? presupuestoMensual : 
+                                       (presupuesto != null ? presupuesto : 100.0);
+                    
+                    presupuestoLiveData.setValue(valorFinal);
                 });
 
         return presupuestoLiveData;
