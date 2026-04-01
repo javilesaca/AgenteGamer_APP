@@ -174,21 +174,18 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void actualizarPresupuestoRestante() {
-        // Usar el mismo método reactivo que el observer
-        userRepository.getPresupuestoLiveData().observe(this, presupuesto -> {
-            if (presupuesto != null) {
-                gastoRepo.getTotalGastadoMesSync(totalGastado -> {
-                    runOnUiThread(() -> {
-                        double restante = presupuesto - totalGastado;
-                        tvTotalGastos.setText(MoneyUtils.format(totalGastado));
-                        tvPresupuesto.setText(MoneyUtils.format(presupuesto));
-                        tvRestante.setText(MoneyUtils.format(restante));
-                        
-                        // DEBUG: Update TextView visible siempre
-                        tvDebug.setText("ONRESUME - P:" + presupuesto + " T:" + totalGastado + " R:" + restante);
-                    });
-                });
-            }
+        // Usar el presupuesto ya cargado en sistemaFinanciero (evita crear observers duplicados)
+        if (sistemaFinanciero == null) return;
+        
+        double presupuesto = sistemaFinanciero.getPresupuestoMensual();
+        gastoRepo.getTotalGastadoMesSync(totalGastado -> {
+            runOnUiThread(() -> {
+                double restante = presupuesto - totalGastado;
+                tvTotalGastos.setText(MoneyUtils.format(totalGastado));
+                tvRestante.setText(MoneyUtils.format(restante));
+                
+                tvDebug.setText("ONRESUME - P:" + presupuesto + " T:" + totalGastado + " R:" + restante);
+            });
         });
     }
 
