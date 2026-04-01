@@ -31,6 +31,9 @@ public class GamesViewModel extends ViewModel {
     private LiveData<List<GameDto>> juegosInicialesLiveData;
     private Observer<List<GameDto>> juegosInicialesObserver;
 
+    private LiveData<List<GameDto>> juegosRecientesLiveData;
+    private Observer<List<GameDto>> juegosRecientesObserver;
+
     private LiveData<List<GameDto>> buscarPaginadosLiveData;
     private Observer<List<GameDto>> buscarPaginadosObserver;
 
@@ -60,6 +63,20 @@ public class GamesViewModel extends ViewModel {
         };
 
         juegosInicialesLiveData.observeForever(juegosInicialesObserver);
+    }
+
+    public void cargarJuegosRecientes() {
+
+        cargando.setValue(true);
+
+        juegosRecientesLiveData = repository.getRecentlyReleasedGames();
+
+        juegosRecientesObserver = lista -> {
+            juegos.setValue(procesarLista(lista));
+            cargando.setValue(false);
+        };
+
+        juegosRecientesLiveData.observeForever(juegosRecientesObserver);
     }
 
     private List<GameDto> procesarLista(List<GameDto> lista) {
@@ -180,6 +197,9 @@ public class GamesViewModel extends ViewModel {
 
         if (juegosInicialesLiveData != null && juegosInicialesObserver != null) {
             juegosInicialesLiveData.removeObserver(juegosInicialesObserver);
+        }
+        if (juegosRecientesLiveData != null && juegosRecientesObserver != null) {
+            juegosRecientesLiveData.removeObserver(juegosRecientesObserver);
         }
         if (buscarPaginadosLiveData != null && buscarPaginadosObserver != null) {
             buscarPaginadosLiveData.removeObserver(buscarPaginadosObserver);

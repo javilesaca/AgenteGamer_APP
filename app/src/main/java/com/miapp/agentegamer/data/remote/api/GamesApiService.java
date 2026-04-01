@@ -30,4 +30,12 @@ public interface GamesApiService {
             @Query("ordering") String ordering,
             @Query("page_size") int pageSize
     );
+
+    @GET("games")
+    Call<GamesResponse> getRecentlyReleasedGames(
+            @Query("key") String apiKey,
+            @Query("dates") String dates,
+            @Query("ordering") String ordering,
+            @Query("page_size") int pageSize
+    );
 }

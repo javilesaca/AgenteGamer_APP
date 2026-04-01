@@ -54,6 +54,9 @@ public class ListaJuegosActivity extends AppCompatActivity {
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
         SearchView searchView = findViewById(R.id.searchView);
 
+        // Cargar juegos recién lanzados al abrir la pantalla
+        viewModel.cargarJuegosRecientes();
+
         adapter.setOnJuegoClickListener((juego, precioEstimado) -> {
             WishlistEntity entity = new WishlistEntity(
                     juego.getId(),
