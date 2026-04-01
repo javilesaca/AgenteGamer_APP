@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miapp.agentegamer.R;
+import com.miapp.agentegamer.data.model.UsuarioEntity;
 import com.miapp.agentegamer.domain.model.SistemaFinanciero;
 import com.miapp.agentegamer.domain.repository.UserRepository;
 import com.miapp.agentegamer.domain.usecase.UpdateSettingsUseCase;
@@ -83,20 +84,55 @@ public class AjustesActivity extends AppCompatActivity {
         rgMoneda = findViewById(R.id.rgMoneda);
 
         cargarPresupuestoActual();
+        cargarMonedaActual();
 
         btnGuardar.setOnClickListener(v -> guardarPresupuesto());
         btnCancelar.setOnClickListener(v -> finish());
 
-        // Restaurar selección de moneda guardada (ejemplo)
-        // TODO: implementar persistencia de preferencias
+        // Guardar moneda seleccionada en Firestore
         rgMoneda.setOnCheckedChangeListener((group, checkedId) -> {
-            // Guardar preferencia de moneda
-            // Por ahora solo muestra un toast
-            RadioButton selected = findViewById(checkedId);
-            if (selected != null) {
-                Toast.makeText(AjustesActivity.this, 
-                    "Moneda seleccionada: " + selected.getText(), 
-                    Toast.LENGTH_SHORT).show();
+            String moneda = "EUR";
+            if (checkedId == R.id.rbDolar) {
+                moneda = "USD";
+            }
+            String monedaFinal = moneda;
+            updateSettingsUseCase.updateMoneda(moneda, new UserRepository.OnMonedaCallback() {
+                @Override
+                public void onSuccess(String m) {
+                    if (isFinishing()) return;
+                    Toast.makeText(AjustesActivity.this,
+                        "Moneda guardada: " + monedaFinal,
+                        Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError() {
+                    if (isFinishing()) return;
+                    Toast.makeText(AjustesActivity.this,
+                        "Error al guardar moneda",
+                        Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+    private void cargarMonedaActual() {
+        userRepo.obtenerUsuario(new UserRepository.OnUsuarioCallback() {
+            @Override
+            public void onSuccess(UsuarioEntity usuario) {
+                if (isFinishing()) return;
+                String moneda = usuario.getMoneda();
+                if ("USD".equalsIgnoreCase(moneda)) {
+                    rgMoneda.check(R.id.rbDolar);
+                } else {
+                    rgMoneda.check(R.id.rbEuro);
+                }
+            }
+
+            @Override
+            public void onError() {
+                // EUR por defecto si hay error
+                rgMoneda.check(R.id.rbEuro);
             }
         });
     }

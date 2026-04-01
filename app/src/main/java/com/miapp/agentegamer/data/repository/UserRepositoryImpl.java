@@ -107,6 +107,21 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void actualizarMoneda(String moneda, OnMonedaCallback callback) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            callback.onError();
+            return;
+        }
+
+        db.collection("users")
+                .document(user.getUid())
+                .update("moneda", moneda)
+                .addOnSuccessListener(unused -> callback.onSuccess(moneda))
+                .addOnFailureListener(e -> callback.onError());
+    }
+
+    @Override
     public LiveData<Double> getPresupuestoLiveData() {
 
         FirebaseUser user = auth.getCurrentUser();
@@ -126,15 +141,11 @@ public class UserRepositoryImpl implements UserRepository {
                     // Intentar leer presupuestoMensual primero, luego presupuesto
                     Double presupuestoMensual = doc.getDouble("presupuestoMensual");
                     Double presupuesto = doc.getDouble("presupuesto");
-                    
-                    // DEBUG: Log del valor leído con ID de usuario
-                    String userId = user.getUid();
-                    android.util.Log.d("DEBUG_FIRESTORE", "userId=" + userId + " presupuestoMensual=" + presupuestoMensual + " presupuesto=" + presupuesto);
-                    
+
                     // Usar presupuestoMensual si existe, sino presupuesto, sino 100
-                    Double valorFinal = presupuestoMensual != null ? presupuestoMensual : 
+                    Double valorFinal = presupuestoMensual != null ? presupuestoMensual :
                                        (presupuesto != null ? presupuesto : 100.0);
-                    
+
                     presupuestoLiveData.setValue(valorFinal);
                 });
 

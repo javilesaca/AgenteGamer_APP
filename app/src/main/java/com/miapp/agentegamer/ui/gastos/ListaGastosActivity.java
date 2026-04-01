@@ -17,10 +17,12 @@ import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.GastoEntity;
 import com.miapp.agentegamer.data.model.UsuarioEntity;
 import com.miapp.agentegamer.domain.repository.UserRepository;
-import dagger.hilt.android.AndroidEntryPoint;
 import com.miapp.agentegamer.ui.viewmodel.GastoViewModel;
+import com.miapp.agentegamer.util.MoneyUtils;
 
 import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class ListaGastosActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class ListaGastosActivity extends AppCompatActivity {
     private FloatingActionButton fabAgregar;
     private LinearLayout layoutEmpty;
     private TextView tvTotal;
+    private String userCurrency = "EUR";
 
     @Inject
     UserRepository userRepository;
@@ -54,6 +57,9 @@ public class ListaGastosActivity extends AppCompatActivity {
         // Solo mostrar botón de gasto de prueba para administradores
         configurarVisibilidadBotonPrueba();
 
+        // Cargar moneda del usuario para formatear totales
+        cargarMonedaUsuario();
+
         // FAB click listener — gasto de prueba (solo visible para admin)
         fabAgregar.setOnClickListener(v -> {
             GastoEntity gastoPrueba = new GastoEntity("Compra test", 19.99, System.currentTimeMillis(), null);
@@ -66,7 +72,7 @@ public class ListaGastosActivity extends AppCompatActivity {
             if (gastos == null || gastos.isEmpty()) {
                 layoutEmpty.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
-                tvTotal.setText("Total: $0.00");
+                tvTotal.setText("Total: " + MoneyUtils.format(0, userCurrency));
             } else {
                 layoutEmpty.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
@@ -74,7 +80,28 @@ public class ListaGastosActivity extends AppCompatActivity {
                 for (GastoEntity gasto : gastos) {
                     total += gasto.getPrecio();
                 }
-                tvTotal.setText(String.format("Total: $%.2f", total));
+                tvTotal.setText("Total: " + MoneyUtils.format(total, userCurrency));
+            }
+        });
+    }
+
+    /**
+     * Carga la moneda configurada por el usuario desde Firestore.
+     * Se usa para formatear el total de gastos con el símbolo correcto.
+     */
+    private void cargarMonedaUsuario() {
+        userRepository.obtenerUsuario(new UserRepository.OnUsuarioCallback() {
+            @Override
+            public void onSuccess(UsuarioEntity usuario) {
+                String moneda = usuario.getMoneda();
+                if (moneda != null && !moneda.isEmpty()) {
+                    userCurrency = moneda;
+                }
+            }
+
+            @Override
+            public void onError() {
+                // Mantener EUR por defecto
             }
         });
     }
