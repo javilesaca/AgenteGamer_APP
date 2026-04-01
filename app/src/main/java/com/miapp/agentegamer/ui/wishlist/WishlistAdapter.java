@@ -139,7 +139,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
     }
 
     static class WishlistViewHolder extends RecyclerView.ViewHolder{
-        TextView nombre, precio, recomendacion;
+        TextView nombre, precio, recomendacion, affordableBadge;
         ImageButton btnEliminar;
         ImageView imgJuego;
 
@@ -148,6 +148,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
             nombre = itemView.findViewById(R.id.tvNombreJuego);
             precio = itemView.findViewById(R.id.tvPrecio);
             recomendacion = itemView.findViewById(R.id.tvRecomendacion);
+            affordableBadge = itemView.findViewById(R.id.tvAffordableBadge);
             btnEliminar = itemView.findViewById(R.id.btnEliminar);
             imgJuego = itemView.findViewById(R.id.imgJuego);
 
