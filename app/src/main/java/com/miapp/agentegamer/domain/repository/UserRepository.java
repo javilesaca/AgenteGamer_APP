@@ -9,6 +9,7 @@ public interface UserRepository {
     void actualizarPresupuesto(double presupuesto, OnPresupuestoCallback callback);
     LiveData<Double> getPresupuestoLiveData();
     void actualizarNombre(String nombre, OnActualizarNombreCallback callback);
+    void actualizarMoneda(String moneda, OnMonedaCallback callback);
 
     interface OnUsuarioCallback {
         void onSuccess(UsuarioEntity usuario);
@@ -22,6 +23,11 @@ public interface UserRepository {
 
     interface OnActualizarNombreCallback {
         void onSuccess();
+        void onError();
+    }
+
+    interface OnMonedaCallback {
+        void onSuccess(String moneda);
         void onError();
     }
 }

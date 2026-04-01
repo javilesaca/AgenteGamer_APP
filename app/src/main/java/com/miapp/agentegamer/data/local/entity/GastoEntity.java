@@ -17,12 +17,14 @@ public class GastoEntity {
     private long fecha;  // Guardada en milisegundos
     private int mes;
     private int anio;
+    private String imagenUrl;
 
     // Constructor
-    public GastoEntity(String nombreJuego, double precio, long fecha) {
+    public GastoEntity(String nombreJuego, double precio, long fecha, String imagenUrl) {
         this.nombreJuego = nombreJuego;
         this.precio = precio;
         this.fecha = fecha;
+        this.imagenUrl = imagenUrl;
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(fecha);
@@ -69,5 +71,9 @@ public class GastoEntity {
     public int getAnio() {
         return anio;
     }
+
+    public String getImagenUrl() { return imagenUrl; }
+
+    public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
 
 }

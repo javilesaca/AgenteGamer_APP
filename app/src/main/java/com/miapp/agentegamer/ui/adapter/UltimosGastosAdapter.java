@@ -3,6 +3,7 @@ package com.miapp.agentegamer.ui.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.GastoEntity;
+import com.miapp.agentegamer.util.ImageLoader;
 import com.miapp.agentegamer.util.MoneyUtils;
 
 import java.util.ArrayList;
@@ -58,12 +60,14 @@ public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdap
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        private final ImageView ivGameImage;
         private final TextView tvNombreJuego;
         private final TextView tvPrecio;
         private final TextView tvFechaRelativa;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivGameImage = itemView.findViewById(R.id.ivGameImage);
             tvNombreJuego = itemView.findViewById(R.id.tvNombreJuego);
             tvPrecio = itemView.findViewById(R.id.tvPrecio);
             tvFechaRelativa = itemView.findViewById(R.id.tvFechaRelativa);
@@ -73,6 +77,7 @@ public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdap
             tvNombreJuego.setText(gasto.getNombreJuego());
             tvPrecio.setText(MoneyUtils.format(gasto.getPrecio()));
             tvFechaRelativa.setText(getFechaRelativa(gasto.getFecha()));
+            ImageLoader.load(ivGameImage, gasto.getImagenUrl());
 
             itemView.setOnClickListener(v -> {
                 if (listener != null) {

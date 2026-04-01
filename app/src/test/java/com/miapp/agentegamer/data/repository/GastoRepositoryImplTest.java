@@ -191,6 +191,6 @@ public class GastoRepositoryImplTest {
     private GastoEntity createTestGastoEntity(String nombre, double precio) {
         // Usar timestamp fijo para tests consistentes
         long testTimestamp = 1672531200000L; // 1 de enero de 2023
-        return new GastoEntity(nombre, precio, testTimestamp);
+        return new GastoEntity(nombre, precio, testTimestamp, null);
     }
 }

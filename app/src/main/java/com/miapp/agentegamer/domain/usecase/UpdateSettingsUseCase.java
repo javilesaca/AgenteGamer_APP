@@ -20,4 +20,12 @@ public class UpdateSettingsUseCase {
         }
         userRepository.actualizarPresupuesto(nuevoPresupuesto, callback);
     }
+
+    public void updateMoneda(String moneda, UserRepository.OnMonedaCallback callback) {
+        if (moneda == null || moneda.isEmpty()) {
+            callback.onError();
+            return;
+        }
+        userRepository.actualizarMoneda(moneda, callback);
+    }
 }

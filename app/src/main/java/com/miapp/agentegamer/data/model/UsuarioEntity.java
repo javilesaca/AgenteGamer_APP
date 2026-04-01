@@ -12,6 +12,7 @@ public class UsuarioEntity {
 
     private Timestamp fechaCreacion;
     private String rol;
+    private String moneda;
 
     // Required empty constructor for Firestore
     public UsuarioEntity() {}
@@ -38,6 +39,10 @@ public class UsuarioEntity {
         return rol;
     }
 
+    public String getMoneda() {
+        return moneda;
+    }
+
     // Setters
     public void setEmail(String email) {
         this.email = email;
@@ -58,5 +63,9 @@ public class UsuarioEntity {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 }

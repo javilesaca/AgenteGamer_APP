@@ -98,7 +98,8 @@ public class WishlistViewModel extends AndroidViewModel {
             GastoEntity gasto = new GastoEntity(
                     juego.getNombre(),
                     precioFinal,
-                    FechaUtils.ahoraTimestamp()
+                    FechaUtils.ahoraTimestamp(),
+                    juego.getImagenUrl()
             );
             //Insertar en Gastos
             gastoRepo.insertarGasto(gasto);

@@ -17,6 +17,15 @@
         android:orientation="vertical"
         android:padding="12dp">
 
+        <!-- Imagen del juego -->
+        <ImageView
+            android:id="@+id/ivGameImage"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder_game"
+            android:contentDescription="Imagen del juego" />
+
         <!-- Nombre del juego -->
         <TextView
             android:id="@+id/tvNombreJuego"
@@ -27,7 +36,8 @@
             android:textSize="13sp"
             android:fontFamily="@font/manrope_medium"
             android:maxLines="2"
-            android:ellipsize="end"/>
+            android:ellipsize="end"
+            android:layout_marginTop="8dp"/>
 
         <!-- Precio -->
         <TextView
