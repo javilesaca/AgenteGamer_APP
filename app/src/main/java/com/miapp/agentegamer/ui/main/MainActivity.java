@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -28,6 +27,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     // Quick Actions
-    private LinearLayout btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
+    private MaterialCardView btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
 
     // MVVM
     private GastoViewModel gastoViewModel;
