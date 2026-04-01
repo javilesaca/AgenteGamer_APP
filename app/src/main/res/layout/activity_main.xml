@@ -436,7 +436,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnAddGasto"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="3dp"
                     android:clickable="true"
@@ -454,7 +454,7 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:paddingHorizontal="12dp"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="12dp">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -467,7 +467,7 @@
                             android:layout_height="wrap_content"
                             android:text="Gasto"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:fontFamily="@font/manrope_medium"
                             android:layout_marginTop="6dp"/>
                     </LinearLayout>
@@ -477,7 +477,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnWishlist"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="3dp"
                     android:clickable="true"
@@ -495,7 +495,7 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:paddingHorizontal="12dp"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="12dp">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -508,7 +508,7 @@
                             android:layout_height="wrap_content"
                             android:text="Wishlist"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:fontFamily="@font/manrope_medium"
                             android:layout_marginTop="6dp"/>
                     </LinearLayout>
@@ -518,7 +518,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnJuegos"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="3dp"
                     android:clickable="true"
@@ -536,7 +536,7 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:paddingHorizontal="12dp"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="12dp">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -549,7 +549,7 @@
                             android:layout_height="wrap_content"
                             android:text="Juegos"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:fontFamily="@font/manrope_medium"
                             android:layout_marginTop="6dp"/>
                     </LinearLayout>
@@ -559,7 +559,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnAjustes"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
+                    android:layout_height="80dp"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="3dp"
                     android:clickable="true"
@@ -577,7 +577,7 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:paddingHorizontal="12dp"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="12dp">
 
                         <ImageView
                             android:layout_width="24dp"
@@ -590,7 +590,7 @@
                             android:layout_height="wrap_content"
                             android:text="Ajustes"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
                             android:fontFamily="@font/manrope_medium"
                             android:layout_marginTop="6dp"/>
                     </LinearLayout>
