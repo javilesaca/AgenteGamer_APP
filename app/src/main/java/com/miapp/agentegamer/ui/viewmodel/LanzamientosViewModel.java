@@ -84,12 +84,28 @@ public class LanzamientosViewModel extends AndroidViewModel {
                     long dias = FechaUtils.diasHasta(fechaMs);
                     if (dias <= 0 || dias > 15) continue;
 
-                    // Crear entidad
+                    // Extraer plataformas
+                    String plataformas = "";
+                    if (juego.getPlatforms() != null) {
+                        StringBuilder sb = new StringBuilder();
+                        for (GameDto.PlatformWrapper wrapper : juego.getPlatforms()) {
+                            if (wrapper.getPlatform() != null) {
+                                if (sb.length() > 0) sb.append(", ");
+                                sb.append(wrapper.getPlatform().getName());
+                            }
+                        }
+                        plataformas = sb.toString();
+                    }
+
+                    // Crear entidad con todos los campos
                     LanzamientoEntity lanzamiento = new LanzamientoEntity(
-                            juego.getId(),          // PK
+                            juego.getId(),
                             juego.getName(),
                             fechaMs,
-                            0.00
+                            0.00,
+                            juego.getImageUrl(),
+                            plataformas,
+                            juego.getRating()
                     );
 
                     // Insertar (Room ignorará si ya existe)
