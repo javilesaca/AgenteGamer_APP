@@ -6,7 +6,7 @@ public class PeriodoFinancieroUtils {
 
     public static int getMesActual() {
         Calendar cal = Calendar.getInstance();
-        return cal.get(Calendar.MONTH);
+        return cal.get(Calendar.MONTH) + 1;
     }
 
     public static int getAnioActual() {
