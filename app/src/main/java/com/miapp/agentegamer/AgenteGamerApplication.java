@@ -26,6 +26,13 @@ public class AgenteGamerApplication extends Application implements Configuration
     public void onCreate() {
         super.onCreate();
 
+        // Explicitly initialize WorkManager with HiltWorkerFactory BEFORE any operations.
+        // This ensures the custom factory is used to create workers via @AssistedInject.
+        Configuration config = new Configuration.Builder()
+                .setWorkerFactory(workerFactory)
+                .build();
+        WorkManager.initialize(this, config);
+
         PeriodicWorkRequest agenteWorker = new PeriodicWorkRequest.Builder(
                 SistemaFinancieroWorker.class,
                 24,
