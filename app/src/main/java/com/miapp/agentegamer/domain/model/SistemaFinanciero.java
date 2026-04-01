@@ -49,13 +49,22 @@ public class SistemaFinanciero {
         double total = calcularTotalGastos(gastos);
         EstadoFinanciero estado = obtenerEstado(total);
 
+        // Caso especial: presupuesto completamente consumido o excedido
+        if (total >= presupuestoMensual) {
+            if (total > presupuestoMensual) {
+                return "⚠️ ALERTA: Has superado tu presupuesto mensual. Estás en números rojos.";
+            } else {
+                return "⚠️ Has consumido el 100% de tu presupuesto. Mejor espera al próximo mes.";
+            }
+        }
+
         return switch (estado) {
             case VERDE ->
-                    "Tenemos un buen control de gastos. Podemos permitirnos nuevas compras.";
+                    "✅ Tenemos un buen control de gastos. Podemos permitirnos nuevas compras.";
             case AMARILLO ->
-                    "Atención: estamos consumiendo gran parte del presupuesto.";
+                    "⚠️ Atención: estamos consumiendo gran parte del presupuesto.";
             case ROJO ->
-                    "Alerta: hemos superado el 80% del presupuesto de este mes.";
+                    "❌ Alerta: hemos superado el 80% del presupuesto de este mes.";
         };
     }
 

@@ -1,96 +1,124 @@
 {
-  "status": "success",
-  "executive_summary": "Broken down enhance-user-profile-page enhancement into 10 concrete implementation tasks based on spec and design contexts. Tasks cover creating EditProfileActivity and layout, enhancing PerfilActivity to show additional fields, updating UserRepository interfaces and implementations, and implementing edit functionality with navigation, loading states, and error handling.",
+  "status": "in_progress",
+  "change_name": "fintech-ui-redesign",
+  "executive_summary": "Apply fintech dark theme design system to all 15 non-compliant layouts. Use existing Theme.AgenteGamer defaults, MaterialCardView with 20dp corners, Manrope fonts, and fintech color palette.",
+  "design_system": {
+    "background": "@color/background (#0F0F10)",
+    "surface": "@color/surface (#1A1A1C)",
+    "fonts": ["@font/manrope_bold", "@font/manrope_medium", "@font/manrope_regular"],
+    "card_style": {
+      "cornerRadius": "20dp",
+      "backgroundColor": "@color/surface",
+      "strokeColor": "@color/surface_variant",
+      "strokeWidth": "1dp",
+      "elevation": "0dp"
+    },
+    "text_colors": {
+      "primary": "@color/text_primary",
+      "secondary": "@color/text_secondary",
+      "hint": "@color/text_hint"
+    },
+    "accent_colors": {
+      "green": "@color/accent_green",
+      "orange": "@color/accent_orange",
+      "red": "@color/accent_red"
+    }
+  },
+  "already_compliant": [
+    "activity_main.xml",
+    "drawer_header.xml",
+    "item_ultimo_gasto.xml"
+  ],
   "tasks": [
     {
-      "id": "TASK-001",
-      "title": "Create EditProfileActivity.java",
-      "description": "Create the EditProfileActivity class following the DialogEditarPrecioFragment pattern as specified in the design",
-      "file_s": ["EditProfileActivity.java"],
-      "dependencies": "None",
-      "effort": "M",
-      "acceptance_criteria": "Activity class created with proper imports, extends AppCompatActivity, and includes basic lifecycle methods (onCreate, etc.)"
+      "id": "UI-001",
+      "title": "Rediseñar LoginActivity",
+      "file": "activity_login.xml",
+      "description": "Aplicar dark theme, MaterialCardView para el form, Manrope fonts, colores fintech"
     },
     {
-      "id": "TASK-002",
-      "title": "Create activity_edit_profile.xml layout",
-      "description": "Create the XML layout for EditProfileActivity with fields for nombre and save/cancel buttons",
-      "file_s": ["activity_edit_profile.xml"],
-      "dependencies": "TASK-001",
-      "effort": "S",
-      "acceptance_criteria": "Layout file created with EditText for nombre, Button for save, Button for cancel, and proper constraints/styles"
+      "id": "UI-002",
+      "title": "Rediseñar RegisterActivity",
+      "file": "activity_register.xml",
+      "description": "Aplicar dark theme, MaterialCardView para el form, Manrope fonts, colores fintech"
     },
     {
-      "id": "TASK-003",
-      "title": "Modify PerfilActivity.java to show additional fields",
-      "description": "Enhance PerfilActivity to display nombre, fechaCreacion, and rol fields from the user object",
-      "file_s": ["PerfilActivity.java"],
-      "dependencies": "None",
-      "effort": "S",
-      "acceptance_criteria": "PerfilActivity retrieves and displays nombre, fechaCreacion, and rol fields in the UI"
+      "id": "UI-003",
+      "title": "Rediseñar PerfilActivity",
+      "file": "activity_perfil.xml",
+      "description": "Cards con datos del usuario, botón editar con estilo fintech"
     },
     {
-      "id": "TASK-004",
-      "title": "Modify activity_perfil.xml to display additional fields",
-      "description": "Update the PerfilActivity layout to include TextViews for nombre, fechaCreacion, and rol fields",
-      "file_s": ["activity_perfil.xml"],
-      "dependencies": "TASK-003",
-      "effort": "S",
-      "acceptance_criteria": "Layout updated with TextViews for nombre, fechaCreacion, and rol positioned appropriately"
+      "id": "UI-004",
+      "title": "Rediseñar EditProfileActivity",
+      "file": "activity_edit_profile.xml",
+      "description": "Form en card, botones con acentos fintech"
     },
     {
-      "id": "TASK-005",
-      "title": "Update UserRepository.java interface",
-      "description": "Add method signatures for updating user profile fields (nombre) to the UserRepository interface",
-      "file_s": ["UserRepository.java"],
-      "dependencies": "None",
-      "effort": "XS",
-      "acceptance_criteria": "Interface updated with updateUserNombre(String userId, String nombre) method declaration"
+      "id": "UI-005",
+      "title": "Rediseñar AjustesActivity",
+      "file": "activity_ajustes.xml",
+      "description": "Cards para cada sección de ajustes, radio buttons y inputs estilizados"
     },
     {
-      "id": "TASK-006",
-      "title": "Update UserRepositoryImpl.java implementation",
-      "description": "Implement the update user profile methods in UserRepositoryImpl using Firestore",
-      "file_s": ["UserRepositoryImpl.java"],
-      "dependencies": "TASK-005",
-      "effort": "M",
-      "acceptance_criteria": "Implementation correctly updates the nombre field in Firestore for a given user ID"
+      "id": "UI-006",
+      "title": "Rediseñar ListaGastosActivity",
+      "file": "activity_lista_gastos.xml",
+      "description": "Lista con cards, FAB estilizado, total en header"
     },
     {
-      "id": "TASK-007",
-      "title": "Implement navigation from PerfilActivity to EditProfileActivity",
-      "description": "Add click listener to edit button/icon in PerfilActivity to launch EditProfileActivity",
-      "file_s": ["PerfilActivity.java"],
-      "dependencies": "TASK-001, TASK-002, TASK-003, TASK-004",
-      "effort": "S",
-      "acceptance_criteria": "Clicking edit button/icon in PerfilActivity launches EditProfileActivity and passes current user data"
+      "id": "UI-007",
+      "title": "Rediseñar ListaJuegosActivity",
+      "file": "activity_lista_juegos.xml",
+      "description": "Grid de juegos con cards consistentes"
     },
     {
-      "id": "TASK-008",
-      "title": "Implement saving profile name in EditProfileActivity",
-      "description": "Add functionality to save the nombre field when save button is clicked, using UserRepository",
-      "file_s": ["EditProfileActivity.java"],
-      "dependencies": "TASK-001, TASK-002, TASK-005, TASK-006",
-      "effort": "M",
-      "acceptance_criteria": "When save button is clicked, the nombre value is saved via UserRepository and EditProfileActivity finishes"
+      "id": "UI-008",
+      "title": "Rediseñar LanzamientosActivity",
+      "file": "activity_lanzamientos.xml",
+      "description": "Lista de lanzamientos con cards fintech"
     },
     {
-      "id": "TASK-009",
-      "title": "Implement loading states in EditProfileActivity",
-      "description": "Show loading indicator and disable save button during save operation",
-      "file_s": ["EditProfileActivity.java", "activity_edit_profile.xml"],
-      "dependencies": "TASK-008",
-      "effort": "S",
-      "acceptance_criteria": "During save operation, progress bar is visible and save button is disabled; restored after operation completes"
+      "id": "UI-009",
+      "title": "Rediseñar ListaWishlistActivity",
+      "file": "activity_lista_wishlist.xml",
+      "description": "Lista wishlist con cards y badges de precio"
     },
     {
-      "id": "TASK-010",
-      "title": "Implement error handling in EditProfileActivity",
-      "description": "Show error message and revert field on save failure",
-      "file_s": ["EditProfileActivity.java"],
-      "dependencies": "TASK-008, TASK-009",
-      "effort": "S",
-      "acceptance_criteria": "When save operation fails, error message is shown and nombre field reverts to original value"
+      "id": "UI-010",
+      "title": "Rediseñar item_gasto.xml",
+      "file": "item_gasto.xml",
+      "description": "Card para item de gasto con icono, título, precio"
+    },
+    {
+      "id": "UI-011",
+      "title": "Rediseñar item_juego.xml",
+      "file": "item_juego.xml",
+      "description": "Card para item de juego con imagen, título"
+    },
+    {
+      "id": "UI-012",
+      "title": "Rediseñar item_lanzamiento.xml",
+      "file": "item_lanzamiento.xml",
+      "description": "Card para lanzamiento con fecha countdown"
+    },
+    {
+      "id": "UI-013",
+      "title": "Rediseñar item_wishlist.xml",
+      "file": "item_wishlist.xml",
+      "description": "Card para wishlist con precio y botón compra"
+    },
+    {
+      "id": "UI-014",
+      "title": "Rediseñar item_game_stack.xml",
+      "file": "item_game_stack.xml",
+      "description": "Stack de juegos con badge"
+    },
+    {
+      "id": "UI-015",
+      "title": "Rediseñar dialog_detalle_juego.xml",
+      "file": "dialog_detalle_juego.xml",
+      "description": "Dialog con detalles del juego estilo fintech"
     }
   ],
   "next_recommended": "sdd-apply"

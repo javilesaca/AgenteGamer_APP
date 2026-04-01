@@ -5,6 +5,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ public class AjustesActivity extends AppCompatActivity {
 
     private EditText etPresupuesto;
     private Button btnGuardar;
+    private Button btnCancelar;
+    private RadioGroup rgMoneda;
 
     @Inject
     UserRepository userRepo;
@@ -75,10 +79,26 @@ public class AjustesActivity extends AppCompatActivity {
             wishlistActual = lista;
         });
         btnGuardar = findViewById(R.id.btnGuardarPresupuesto);
+        btnCancelar = findViewById(R.id.btnCancelarPresupuesto);
+        rgMoneda = findViewById(R.id.rgMoneda);
 
         cargarPresupuestoActual();
 
         btnGuardar.setOnClickListener(v -> guardarPresupuesto());
+        btnCancelar.setOnClickListener(v -> finish());
+
+        // Restaurar selección de moneda guardada (ejemplo)
+        // TODO: implementar persistencia de preferencias
+        rgMoneda.setOnCheckedChangeListener((group, checkedId) -> {
+            // Guardar preferencia de moneda
+            // Por ahora solo muestra un toast
+            RadioButton selected = findViewById(checkedId);
+            if (selected != null) {
+                Toast.makeText(AjustesActivity.this, 
+                    "Moneda seleccionada: " + selected.getText(), 
+                    Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void cargarPresupuestoActual() {

@@ -1,71 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="20dp"
+    app:cardBackgroundColor="@color/surface"
+    app:strokeColor="@color/surface_variant"
+    app:strokeWidth="1dp"
+    app:cardElevation="0dp"
+    app:cardUseCompatPadding="false">
 
-    <!-- Imagen del juego -->
-    <ImageView
-        android:id="@+id/imgJuego"
-        android:layout_width="90dp"
-        android:layout_height="120dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_placeholder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- Botón eliminar -->
-    <ImageButton
-        android:id="@+id/btnEliminar"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_delete"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:tint="@color/text_primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Nombre del juego -->
-    <TextView
-        android:id="@+id/tvNombreJuego"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre del juego"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toEndOf="@id/imgJuego"
-        app:layout_constraintEnd_toStartOf="@id/btnEliminar"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:padding="16dp">
 
-    <!-- Precio -->
-    <TextView
-        android:id="@+id/tvPrecio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Precio estimado: 60€"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="@id/tvNombreJuego"
-        app:layout_constraintEnd_toStartOf="@id/btnEliminar"
-        app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"/>
+        <!-- Game image -->
+        <ImageView
+            android:id="@+id/imgJuego"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_image_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic"
+            tools:ignore="ContentDescription" />
 
-    <!-- Recomendación -->
-    <TextView
-        android:id="@+id/tvRecomendacion"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Recomendación financiera"
-        android:textStyle="italic"
-        android:textSize="14sp"
-        android:layout_marginTop="6dp"
-        app:layout_constraintStart_toStartOf="@id/tvNombreJuego"
-        app:layout_constraintEnd_toStartOf="@id/btnEliminar"
-        app:layout_constraintTop_toBottomOf="@id/tvPrecio"/>
+        <!-- Game name -->
+        <TextView
+            android:id="@+id/tvNombreJuego"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_bold"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginStart="14dp"
+            app:layout_constraintStart_toEndOf="@id/imgJuego"
+            app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Elden Ring" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Price -->
+        <TextView
+            android:id="@+id/tvPrecio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_bold"
+            android:textSize="18sp"
+            android:textColor="@color/accent_green"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@id/imgJuego"
+            app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+            app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"
+            tools:text="60€" />
+
+        <!-- Affordable badge -->
+        <TextView
+            android:id="@+id/tvAffordableBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_medium"
+            android:textSize="11sp"
+            android:textColor="@color/text_primary"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:background="@drawable/bg_badge_green"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toEndOf="@id/imgJuego"
+            app:layout_constraintTop_toBottomOf="@id/tvPrecio"
+            tools:text="Dentro de presupuesto" />
+
+        <!-- Financial recommendation -->
+        <TextView
+            android:id="@+id/tvRecomendacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_regular"
+            android:textSize="12sp"
+            android:textColor="@color/text_hint"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@id/imgJuego"
+            app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+            app:layout_constraintTop_toBottomOf="@id/tvAffordableBadge"
+            tools:text="Ahorra 20€ más para comprar" />
+
+        <!-- Comprar button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnComprar"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:fontFamily="@font/manrope_bold"
+            android:textSize="13sp"
+            android:textColor="@color/text_primary"
+            android:backgroundTint="@color/accent_green"
+            android:textAllCaps="false"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="10dp"
+            app:cornerRadius="10dp"
+            app:layout_constraintStart_toEndOf="@id/imgJuego"
+            app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+            app:layout_constraintTop_toBottomOf="@id/tvRecomendacion"
+            tools:text="Comprar" />
+
+        <!-- Delete button -->
+        <ImageButton
+            android:id="@+id/btnEliminar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            app:tint="@color/accent_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

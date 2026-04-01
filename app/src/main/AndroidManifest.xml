@@ -60,6 +60,10 @@
             android:exported="false">
         </activity>
         <activity
+            android:name=".ui.perfil.EditProfileActivity"
+            android:exported="false">
+        </activity>
+        <activity
             android:name=".ui.ajustes.AjustesActivity"
             android:exported="false">
         </activity>

@@ -34,6 +34,8 @@
     <string name="error_guardar_perfil">Error guardando perfil</string>
     
     <!-- Gastos -->
+    <string name="agregar_gasto">Agregar gasto</string>
+    <string name="perfil">Perfil</string>
     <string name="btn_agregar_gasto_prueba">Agregar gasto de prueba</string>
     
     <!-- Lanzamientos -->
@@ -41,4 +43,31 @@
     <string name="precio_estimado">Precio estimado: %1$.2f €</string>
     <string name="lanzamiento_hoy">Hoy es el día de lanzamiento</string>
     <string name="lanzamiento_en_dias">Lanzamiento en %d días</string>
+
+    <!-- Titles -->
+    <string name="title_login">Iniciar sesión</string>
+    <string name="title_register">Crear cuenta</string>
+
+    <!-- Ajustes -->
+    <string name="ajustes">Ajustes</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="guardar">Guardar</string>
+    <string name="preferencias">Preferencias</string>
+    <string name="moneda">Moneda</string>
+    <string name="euro">EUR (€)</string>
+    <string name="dolar">USD ($)</string>
+    <string name="presupuesto_mensual">Presupuesto mensual</string>
+    <string name="impacto_wishlist">Impacto en tu wishlist</string>
+    <string name="recomendados">✔ Recomendados: %d</string>
+    <string name="ajustados">⚠ Ajustados: %d</string>
+    <string name="no_recomendados">✖ No recomendados: %d</string>
+
+    <!-- Game Detail Dialog -->
+    <string name="price_label">Precio:</string>
+    <string name="platforms_label">Plataformas:</string>
+    <string name="release_date_label">Fecha de lanzamiento:</string>
+    <string name="add_to_wishlist">Añadir a Wishlist</string>
+    <string name="close">Cerrar</string>
+    <string name="editar_precio">Editar precio</string>
+    <string name="comprar_juego">Comprar juego</string>
 </resources>

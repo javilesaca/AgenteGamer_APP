@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- Background pill para indicador de tendencia -->
+    <solid android:color="@color/surface_variant"/>
+    
+    <!-- Bordes redondeados -->
+    <corners android:radius="12dp"/>
+    
+    <!-- Padding implícito a través del padding en el TextView -->
+    
+</shape>

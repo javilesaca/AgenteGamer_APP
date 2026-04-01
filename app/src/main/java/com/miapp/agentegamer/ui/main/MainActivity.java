@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -17,17 +18,27 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.model.UsuarioEntity;
 import com.miapp.agentegamer.domain.model.SistemaFinanciero;
+import com.miapp.agentegamer.domain.model.MonthlyExpense;
 import com.miapp.agentegamer.data.local.entity.GastoEntity;
 import com.miapp.agentegamer.domain.repository.UserRepository;
 import com.miapp.agentegamer.domain.repository.GastoRepository;
@@ -38,7 +49,9 @@ import com.miapp.agentegamer.ui.gastos.ListaGastosActivity;
 import com.miapp.agentegamer.ui.lanzamientos.LanzamientosActivity;
 import com.miapp.agentegamer.ui.perfil.PerfilActivity;
 import com.miapp.agentegamer.ui.wishlist.ListaWishlistActivity;
+import com.miapp.agentegamer.ui.adapter.UltimosGastosAdapter;
 import com.miapp.agentegamer.util.MoneyUtils;
+import com.miapp.agentegamer.util.FinancialTrendHelper;
 import com.miapp.agentegamer.ui.viewmodel.GastoViewModel;
 
 import java.util.ArrayList;
@@ -59,14 +72,24 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainActivity extends AppCompatActivity {
 
     // UI
-    protected TextView tvRecomendacion, tvTotalGastos;
+    protected TextView tvRecomendacion, tvTotalGastos, tvPresupuesto, tvRestante;
     private View indicadorEstado;
     private PieChart pieChart;
+    
+    // Nuevos componentes Dashboard
+    private LineChart lineChartTendencia;
+    private TextView tvRecomendacionAgente;
+    private TextView tvIndicadorTendencia;
+    private RecyclerView recyclerUltimosGastos;
+    private UltimosGastosAdapter ultimosGastosAdapter;
 
     //Drawer
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
+    // Quick Actions
+    private LinearLayout btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
 
     // MVVM
     private GastoViewModel gastoViewModel;
@@ -144,6 +167,22 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         configurarHeaderDrawer();
+        
+        // Actualizar presupuesto restante cada vez que se muestra la pantalla
+        actualizarPresupuestoRestante();
+    }
+    
+    private void actualizarPresupuestoRestante() {
+        // Calcular restante usando Room directamente (fuente de verdad única)
+        gastoRepo.getTotalGastadoMesSync(totalGastado -> {
+            runOnUiThread(() -> {
+                double presupuesto = sistemaFinanciero != null 
+                    ? sistemaFinanciero.getPresupuestoMensual() : 0;
+                double restante = presupuesto - totalGastado;
+                tvTotalGastos.setText(MoneyUtils.format(totalGastado));
+                tvRestante.setText(MoneyUtils.format(restante));
+            });
+        });
     }
 
     /**
@@ -153,12 +192,105 @@ public class MainActivity extends AppCompatActivity {
 
         tvRecomendacion = findViewById(R.id.tvRecomendacion);
         tvTotalGastos = findViewById(R.id.tvTotalGastos);
+        tvPresupuesto = findViewById(R.id.tvPresupuesto);
+        tvRestante = findViewById(R.id.tvRestante);
         indicadorEstado = findViewById(R.id.viewIndicador);
         pieChart = findViewById(R.id.pieChart);
+        
+        // Nuevos componentes Dashboard
+        lineChartTendencia = findViewById(R.id.lineChartTendencia);
+        tvRecomendacionAgente = findViewById(R.id.tvRecomendacionAgente);
+        tvIndicadorTendencia = findViewById(R.id.tvIndicadorTendencia);
+        recyclerUltimosGastos = findViewById(R.id.recyclerUltimosGastos);
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
         toolbar = findViewById(R.id.toolbar);
+
+        // Quick Actions
+        btnAddGasto = findViewById(R.id.btnAddGasto);
+        btnWishlist = findViewById(R.id.btnWishlist);
+        btnJuegos = findViewById(R.id.btnJuegos);
+        btnAjustes = findViewById(R.id.btnAjustes);
+
+        configurarQuickActions();
+        configurarDashboardComponents();
+    }
+
+    private void configurarQuickActions() {
+        btnAddGasto.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ListaGastosActivity.class));
+        });
+
+        btnWishlist.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ListaWishlistActivity.class));
+        });
+
+        btnJuegos.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ListaJuegosActivity.class));
+        });
+
+        btnAjustes.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, AjustesActivity.class));
+        });
+    }
+    
+    /**
+     * Configura los nuevos componentes del Dashboard.
+     */
+    private void configurarDashboardComponents() {
+        // Configurar LineChart para tendencias
+        configurarLineChart();
+        
+        // Configurar RecyclerView de últimos gastos
+        configurarRecyclerUltimosGastos();
+    }
+    
+    /**
+     * Configura el LineChart para mostrar tendencias de gastos.
+     */
+    private void configurarLineChart() {
+        lineChartTendencia.getDescription().setEnabled(false);
+        lineChartTendencia.getLegend().setEnabled(false);
+        lineChartTendencia.setTouchEnabled(true);
+        lineChartTendencia.setDragEnabled(false);
+        lineChartTendencia.setScaleEnabled(false);
+        lineChartTendencia.setPinchZoom(false);
+        
+        // X-Axis
+        XAxis xAxis = lineChartTendencia.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextColor(getColor(R.color.text_hint));
+        xAxis.setTextSize(10f);
+        
+        // Y-Axis (oculto)
+        lineChartTendencia.getAxisLeft().setEnabled(false);
+        lineChartTendencia.getAxisRight().setEnabled(false);
+        
+        // Sin grid
+        lineChartTendencia.getAxisLeft().setDrawGridLines(false);
+        lineChartTendencia.getAxisRight().setDrawGridLines(false);
+        
+        // Margen
+        lineChartTendencia.setExtraOffsets(8f, 8f, 8f, 8f);
+    }
+    
+    /**
+     * Configura el RecyclerView horizontal de últimos gastos.
+     */
+    private void configurarRecyclerUltimosGastos() {
+        ultimosGastosAdapter = new UltimosGastosAdapter();
+        recyclerUltimosGastos.setLayoutManager(
+            new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        );
+        recyclerUltimosGastos.setAdapter(ultimosGastosAdapter);
+        
+        // Click listener para navegar a ListaGastos
+        ultimosGastosAdapter.setOnGastoClickListener(gasto -> {
+            startActivity(new Intent(MainActivity.this, ListaGastosActivity.class));
+        });
     }
 
     /**
@@ -188,6 +320,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView tvNombre = header.findViewById(R.id.tvNombreUsuario);
         TextView tvEmail = header.findViewById(R.id.tvEmailUsuario);
+        TextView tvFecha = header.findViewById(R.id.tvFechaCreacion);
+        TextView tvRol = header.findViewById(R.id.tvRol);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -198,6 +332,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UsuarioEntity usuario) {
                     tvNombre.setText(usuario.getNombre());
+                    tvRol.setText(usuario.getRol() != null ? usuario.getRol() : "Usuario");
+                    // Format fechaCreacion
+                    if (usuario.getFechaCreacion() != null) {
+                        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM yyyy", java.util.Locale.getDefault());
+                        String fechaStr = sdf.format(new java.util.Date(usuario.getFechaCreacion().getSeconds() * 1000));
+                        tvFecha.setText(fechaStr);
+                    }
                 }
 
                 @Override
@@ -208,10 +349,12 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         tvNombre.setText("Usuario desconocido");
                     }
+                    tvRol.setText("Usuario");
                 }
             });
         } else {
             tvNombre.setText("Usuario desconocido");
+            tvRol.setText("Usuario");
         }
     }
 
@@ -227,31 +370,21 @@ public class MainActivity extends AppCompatActivity {
      * y lo inyecta en el ViewModel.
      */
     private void cargarPresupuestoUsuario() {
-        userRepository.obtenerPresupuesto(new UserRepository.OnPresupuestoCallback() {
-            @Override
-            public void onSuccess(double presupuesto) {
+        // Usar LiveData para que se actualice automáticamente cuando cambie el presupuesto
+        userRepository.getPresupuestoLiveData().observe(this, presupuesto -> {
+            if (presupuesto != null) {
                 sistemaFinanciero = new SistemaFinanciero(presupuesto);
                 gastoViewModel.setSistemaFinanciero(sistemaFinanciero);
 
-                // Actualizar el TextView con el presupuesto restante
+                // Actualizar el TextView con el presupuesto
+                tvPresupuesto.setText(MoneyUtils.format(presupuesto));
+                
+                // También actualizar restante cuando cambie el presupuesto
                 gastoRepo.getTotalGastadoMesSync(totalGastado -> {
                     runOnUiThread(() -> {
-                        tvTotalGastos.setText(MoneyUtils.format(presupuesto - totalGastado));
-                    });
-                });
-            }
-
-            @Override
-            public void onError() {
-                // Presupuesto por defecto si falla Firestore
-                double presupuestoDefault = 100;
-                sistemaFinanciero = new SistemaFinanciero(presupuestoDefault);
-                gastoViewModel.setSistemaFinanciero(sistemaFinanciero);
-
-                // Actualizar el TextView con el presupuesto restante
-                gastoRepo.getTotalGastadoMesSync(totalGastado -> {
-                    runOnUiThread(() -> {
-                        tvTotalGastos.setText(MoneyUtils.format(presupuestoDefault - totalGastado));
+                        double restante = presupuesto - totalGastado;
+                        tvTotalGastos.setText(MoneyUtils.format(totalGastado));
+                        tvRestante.setText(MoneyUtils.format(restante));
                     });
                 });
             }
@@ -269,6 +402,9 @@ public class MainActivity extends AppCompatActivity {
         gastoViewModel.getEstadoUI().observe(this, ui -> {
 
             tvRecomendacion.setText(ui.getMensaje());
+            
+            // Actualizar recomendación del agente
+            actualizarRecomendacionAgente();
 
             indicadorEstado.animate()
                     .scaleX(1.2f)
@@ -302,6 +438,14 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
 
+            // Calcular restante directamente: presupuesto - total gastado
+            double presupuesto = sistemaFinanciero != null ? sistemaFinanciero.getPresupuestoMensual() : 0;
+            double restante = presupuesto - total;
+            
+            tvTotalGastos.setText(MoneyUtils.format(total));
+            tvPresupuesto.setText(MoneyUtils.format(presupuesto));
+            tvRestante.setText(MoneyUtils.format(restante));
+
             animarTotal(total);
 
             PieDataSet dataSet = new PieDataSet(entradas, "");
@@ -331,8 +475,98 @@ public class MainActivity extends AppCompatActivity {
             pieChart.setDrawEntryLabels(false);
             pieChart.animateY(800);
             pieChart.invalidate();
-
         });
+        
+        // ========== NUEVOS OBSERVERS PARA DASHBOARD ==========
+        
+        // Observer para gastos mensuales (gráfico de tendencia)
+        gastoViewModel.getMonthlyExpenses().observe(this, monthlyExpenses -> {
+            if (monthlyExpenses != null && !monthlyExpenses.isEmpty()) {
+                actualizarLineChart(monthlyExpenses);
+            }
+        });
+        
+        // Observer para resultado de tendencia
+        gastoViewModel.getTrendResult().observe(this, trendResult -> {
+            if (trendResult != null) {
+                actualizarIndicadorTendencia(trendResult);
+            }
+        });
+        
+        // Observer para últimos gastos
+        gastoViewModel.getRecentGastos().observe(this, recentGastos -> {
+            if (ultimosGastosAdapter != null) {
+                ultimosGastosAdapter.setGastos(recentGastos);
+            }
+        });
+    }
+    
+    /**
+     * Actualiza el LineChart con los datos de gastos mensuales.
+     */
+    private void actualizarLineChart(List<MonthlyExpense> expenses) {
+        List<Entry> entries = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        
+        for (int i = 0; i < expenses.size(); i++) {
+            MonthlyExpense expense = expenses.get(i);
+            entries.add(new Entry(i, (float) expense.getTotal()));
+            labels.add(expense.getMes());
+        }
+        
+        LineDataSet dataSet = new LineDataSet(entries, "Gastos");
+        dataSet.setColor(getColor(R.color.accent_green));
+        dataSet.setLineWidth(2f);
+        dataSet.setCircleRadius(6f);
+        dataSet.setCircleColor(getColor(R.color.accent_green));
+        dataSet.setFillColor(getColor(R.color.accent_green));
+        dataSet.setDrawFilled(true);
+        dataSet.setFillAlpha(30);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        dataSet.setValueTextSize(10f);
+        dataSet.setValueTextColor(getColor(R.color.text_primary));
+        dataSet.setDrawValues(true);
+        
+        // Configurar eje X con labels de meses
+        lineChartTendencia.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int index = (int) value;
+                if (index >= 0 && index < labels.size()) {
+                    return labels.get(index);
+                }
+                return "";
+            }
+        });
+        
+        lineChartTendencia.setData(new LineData(dataSet));
+        lineChartTendencia.animateX(800);
+        lineChartTendencia.invalidate();
+    }
+    
+    /**
+     * Actualiza el indicador de tendencia en el Card Total.
+     */
+    private void actualizarIndicadorTendencia(FinancialTrendHelper.TrendResult trend) {
+        String text = trend.symbol + " " + String.format("%.1f%%", trend.percentage);
+        tvIndicadorTendencia.setText(text);
+        tvIndicadorTendencia.setTextColor(getColor(trend.colorResId));
+        tvIndicadorTendencia.setVisibility(View.VISIBLE);
+        
+        // Animación de entrada
+        tvIndicadorTendencia.setAlpha(0f);
+        tvIndicadorTendencia.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .start();
+    }
+    
+    /**
+     * Actualiza la recomendación del agente.
+     */
+    private void actualizarRecomendacionAgente() {
+        String recomendacion = gastoViewModel.getRecomendacionDashboard();
+        tvRecomendacionAgente.setText(recomendacion);
     }
 
     /**
