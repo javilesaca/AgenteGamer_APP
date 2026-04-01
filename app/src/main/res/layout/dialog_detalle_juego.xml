@@ -143,40 +143,43 @@
                 android:gravity="end"
                 android:orientation="vertical">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEditar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_button_secondary"
                     android:fontFamily="@font/manrope_medium"
                     android:text="@string/editar_precio"
                     android:textAllCaps="false"
                     android:textColor="@color/background"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/accent_green"
+                    app:cornerRadius="12dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnComprar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_button_primary"
                     android:fontFamily="@font/manrope_medium"
                     android:text="@string/comprar_juego"
                     android:textAllCaps="false"
                     android:textColor="@color/background"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/accent_green"
+                    app:cornerRadius="12dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancelar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_button_outlined"
                     android:fontFamily="@font/manrope_medium"
                     android:text="@string/cancelar"
                     android:textAllCaps="false"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="16sp" />
+                    android:textColor="@color/background"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/accent_green"
+                    app:cornerRadius="12dp" />
             </LinearLayout>
 
         </LinearLayout>
