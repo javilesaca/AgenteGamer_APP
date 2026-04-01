@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Quick Actions
     private LinearLayout btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
-    private TextView tvDebug;
 
     // MVVM
     private GastoViewModel gastoViewModel;
@@ -174,17 +173,14 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void actualizarPresupuestoRestante() {
-        // Usar el presupuesto ya cargado en sistemaFinanciero (evita crear observers duplicados)
-        if (sistemaFinanciero == null) return;
-        
-        double presupuesto = sistemaFinanciero.getPresupuestoMensual();
+        // Calcular restante usando Room directamente (fuente de verdad única)
         gastoRepo.getTotalGastadoMesSync(totalGastado -> {
             runOnUiThread(() -> {
+                double presupuesto = sistemaFinanciero != null 
+                    ? sistemaFinanciero.getPresupuestoMensual() : 0;
                 double restante = presupuesto - totalGastado;
                 tvTotalGastos.setText(MoneyUtils.format(totalGastado));
                 tvRestante.setText(MoneyUtils.format(restante));
-                
-                tvDebug.setText("ONRESUME - P:" + presupuesto + " T:" + totalGastado + " R:" + restante);
             });
         });
     }
@@ -216,9 +212,6 @@ public class MainActivity extends AppCompatActivity {
         btnWishlist = findViewById(R.id.btnWishlist);
         btnJuegos = findViewById(R.id.btnJuegos);
         btnAjustes = findViewById(R.id.btnAjustes);
-        
-        // Debug TextView
-        tvDebug = findViewById(R.id.tvDebug);
 
         configurarQuickActions();
         configurarDashboardComponents();
@@ -452,9 +445,6 @@ public class MainActivity extends AppCompatActivity {
             tvTotalGastos.setText(MoneyUtils.format(total));
             tvPresupuesto.setText(MoneyUtils.format(presupuesto));
             tvRestante.setText(MoneyUtils.format(restante));
-            
-            // DEBUG: Update TextView visible siempre
-            tvDebug.setText("OBSERVER - P:" + presupuesto + " T:" + total + " R:" + restante + " (user: " + com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser().getUid().substring(0,8) + "...");
 
             animarTotal(total);
 
