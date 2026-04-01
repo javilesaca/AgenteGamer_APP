@@ -34,6 +34,8 @@
     <string name="error_guardar_perfil">Error guardando perfil</string>
     
     <!-- Gastos -->
+    <string name="agregar_gasto">Agregar gasto</string>
+    <string name="perfil">Perfil</string>
     <string name="btn_agregar_gasto_prueba">Agregar gasto de prueba</string>
     
     <!-- Lanzamientos -->
