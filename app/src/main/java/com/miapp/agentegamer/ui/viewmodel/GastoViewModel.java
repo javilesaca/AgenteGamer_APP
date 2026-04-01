@@ -198,7 +198,7 @@ public class GastoViewModel extends AndroidViewModel {
                 );
                 trendResult.postValue(trend);
             } else if (expenses.size() == 1) {
-                trendResult.postValue(new TrendResult(0, TrendResult.TrendDirection.STABLE));
+                trendResult.postValue(new TrendResult(0, FinancialTrendHelper.TrendDirection.STABLE));
             }
         });
     }

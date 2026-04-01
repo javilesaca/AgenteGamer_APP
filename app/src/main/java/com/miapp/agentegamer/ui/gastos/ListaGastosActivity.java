@@ -62,7 +62,7 @@ public class ListaGastosActivity extends AppCompatActivity {
                 recyclerView.setVisibility(View.VISIBLE);
                 double total = 0;
                 for (GastoEntity gasto : gastos) {
-                    total += gasto.getMonto();
+                    total += gasto.getPrecio();
                 }
                 tvTotal.setText(String.format("Total: $%.2f", total));
             }

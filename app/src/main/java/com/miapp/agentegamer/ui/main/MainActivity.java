@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity {
         
         // Observer para últimos gastos
         gastoViewModel.getRecentGastos().observe(this, recentGastos -> {
-            if (recentGastosAdapter != null) {
+            if (ultimosGastosAdapter != null) {
                 ultimosGastosAdapter.setGastos(recentGastos);
             }
         });
