@@ -15,12 +15,17 @@ import com.miapp.agentegamer.data.local.entity.GastoEntity;
 import com.miapp.agentegamer.util.ImageLoader;
 import com.miapp.agentegamer.util.MoneyUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHolder> {
 
     private List<GastoEntity> lista = new ArrayList<>();
+    private static final SimpleDateFormat DATE_FORMAT =
+            new SimpleDateFormat("d 'de' MMMM yyyy", new Locale("es", "ES"));
 
     // DiffUtil callback for efficient updates
     private static final DiffUtil.ItemCallback<GastoEntity> DIFF_CALLBACK = new DiffUtil.ItemCallback<GastoEntity>() {
@@ -59,9 +64,10 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         if (g == null) {
             return;
         }
-        holder.textConcepto.setText(g.getNombreJuego());
-        holder.textCantidad.setText(MoneyUtils.format(g.getPrecio()));
-        ImageLoader.load(holder.ivIcon, g.getImagenUrl());
+        holder.tvNombre.setText(g.getNombreJuego());
+        holder.tvPrecio.setText(MoneyUtils.format(g.getPrecio()));
+        holder.tvFecha.setText(DATE_FORMAT.format(new Date(g.getFecha())));
+        ImageLoader.load(holder.ivCover, g.getImagenUrl());
     }
 
     @Override
@@ -116,15 +122,15 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
 
     static class GastoViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivIcon;
-        TextView textConcepto, textCantidad;
+        ImageView ivCover;
+        TextView tvNombre, tvFecha, tvPrecio;
 
         public GastoViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivIcon = itemView.findViewById(R.id.ivIcon);
-            textConcepto = itemView.findViewById(R.id.textConcepto);
-            textCantidad = itemView.findViewById(R.id.textCantidad);
+            ivCover = itemView.findViewById(R.id.ivCover);
+            tvNombre = itemView.findViewById(R.id.tvNombre);
+            tvFecha = itemView.findViewById(R.id.tvFecha);
+            tvPrecio = itemView.findViewById(R.id.tvPrecio);
         }
     }
 }
-
