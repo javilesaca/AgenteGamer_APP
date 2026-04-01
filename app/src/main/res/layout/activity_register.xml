@@ -97,15 +97,16 @@
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Register Button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
         android:text="@string/btn_register"
-        android:background="@drawable/bg_button_primary"
-        android:textColor="@color/on_primary"
+        android:textColor="@color/background"
         android:fontFamily="@font/manrope_bold"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        app:backgroundTint="@color/accent_green"
+        app:cornerRadius="12dp"/>
 
 </LinearLayout>

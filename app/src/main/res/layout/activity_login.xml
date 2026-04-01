@@ -69,28 +69,32 @@
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Login Button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:text="@string/btn_login"
-        android:background="@drawable/bg_button_primary"
-        android:textColor="@color/on_primary"
+        android:textColor="@color/background"
         android:fontFamily="@font/manrope_bold"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        app:backgroundTint="@color/accent_green"
+        app:cornerRadius="12dp"/>
 
     <!-- Register Button (secondary) -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
         android:text="@string/btn_register"
-        android:background="@drawable/bg_button_secondary"
-        android:textColor="@color/on_primary"
+        android:textColor="@color/accent_orange"
         android:fontFamily="@font/manrope_bold"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:cornerRadius="12dp"
+        app:strokeColor="@color/accent_orange"
+        app:strokeWidth="1dp"/>
 
 </LinearLayout>
