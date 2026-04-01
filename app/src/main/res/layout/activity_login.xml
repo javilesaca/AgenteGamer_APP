@@ -81,20 +81,18 @@
         app:backgroundTint="@color/accent_green"
         app:cornerRadius="12dp"/>
 
-    <!-- Register Button (secondary) -->
+    <!-- Register Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegister"
         android:text="@string/btn_register"
-        android:textColor="@color/accent_orange"
+        android:textColor="@color/background"
         android:fontFamily="@font/manrope_bold"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:textAllCaps="false"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:cornerRadius="12dp"
-        app:strokeColor="@color/accent_orange"
-        app:strokeWidth="1dp"/>
+        app:backgroundTint="@color/accent_green"
+        app:cornerRadius="12dp"/>
 
 </LinearLayout>
