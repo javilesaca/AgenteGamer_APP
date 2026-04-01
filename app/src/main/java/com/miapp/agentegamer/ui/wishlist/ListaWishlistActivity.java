@@ -1,6 +1,7 @@
 package com.miapp.agentegamer.ui.wishlist;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miapp.agentegamer.R;
+import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.ui.wishlist.dialogs.DialogDetalleJuegoFragment;
 import com.miapp.agentegamer.ui.wishlist.dialogs.DialogEditarPrecioFragment;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -18,6 +20,7 @@ public class ListaWishlistActivity extends AppCompatActivity {
 
     private WishlistViewModel viewModel;
     private WishlistAdapter adapter;
+    private TextView tvTotalCosto;
 
 
     @Override
@@ -26,6 +29,8 @@ public class ListaWishlistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_wishlist);
 
         viewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
+
+        tvTotalCosto = findViewById(R.id.tvTotalCosto);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerWishlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -42,7 +47,16 @@ public class ListaWishlistActivity extends AppCompatActivity {
         });
 
         // ViewModel from ViewModelProvider
-        viewModel.getWishList().observe(this, adapter::setLista);
+        viewModel.getWishList().observe(this, lista -> {
+            adapter.setLista(lista);
+
+            // Calculate and display total estimated cost
+            double total = 0;
+            for (WishlistItemUI item : lista) {
+                total += item.getJuego().getPrecioEstimado();
+            }
+            tvTotalCosto.setText(MoneyUtils.format(total));
+        });
     }
 
 }

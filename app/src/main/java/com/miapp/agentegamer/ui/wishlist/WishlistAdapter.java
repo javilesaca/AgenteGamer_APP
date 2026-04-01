@@ -65,7 +65,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         WishlistEntity juego = itemUI.getJuego();
 
         holder.nombre.setText(juego.getNombre());
-        holder.precio.setText("Precio estimado: " + MoneyUtils.format(juego.getPrecioEstimado()));
+        holder.precioValue.setText(MoneyUtils.format(juego.getPrecioEstimado()));
         holder.recomendacion.setText(itemUI.getEvaluacion());
 
         Glide.with(holder.itemView.getContext())
@@ -139,15 +139,17 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
     }
 
     static class WishlistViewHolder extends RecyclerView.ViewHolder{
-        TextView nombre, precio, recomendacion;
+        TextView nombre, precioLabel, precioValue, recomendacion, affordableBadge;
         ImageButton btnEliminar;
         ImageView imgJuego;
 
         public WishlistViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.tvNombreJuego);
-            precio = itemView.findViewById(R.id.tvPrecio);
+            precioLabel = itemView.findViewById(R.id.tvPrecioLabel);
+            precioValue = itemView.findViewById(R.id.tvPrecioValue);
             recomendacion = itemView.findViewById(R.id.tvRecomendacion);
+            affordableBadge = itemView.findViewById(R.id.tvAffordableBadge);
             btnEliminar = itemView.findViewById(R.id.btnEliminar);
             imgJuego = itemView.findViewById(R.id.imgJuego);
 

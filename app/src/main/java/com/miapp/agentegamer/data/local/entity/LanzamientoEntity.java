@@ -11,14 +11,21 @@ public class LanzamientoEntity {
     public int gameId;
 
     public String nombre;
-    public long fechaLanzamiento; //yyyy-MM-dd
+    public long fechaLanzamiento;
     public double precioEstimado;
+    public String imageUrl;
+    public String plataformas;
+    public double rating;
 
-    public LanzamientoEntity(int gameId, String nombre, long fechaLanzamiento, double precioEstimado) {
+    public LanzamientoEntity(int gameId, String nombre, long fechaLanzamiento, double precioEstimado,
+                             String imageUrl, String plataformas, double rating) {
         this.gameId = gameId;
         this.nombre = nombre;
         this.fechaLanzamiento = fechaLanzamiento;
         this.precioEstimado = precioEstimado;
+        this.imageUrl = imageUrl != null ? imageUrl : "";
+        this.plataformas = plataformas != null ? plataformas : "";
+        this.rating = rating;
     }
 
     public int getGameId() {
@@ -35,5 +42,17 @@ public class LanzamientoEntity {
 
     public double getPrecioEstimado() {
         return precioEstimado;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getPlataformas() {
+        return plataformas;
+    }
+
+    public double getRating() {
+        return rating;
     }
 }
