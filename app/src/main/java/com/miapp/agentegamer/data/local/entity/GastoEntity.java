@@ -20,11 +20,6 @@ public class GastoEntity {
     private String imagenUrl;
 
     // Constructor
-    public GastoEntity(String nombreJuego, double precio, long fecha) {
-        this(nombreJuego, precio, fecha, null);
-    }
-
-    // Constructor con imagen
     public GastoEntity(String nombreJuego, double precio, long fecha, String imagenUrl) {
         this.nombreJuego = nombreJuego;
         this.precio = precio;
