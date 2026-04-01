@@ -15,8 +15,12 @@ import java.util.List;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.GastoEntity;
+import com.miapp.agentegamer.data.model.UsuarioEntity;
+import com.miapp.agentegamer.domain.repository.UserRepository;
 import dagger.hilt.android.AndroidEntryPoint;
 import com.miapp.agentegamer.ui.viewmodel.GastoViewModel;
+
+import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class ListaGastosActivity extends AppCompatActivity {
@@ -27,6 +31,9 @@ public class ListaGastosActivity extends AppCompatActivity {
     private FloatingActionButton fabAgregar;
     private LinearLayout layoutEmpty;
     private TextView tvTotal;
+
+    @Inject
+    UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +51,10 @@ public class ListaGastosActivity extends AppCompatActivity {
         adapter = new GastoAdapter();
         recyclerView.setAdapter(adapter);
 
-        // FAB click listener
+        // Solo mostrar botón de gasto de prueba para administradores
+        configurarVisibilidadBotonPrueba();
+
+        // FAB click listener — gasto de prueba (solo visible para admin)
         fabAgregar.setOnClickListener(v -> {
             GastoEntity gastoPrueba = new GastoEntity("Compra test", 19.99, System.currentTimeMillis(), null);
             gastoViewModel.insertar(gastoPrueba);
@@ -69,5 +79,29 @@ public class ListaGastosActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Oculta el botón de gasto de prueba para usuarios no-admin.
+     * Solo los usuarios con rol "ADMIN" pueden ver el FAB de prueba.
+     */
+    private void configurarVisibilidadBotonPrueba() {
+        // Ocultar por defecto hasta confirmar el rol
+        fabAgregar.setVisibility(View.GONE);
 
+        userRepository.obtenerUsuario(new UserRepository.OnUsuarioCallback() {
+            @Override
+            public void onSuccess(UsuarioEntity usuario) {
+                if (isFinishing()) return;
+                String rol = usuario.getRol();
+                if ("ADMIN".equalsIgnoreCase(rol)) {
+                    fabAgregar.setVisibility(View.VISIBLE);
+                }
+                // Si no es admin, queda GONE (ya establecido)
+            }
+
+            @Override
+            public void onError() {
+                // En caso de error, mantener oculto por seguridad
+            }
+        });
+    }
 }
