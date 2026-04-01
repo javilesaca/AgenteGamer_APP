@@ -17,16 +17,6 @@ public class LanzamientoEntity {
     public String plataformas;
     public double rating;
 
-    public LanzamientoEntity(int gameId, String nombre, long fechaLanzamiento, double precioEstimado) {
-        this.gameId = gameId;
-        this.nombre = nombre;
-        this.fechaLanzamiento = fechaLanzamiento;
-        this.precioEstimado = precioEstimado;
-        this.imageUrl = "";
-        this.plataformas = "";
-        this.rating = 0;
-    }
-
     public LanzamientoEntity(int gameId, String nombre, long fechaLanzamiento, double precioEstimado,
                              String imageUrl, String plataformas, double rating) {
         this.gameId = gameId;

@@ -88,7 +88,8 @@ public class WishlistViewModel extends AndroidViewModel {
                     juego.getGameId(),
                     juego.getNombre(),
                     fechaLanzamiento.getTime(),
-                    precioFinal
+                    precioFinal,
+                    "", "", 0
             );
             repoLanzamiento.insertar(lanzamiento);
         } else {
