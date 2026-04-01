@@ -51,14 +51,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Elden Ring" />
 
-        <!-- Price -->
+        <!-- Price label -->
         <TextView
-            android:id="@+id/tvPrecio"
+            android:id="@+id/tvPrecioLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope_bold"
-            android:textSize="13sp"
-            android:textColor="@color/accent_green"
+            android:fontFamily="@font/manrope_regular"
+            android:textSize="11sp"
+            android:textColor="@color/text_hint"
             android:maxLines="1"
             android:ellipsize="end"
             android:layout_marginStart="14dp"
@@ -67,7 +67,25 @@
             app:layout_constraintStart_toEndOf="@id/imgJuego"
             app:layout_constraintEnd_toStartOf="@id/btnEliminar"
             app:layout_constraintTop_toBottomOf="@id/tvNombreJuego"
-            tools:text="Precio estimado: 49,99 €" />
+            android:text="Precio estimado:" />
+
+        <!-- Price value -->
+        <TextView
+            android:id="@+id/tvPrecioValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_bold"
+            android:textSize="16sp"
+            android:textColor="@color/accent_green"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@id/imgJuego"
+            app:layout_constraintEnd_toStartOf="@id/btnEliminar"
+            app:layout_constraintTop_toBottomOf="@id/tvPrecioLabel"
+            tools:text="39,99 €" />
 
         <!-- Affordable badge (hidden by default — adapter controls visibility) -->
         <TextView
@@ -84,8 +102,8 @@
             android:layout_marginTop="6dp"
             android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/imgJuego"
-            app:layout_constraintTop_toBottomOf="@id/tvPrecio"
-            tools:text="Dentro de presupuesto" />
+             app:layout_constraintTop_toBottomOf="@id/tvPrecioValue"
+             tools:text="Dentro de presupuesto" />
 
         <!-- Financial recommendation -->
         <TextView
