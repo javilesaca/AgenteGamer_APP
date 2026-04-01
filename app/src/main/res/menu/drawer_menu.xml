@@ -9,17 +9,17 @@
     <item
         android:id="@+id/menu_juegos"
         android:title="Juegos"
-        android:icon="@android:drawable/ic_menu_search" />
+        android:icon="@drawable/ic_games" />
 
     <item
         android:id="@+id/menu_wishlist"
         android:title="Wishlist"
-        android:icon="@android:drawable/ic_menu_agenda" />
+        android:icon="@drawable/ic_wishlist" />
 
     <item
         android:id="@+id/menu_gastos"
         android:title="Gastos"
-        android:icon="@android:drawable/ic_menu_edit" />
+        android:icon="@drawable/ic_add_circle" />
 
     <item
         android:id="@+id/menu_lanzamientos"
@@ -29,7 +29,7 @@
     <item
         android:id="@+id/menu_ajustes"
         android:title="Ajustes"
-        android:icon="@android:drawable/ic_menu_manage" />
+        android:icon="@drawable/ic_settings" />
 
     <item
         android:id="@+id/menu_logout"
