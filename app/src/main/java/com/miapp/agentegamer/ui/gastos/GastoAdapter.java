@@ -3,6 +3,7 @@ package com.miapp.agentegamer.ui.gastos;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.GastoEntity;
+import com.miapp.agentegamer.util.ImageLoader;
 import com.miapp.agentegamer.util.MoneyUtils;
 
 import java.util.ArrayList;
@@ -59,6 +61,7 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         }
         holder.textConcepto.setText(g.getNombreJuego());
         holder.textCantidad.setText(MoneyUtils.format(g.getPrecio()));
+        ImageLoader.load(holder.ivIcon, g.getImagenUrl());
     }
 
     @Override
@@ -113,10 +116,12 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
 
     static class GastoViewHolder extends RecyclerView.ViewHolder {
 
+        ImageView ivIcon;
         TextView textConcepto, textCantidad;
 
         public GastoViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivIcon = itemView.findViewById(R.id.ivIcon);
             textConcepto = itemView.findViewById(R.id.textConcepto);
             textCantidad = itemView.findViewById(R.id.textCantidad);
         }
