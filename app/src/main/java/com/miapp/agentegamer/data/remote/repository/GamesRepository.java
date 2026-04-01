@@ -56,6 +56,33 @@ public class GamesRepository {
         return gamesLiveData;
     }
 
+    public LiveData<List<GameDto>> getRecentlyReleasedGames() {
+        // Últimos 30 días de juegos lanzados, ordenados por fecha de lanzamiento
+        String today = java.time.LocalDate.now().toString(); // 2026-04-01
+        String thirtyDaysAgo = java.time.LocalDate.now().minusDays(30).toString(); // 2026-03-02
+        String dates = thirtyDaysAgo + "," + today;
+
+        cargando.setValue(true);
+        apiService.getRecentlyReleasedGames(apiKey, dates, "-released", 20)
+                .enqueue(new Callback<GamesResponse>() {
+                    @Override
+                    public void onResponse(Call<GamesResponse> call, Response<GamesResponse> response) {
+                        cargando.setValue(false);
+                        if (response.isSuccessful() && response.body() != null) {
+                            gamesLiveData.setValue(response.body().getResults());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GamesResponse> call, Throwable throwable) {
+                        cargando.setValue(false);
+                        gamesLiveData.setValue(null);
+                    }
+                });
+
+        return gamesLiveData;
+    }
+
     public LiveData<List<GameDto>> buscarJuegosPaginados(String query, boolean reset) {
         MutableLiveData<List<GameDto>> data = new MutableLiveData<>();
 
