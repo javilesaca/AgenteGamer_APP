@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +45,7 @@ public class ListaJuegosActivity extends AppCompatActivity {
         emptyLayout = findViewById(R.id.layoutEmpty);
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.recyclerJuegos);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         adapter = new JuegosAdapter();
         recyclerView.setAdapter(adapter);

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icono simple para el Agente Financiero (robot/IA) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorOnPrimary">
+  
+  <!-- Cabeza del robot -->
+  <path
+      android:fillColor="@android:color/white"
+      android:pathData="M12,2C9.24,2 7,4.24 7,7V9H6C4.9,9 4,9.9 4,11V20C4,21.1 4.9,22 6,22H18C19.1,22 20,21.1 20,20V11C20,9.9 19.1,9 18,9H17V7C17,4.24 14.76,2 12,2ZM12,4C13.66,4 15,5.34 15,7V9H9V7C9,5.34 10.34,4 12,4ZM12,17C10.9,17 10,16.1 10,15C10,13.9 10.9,13 12,13C13.1,13 14,13.9 14,15C14,16.1 13.1,17 12,17Z"/>
+  
+  <!-- Antena -->
+  <path
+      android:fillColor="@android:color/white"
+      android:pathData="M12,6L12,6"/>
+</vector>

@@ -14,12 +14,19 @@ import javax.inject.Inject;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.domain.model.Gasto;
 import com.miapp.agentegamer.domain.model.SistemaFinanciero;
+import com.miapp.agentegamer.domain.model.MonthlyExpense;
+import com.miapp.agentegamer.data.local.dao.GastoDao.MonthlyTotal;
 import com.miapp.agentegamer.data.local.entity.GastoEntity;
 import com.miapp.agentegamer.domain.repository.GastoRepository;
 import com.miapp.agentegamer.ui.model.EstadoFinancieroUI;
+import com.miapp.agentegamer.util.FinancialTrendHelper;
+import com.miapp.agentegamer.util.FinancialTrendHelper.TrendResult;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @HiltViewModel
 public class GastoViewModel extends AndroidViewModel {
@@ -29,15 +36,28 @@ public class GastoViewModel extends AndroidViewModel {
     protected SistemaFinanciero sistemaFinanciero;
     private final MutableLiveData<EstadoFinancieroUI> estadoUI = new MutableLiveData<>();
     private final Observer<List<GastoEntity>> gastosObserver;
+    
+    // Nuevos LiveData para Dashboard
+    private final MutableLiveData<List<MonthlyExpense>> monthlyExpenses = new MutableLiveData<>();
+    private final MutableLiveData<TrendResult> trendResult = new MutableLiveData<>();
+    private final LiveData<List<GastoEntity>> recentGastos;
+    private final ExecutorService executorService;
 
     @Inject
     public GastoViewModel(@NonNull Application application, GastoRepository repository) {
         super(application);
         this.repository = repository;
+        this.executorService = Executors.newSingleThreadExecutor();
 
         listaGastos = repository.obtenerGastos();
-        gastosObserver = gastos -> recalcularEstado(gastos);
+        gastosObserver = gastos -> {
+            recalcularEstado(gastos);
+            loadDashboardData(); // Recargar datos del dashboard cuando cambian gastos
+        };
         listaGastos.observeForever(gastosObserver);
+        
+        // Gastos recientes (últimos 5)
+        recentGastos = repository.getRecentGastos(5);
     }
 
     @Override
@@ -46,6 +66,7 @@ public class GastoViewModel extends AndroidViewModel {
         if (listaGastos != null && gastosObserver != null) {
             listaGastos.removeObserver(gastosObserver);
         }
+        executorService.shutdown();
     }
 
     //=========================
@@ -54,10 +75,11 @@ public class GastoViewModel extends AndroidViewModel {
     public void setSistemaFinanciero(SistemaFinanciero sistema) {
         this.sistemaFinanciero = sistema;
         recalcularEstado(listaGastos.getValue());
+        loadDashboardData();
     }
 
     //===========================
-    // OBSERVABLES
+    // OBSERVABLES EXISTENTES
     //===========================
     public LiveData<List<GastoEntity>> getListaGastos() {
         return listaGastos;
@@ -71,8 +93,33 @@ public class GastoViewModel extends AndroidViewModel {
         return estadoUI;
     }
 
+    //===========================
+    // NUEVOS OBSERVABLES PARA DASHBOARD
+    //===========================
+    
+    /**
+     * Gastos mensuales para gráfico de tendencias.
+     */
+    public LiveData<List<MonthlyExpense>> getMonthlyExpenses() {
+        return monthlyExpenses;
+    }
+
+    /**
+     * Resultado de tendencia (vs mes anterior).
+     */
+    public LiveData<TrendResult> getTrendResult() {
+        return trendResult;
+    }
+
+    /**
+     * Últimos gastos para card de recientes.
+     */
+    public LiveData<List<GastoEntity>> getRecentGastos() {
+        return recentGastos;
+    }
+
     //============================
-    // LÓGICA
+    // LÓGICA EXISTENTE
     //============================
     private void recalcularEstado(List<GastoEntity> gastos) {
 
@@ -110,6 +157,77 @@ public class GastoViewModel extends AndroidViewModel {
             }
         }
         return result;
+    }
+
+    //============================
+    // NUEVA LÓGICA PARA DASHBOARD
+    //============================
+
+    /**
+     * Carga datos del dashboard: tendencias mensuales y cálculo de trend.
+     */
+    private void loadDashboardData() {
+        if (sistemaFinanciero == null) return;
+
+        executorService.execute(() -> {
+            double presupuesto = sistemaFinanciero.getPresupuestoMensual();
+            
+            // Obtener totales de últimos 3 meses
+            List<MonthlyTotal> rawTotals = repository.getMonthlyTotalsSync(3);
+            List<MonthlyExpense> expenses = new ArrayList<>();
+            
+            for (MonthlyTotal mt : rawTotals) {
+                // Parsear mes de formato "YYYY-MM"
+                String[] parts = mt.mes.split("-");
+                if (parts.length == 2) {
+                    int month = Integer.parseInt(parts[1]) - 1; // 0-indexed
+                    int year = Integer.parseInt(parts[0]);
+                    expenses.add(new MonthlyExpense(month, year, mt.total, presupuesto));
+                }
+            }
+            
+            monthlyExpenses.postValue(expenses);
+            
+            // Calcular tendencia si hay al menos 2 meses
+            if (expenses.size() >= 2) {
+                MonthlyExpense current = expenses.get(expenses.size() - 1);
+                MonthlyExpense previous = expenses.get(expenses.size() - 2);
+                TrendResult trend = FinancialTrendHelper.calculateTrend(
+                    current.getTotal(), 
+                    previous.getTotal()
+                );
+                trendResult.postValue(trend);
+            } else if (expenses.size() == 1) {
+                trendResult.postValue(new TrendResult(0, TrendResult.TrendDirection.STABLE));
+            }
+        });
+    }
+
+    /**
+     * Obtiene el string de recomendación para el dashboard.
+     */
+    public String getRecomendacionDashboard() {
+        if (sistemaFinanciero == null || estadoUI.getValue() == null) {
+            return "Configura tu presupuesto en Ajustes.";
+        }
+        
+        EstadoFinancieroUI estado = estadoUI.getValue();
+        double total = listaGastos.getValue() != null ? 
+            calcularTotal(listaGastos.getValue()) : 0;
+        
+        return FinancialTrendHelper.generateRecommendation(
+            estado.getEstado(),
+            sistemaFinanciero.getPresupuestoMensual(),
+            total
+        );
+    }
+
+    private double calcularTotal(List<GastoEntity> gastos) {
+        double total = 0;
+        for (GastoEntity g : gastos) {
+            if (g != null) total += g.getPrecio();
+        }
+        return total;
     }
 
     //=============================

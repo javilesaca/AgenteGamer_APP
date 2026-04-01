@@ -1,45 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/background"
     android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/etNombre"
-        android:hint="@string/hint_nombre"
-        android:inputType="textPersonName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:text="@string/title_register"
+        android:textSize="28sp"
+        android:textColor="@color/text_primary"
+        android:fontFamily="@font/manrope_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="32dp"/>
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:hint="@string/hint_email"
-        android:inputType="textEmailAddress"
+    <!-- Card containing form inputs -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"/>
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/surface"
+        app:strokeColor="@color/surface_variant"
+        app:strokeWidth="1dp"
+        app:cardElevation="0dp"
+        android:layout_marginBottom="24dp">
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:hint="@string/hint_password"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etPresupuesto"
-        android:hint="@string/hint_presupuesto"
-        android:inputType="numberDecimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"/>
+            <!-- Nombre -->
+            <EditText
+                android:id="@+id/etNombre"
+                android:hint="@string/hint_nombre"
+                android:inputType="textPersonName"
+                android:background="@drawable/bg_input_field"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:fontFamily="@font/manrope_regular"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
+            <!-- Email -->
+            <EditText
+                android:id="@+id/etEmail"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/bg_input_field"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:fontFamily="@font/manrope_regular"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Password -->
+            <EditText
+                android:id="@+id/etPassword"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:background="@drawable/bg_input_field"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:fontFamily="@font/manrope_regular"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Presupuesto -->
+            <EditText
+                android:id="@+id/etPresupuesto"
+                android:hint="@string/hint_presupuesto"
+                android:inputType="numberDecimal"
+                android:background="@drawable/bg_input_field"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
+                android:fontFamily="@font/manrope_regular"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Register Button -->
     <Button
         android:id="@+id/btnRegister"
         android:text="@string/btn_register"
+        android:background="@drawable/bg_button_primary"
+        android:textColor="@color/on_primary"
+        android:fontFamily="@font/manrope_bold"
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
+        android:textAllCaps="false"/>
+
 </LinearLayout>
