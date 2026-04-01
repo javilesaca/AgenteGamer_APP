@@ -24,7 +24,7 @@
     <item
         android:id="@+id/menu_lanzamientos"
         android:title="Lanzamientos"
-        android:icon="@android:drawable/ic_menu_my_calendar" />
+        android:icon="@drawable/ic_lanzamientos" />
 
     <item
         android:id="@+id/menu_ajustes"
@@ -34,5 +34,5 @@
     <item
         android:id="@+id/menu_logout"
         android:title="Cerrar sesión"
-        android:icon="@android:drawable/ic_lock_power_off" />
+        android:icon="@drawable/ic_logout" />
 </menu>
