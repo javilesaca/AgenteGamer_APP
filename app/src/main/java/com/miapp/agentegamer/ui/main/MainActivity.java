@@ -632,18 +632,9 @@ public class MainActivity extends AppCompatActivity {
      * Forma recomendada: logout explícito por acción del usuario
      */
     private void cerrarSesion() {
-        // Best-effort cleanup of current user's local data
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String uid = user.getUid();
-            new Thread(() -> {
-                com.miapp.agentegamer.data.local.database.AppDatabase dbLocal =
-                    com.miapp.agentegamer.data.local.database.AppDatabase.getInstance(this);
-                dbLocal.gastoDao().deleteAll(uid);
-                dbLocal.wishlistDao().deleteAll(uid);
-                dbLocal.lanzamientoDao().borrarTodos(uid);
-            }).start();
-        }
+        // No borramos Room: el userId scoping en los queries asegura que
+        // cada usuario solo ve sus propios datos al volver a entrar.
+        // Así el usuario recupera su historial de sesiones anteriores.
 
         FirebaseAuth.getInstance().signOut();
 
