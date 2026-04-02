@@ -159,6 +159,15 @@
                         android:textColor="@color/text_primary"
                         android:fontFamily="@font/manrope_medium" />
 
+                    <RadioButton
+                        android:id="@+id/rbLibra"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/libra"
+                        android:buttonTint="@color/accent_green"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/manrope_medium" />
+
                 </RadioGroup>
 
             </LinearLayout>

@@ -94,6 +94,8 @@ public class AjustesActivity extends AppCompatActivity {
             String moneda = "EUR";
             if (checkedId == R.id.rbDolar) {
                 moneda = "USD";
+            } else if (checkedId == R.id.rbLibra) {
+                moneda = "GBP";
             }
             String monedaFinal = moneda;
             updateSettingsUseCase.updateMoneda(moneda, new UserRepository.OnMonedaCallback() {
@@ -124,6 +126,8 @@ public class AjustesActivity extends AppCompatActivity {
                 String moneda = usuario.getMoneda();
                 if ("USD".equalsIgnoreCase(moneda)) {
                     rgMoneda.check(R.id.rbDolar);
+                } else if ("GBP".equalsIgnoreCase(moneda)) {
+                    rgMoneda.check(R.id.rbLibra);
                 } else {
                     rgMoneda.check(R.id.rbEuro);
                 }
@@ -197,10 +201,10 @@ public class AjustesActivity extends AppCompatActivity {
                 String evaluacion =
                         sistema.evaluarCompra(precio, gastoSimulado);
 
-                if (evaluacion.equals("RECOMENDADO")) {
+                if (evaluacion.contains("recomendada")) {
                     recomendados++;
                 }
-                else if (evaluacion.equals("AJUSTADO")) {
+                else if (evaluacion.contains("ajustada")) {
                     ajustados++;
                 }
                 else {

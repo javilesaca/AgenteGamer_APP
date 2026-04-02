@@ -56,6 +56,7 @@
     <string name="moneda">Moneda</string>
     <string name="euro">EUR (€)</string>
     <string name="dolar">USD ($)</string>
+    <string name="libra">GBP (£)</string>
     <string name="presupuesto_mensual">Presupuesto mensual</string>
     <string name="impacto_wishlist">Impacto en tu wishlist</string>
     <string name="recomendados">✔ Recomendados: %d</string>
