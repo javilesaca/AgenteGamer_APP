@@ -62,7 +62,7 @@ public class ListaGastosActivity extends AppCompatActivity {
 
         // FAB click listener — gasto de prueba (solo visible para admin)
         fabAgregar.setOnClickListener(v -> {
-            GastoEntity gastoPrueba = new GastoEntity("Compra test", 19.99, System.currentTimeMillis(), null);
+            GastoEntity gastoPrueba = new GastoEntity(null, "Compra test", 19.99, System.currentTimeMillis(), null);
             gastoViewModel.insertar(gastoPrueba);
         });
 

@@ -632,6 +632,19 @@ public class MainActivity extends AppCompatActivity {
      * Forma recomendada: logout explícito por acción del usuario
      */
     private void cerrarSesion() {
+        // Best-effort cleanup of current user's local data
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            new Thread(() -> {
+                com.miapp.agentegamer.data.local.database.AppDatabase dbLocal =
+                    com.miapp.agentegamer.data.local.database.AppDatabase.getInstance(this);
+                dbLocal.gastoDao().deleteAll(uid);
+                dbLocal.wishlistDao().deleteAll(uid);
+                dbLocal.lanzamientoDao().borrarTodos(uid);
+            }).start();
+        }
+
         FirebaseAuth.getInstance().signOut();
 
         Intent intent = new Intent(this, LoginActivity.class);

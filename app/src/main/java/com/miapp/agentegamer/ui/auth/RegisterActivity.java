@@ -14,10 +14,14 @@ import com.google.firebase.firestore.FieldValue;
 import dagger.hilt.android.AndroidEntryPoint;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.miapp.agentegamer.R;
+import com.miapp.agentegamer.data.repository.UserRepositoryImpl;
+import com.miapp.agentegamer.domain.repository.UserRepository;
 import com.miapp.agentegamer.ui.main.MainActivity;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
@@ -27,6 +31,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword, etNombre, etPresupuesto;
     private Button btnRegister;
+
+    @Inject
+    UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Map<String, Object> userData = new HashMap<>();
                     userData.put("email", email);
                     userData.put("nombre", nombre);
-                    userData.put("presupuesto", presupuesto);
+                    userData.put("presupuestoMensual", presupuesto);
                     userData.put("fechaCreacion", FieldValue.serverTimestamp());
                     userData.put("rol", "USER");
 
@@ -89,6 +96,9 @@ public class RegisterActivity extends AppCompatActivity {
                             .set(userData)
                             .addOnSuccessListener(unused -> {
                                 if (isFinishing()) return;
+                                if (userRepository instanceof UserRepositoryImpl) {
+                                    ((UserRepositoryImpl) userRepository).resetForNewUser();
+                                }
                                 startActivity(new Intent(this, MainActivity.class));
                                 finish();
                             })
