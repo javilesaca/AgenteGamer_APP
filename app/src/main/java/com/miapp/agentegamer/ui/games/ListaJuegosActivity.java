@@ -3,10 +3,11 @@ package com.miapp.agentegamer.ui.games;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.ui.viewmodel.GamesViewModel;
@@ -60,7 +62,7 @@ public class ListaJuegosActivity extends AppCompatActivity {
             moneda = currency != null ? currency : "EUR";
             adapter.setMoneda(moneda);
         });
-        SearchView searchView = findViewById(R.id.searchView);
+        TextInputEditText searchView = findViewById(R.id.searchView);
 
         // Cargar juegos recién lanzados al abrir la pantalla
         viewModel.cargarJuegosRecientes();
@@ -95,22 +97,24 @@ public class ListaJuegosActivity extends AppCompatActivity {
             cargando = false;
         });
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextChange(String newText) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (searchRunnable != null) {
                     handler.removeCallbacks(searchRunnable);
                 }
 
                 searchRunnable = () -> {
-
+                    String newText = s.toString().trim();
                     if (newText.length() < 3) {
                         return;
                     }
 
                     queryActual = newText;
-                    cargando =true;
+                    cargando = true;
 
                     progressBar.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
@@ -120,15 +124,10 @@ public class ListaJuegosActivity extends AppCompatActivity {
                 };
 
                 handler.postDelayed(searchRunnable, DEBOUNCE_DELAY);
-
-                return true;
             }
 
             @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                return true;
-            }
+            public void afterTextChanged(Editable s) {}
         });
 
 
