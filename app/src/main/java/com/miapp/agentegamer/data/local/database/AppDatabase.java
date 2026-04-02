@@ -13,7 +13,7 @@ import com.miapp.agentegamer.data.local.entity.GastoEntity;
 import com.miapp.agentegamer.data.local.entity.LanzamientoEntity;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 
-@Database(entities = {GastoEntity.class, WishlistEntity.class, LanzamientoEntity.class}, version = 8, exportSchema = false)
+@Database(entities = {GastoEntity.class, WishlistEntity.class, LanzamientoEntity.class}, version = 9, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile AppDatabase INSTANCE;

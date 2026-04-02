@@ -2,6 +2,7 @@ package com.miapp.agentegamer.data.repository;
 
 import androidx.lifecycle.LiveData;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.miapp.agentegamer.data.local.dao.WishlistDao;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.domain.repository.WishlistRepository;
@@ -22,14 +23,23 @@ public class WishlistRepositoryImpl implements WishlistRepository {
         this.dao = dao;
     }
 
+    private String getCurrentUserId() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : "";
+    }
+
     @Override
     public void insertar(WishlistEntity juego) {
-        executor.execute(() -> dao.insert(juego));
+        executor.execute(() -> {
+            juego.setUserId(getCurrentUserId());
+            dao.insert(juego);
+        });
     }
 
     @Override
     public LiveData<List<WishlistEntity>> getWishlist() {
-        return dao.getWishlist();
+        return dao.getWishlist(getCurrentUserId());
     }
 
     @Override
@@ -44,11 +54,11 @@ public class WishlistRepositoryImpl implements WishlistRepository {
 
     @Override
     public List<WishlistEntity> getWishlistSync() {
-        return dao.getWishlistSync();
+        return dao.getWishlistSync(getCurrentUserId());
     }
 
     @Override
     public Double getTotalGastado() {
-        return dao.getTotalGastado();
+        return dao.getTotalGastado(getCurrentUserId());
     }
 }

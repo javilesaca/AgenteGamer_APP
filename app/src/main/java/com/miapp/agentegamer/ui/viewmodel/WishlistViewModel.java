@@ -87,6 +87,7 @@ public class WishlistViewModel extends AndroidViewModel {
         if (fechaLanzamiento != null && fechaLanzamiento.after(hoy)) {
 
             LanzamientoEntity lanzamiento = new LanzamientoEntity(
+                    null,
                     juego.getGameId(),
                     juego.getNombre(),
                     fechaLanzamiento.getTime(),
@@ -98,6 +99,7 @@ public class WishlistViewModel extends AndroidViewModel {
 
             //Crear gasto desde el juego
             GastoEntity gasto = new GastoEntity(
+                    null,
                     juego.getNombre(),
                     precioFinal,
                     FechaUtils.ahoraTimestamp(),
