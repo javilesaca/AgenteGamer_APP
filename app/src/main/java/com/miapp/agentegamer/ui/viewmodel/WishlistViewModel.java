@@ -72,6 +72,8 @@ public class WishlistViewModel extends AndroidViewModel {
 
     public LiveData<List<WishlistItemUI>> getWishList() { return wishlistEvaluada; }
 
+    public LiveData<String> getMonedaLiveData() { return userRepository.getMonedaLiveData(); }
+
     public void actualizar(WishlistEntity juego) {
         repo.actualizar(juego);
     }

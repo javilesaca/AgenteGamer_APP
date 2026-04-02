@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miapp.agentegamer.R;
+import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 
@@ -17,17 +18,20 @@ public class DialogConfirmarCompraFragment extends DialogFragment {
 
     private static final String ARG_JUEGO = "arg_juego";
     private static final String ARG_PRECIO = "arg_precio";
+    private static final String ARG_MONEDA = "moneda";
 
     private WishlistEntity juego;
     private double precioFinal;
+    private String moneda = "EUR";
     private WishlistViewModel viewModel;
 
-    public static DialogConfirmarCompraFragment newInstance(WishlistEntity juego, double precioFinal) {
+    public static DialogConfirmarCompraFragment newInstance(WishlistEntity juego, double precioFinal, String moneda) {
         DialogConfirmarCompraFragment fragment= new DialogConfirmarCompraFragment();
 
         Bundle args = new Bundle();
         args.putSerializable(ARG_JUEGO, juego);
         args.putDouble(ARG_PRECIO, precioFinal);
+        args.putString(ARG_MONEDA, moneda);
         fragment.setArguments(args);
 
         return fragment;
@@ -40,6 +44,7 @@ public class DialogConfirmarCompraFragment extends DialogFragment {
         if (getArguments() != null) {
             juego = (WishlistEntity) getArguments().getSerializable(ARG_JUEGO);
             precioFinal = getArguments().getDouble(ARG_PRECIO);
+            moneda = getArguments().getString(ARG_MONEDA, "EUR");
         }
 
         viewModel = new ViewModelProvider(requireActivity()).get(WishlistViewModel.class);
@@ -51,7 +56,7 @@ public class DialogConfirmarCompraFragment extends DialogFragment {
 
           AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setTitle("Confirmar compra")
-                .setMessage( "¿Deseas comprar:\n\n" + juego.getNombre() + "\n\nPrecio: " + precioFinal + " €")
+                .setMessage( "¿Deseas comprar:\n\n" + juego.getNombre() + "\n\nPrecio: " + MoneyUtils.format(precioFinal, moneda))
                 .setPositiveButton("Comprar", (d,w) -> {
                     viewModel.comprarJuego(juego, precioFinal);
                 })

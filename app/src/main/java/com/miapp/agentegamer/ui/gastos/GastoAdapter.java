@@ -24,6 +24,7 @@ import java.util.Locale;
 public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHolder> {
 
     private List<GastoEntity> lista = new ArrayList<>();
+    private String moneda;
     private static final SimpleDateFormat DATE_FORMAT =
             new SimpleDateFormat("d 'de' MMMM yyyy", new Locale("es", "ES"));
 
@@ -47,6 +48,10 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         // Empty constructor
     }
 
+    public GastoAdapter(String moneda) {
+        this.moneda = moneda;
+    }
+
     @NonNull
     @Override
     public GastoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,7 +70,7 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
             return;
         }
         holder.tvNombre.setText(g.getNombreJuego());
-        holder.tvPrecio.setText(MoneyUtils.format(g.getPrecio()));
+        holder.tvPrecio.setText(MoneyUtils.format(g.getPrecio(), moneda));
         holder.tvFecha.setText(DATE_FORMAT.format(new Date(g.getFecha())));
         ImageLoader.load(holder.ivCover, g.getImagenUrl());
     }
@@ -75,7 +80,8 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         return lista.size();
     }
 
-    public void setLista(List<GastoEntity> nuevaLista) {
+    public void setLista(List<GastoEntity> nuevaLista, String moneda) {
+        this.moneda = moneda;
         // Make a defensive copy
         List<GastoEntity> copiaSegura = new ArrayList<>(nuevaLista);
         // Calculate diff

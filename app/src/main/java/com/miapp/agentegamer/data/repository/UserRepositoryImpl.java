@@ -21,6 +21,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final FirebaseAuth auth;
     private final FirebaseFirestore db;
     private final MutableLiveData<Double> presupuestoLiveData = new MutableLiveData<>();
+    private MutableLiveData<String> monedaLiveData = new MutableLiveData<>("");
 
     @Inject
     public UserRepositoryImpl(FirebaseAuth auth, FirebaseFirestore db) {
@@ -150,5 +151,26 @@ public class UserRepositoryImpl implements UserRepository {
                 });
 
         return presupuestoLiveData;
+    }
+
+    @Override
+    public LiveData<String> getMonedaLiveData() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            monedaLiveData.setValue("EUR");
+            return monedaLiveData;
+        }
+
+        db.collection("users").document(user.getUid())
+                .addSnapshotListener((snapshot, error) -> {
+                    if (error != null || snapshot == null || !snapshot.exists()) {
+                        monedaLiveData.setValue("EUR");
+                        return;
+                    }
+                    String moneda = snapshot.getString("moneda");
+                    monedaLiveData.setValue(moneda != null && !moneda.isEmpty() ? moneda : "EUR");
+                });
+
+        return monedaLiveData;
     }
 }

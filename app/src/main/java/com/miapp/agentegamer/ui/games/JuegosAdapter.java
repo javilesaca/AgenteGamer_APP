@@ -26,6 +26,7 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
 
     private List<GameDto> lista = new ArrayList<>();
     private OnJuegoClickListener listener;
+    private String moneda;
 
     public interface OnJuegoClickListener {
         void onJuegoClick(GameDto juego, double precioEstimado);
@@ -52,7 +53,7 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
         // Texto
         holder.nombre.setText(juego.getName());
 
-        String info = "⭐ " + juego.getRating() + " / " + MoneyUtils.format(juego.getPrecioEstimado());
+        String info = "⭐ " + juego.getRating() + " / " + MoneyUtils.format(juego.getPrecioEstimado(), moneda);
 
         holder.subtitulo.setText(info);
 
@@ -114,6 +115,10 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
     public void setLista(List<GameDto> nuevaLista) {
         this.lista = nuevaLista;
         notifyDataSetChanged();
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 
     private int getPlatformIcon(String slug) {

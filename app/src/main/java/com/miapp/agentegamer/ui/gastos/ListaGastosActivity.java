@@ -68,7 +68,7 @@ public class ListaGastosActivity extends AppCompatActivity {
 
         // Observe lista de gastos y mostrar/ocultar empty state
         gastoViewModel.getListaGastos().observe(this, gastos -> {
-            adapter.setLista(gastos);
+            adapter.setLista(gastos, userCurrency);
             if (gastos == null || gastos.isEmpty()) {
                 layoutEmpty.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);

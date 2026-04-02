@@ -29,7 +29,8 @@ public class ListaJuegosActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private JuegosAdapter adapter;
     private WishlistViewModel wishlistViewModel;
-    private  String queryActual="";
+    private String queryActual="";
+    private String moneda = "EUR";
     private boolean cargando = false;
     private View emptyLayout;
     private ProgressBar progressBar;
@@ -48,10 +49,17 @@ public class ListaJuegosActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         adapter = new JuegosAdapter();
+        adapter.setMoneda(moneda);
         recyclerView.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(GamesViewModel.class);
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
+
+        // Observe currency changes
+        wishlistViewModel.getMonedaLiveData().observe(this, currency -> {
+            moneda = currency != null ? currency : "EUR";
+            adapter.setMoneda(moneda);
+        });
         SearchView searchView = findViewById(R.id.searchView);
 
         // Cargar juegos recién lanzados al abrir la pantalla

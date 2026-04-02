@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Dominio
     private SistemaFinanciero sistemaFinanciero;
-    
+    private String moneda = "EUR";
+
     @Inject
     UserRepository userRepository;
     
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         inicializarViewModel();
         cargarPresupuestoUsuario();
         configurarObservers();
+        observarMoneda();
         configurarMenu();
 
         getOnBackPressedDispatcher().addCallback(
@@ -179,8 +181,8 @@ public class MainActivity extends AppCompatActivity {
                 double presupuesto = sistemaFinanciero != null 
                     ? sistemaFinanciero.getPresupuestoMensual() : 0;
                 double restante = presupuesto - totalGastado;
-                tvTotalGastos.setText(MoneyUtils.format(totalGastado));
-                tvRestante.setText(MoneyUtils.format(restante));
+                tvTotalGastos.setText(MoneyUtils.format(totalGastado, moneda));
+                tvRestante.setText(MoneyUtils.format(restante, moneda));
             });
         });
     }
@@ -377,14 +379,14 @@ public class MainActivity extends AppCompatActivity {
                 gastoViewModel.setSistemaFinanciero(sistemaFinanciero);
 
                 // Actualizar el TextView con el presupuesto
-                tvPresupuesto.setText(MoneyUtils.format(presupuesto));
-                
+                tvPresupuesto.setText(MoneyUtils.format(presupuesto, moneda));
+
                 // También actualizar restante cuando cambie el presupuesto
                 gastoRepo.getTotalGastadoMesSync(totalGastado -> {
                     runOnUiThread(() -> {
                         double restante = presupuesto - totalGastado;
-                        tvTotalGastos.setText(MoneyUtils.format(totalGastado));
-                        tvRestante.setText(MoneyUtils.format(restante));
+                        tvTotalGastos.setText(MoneyUtils.format(totalGastado, moneda));
+                        tvRestante.setText(MoneyUtils.format(restante, moneda));
                     });
                 });
             }
@@ -442,9 +444,9 @@ public class MainActivity extends AppCompatActivity {
             double presupuesto = sistemaFinanciero != null ? sistemaFinanciero.getPresupuestoMensual() : 0;
             double restante = presupuesto - total;
             
-            tvTotalGastos.setText(MoneyUtils.format(total));
-            tvPresupuesto.setText(MoneyUtils.format(presupuesto));
-            tvRestante.setText(MoneyUtils.format(restante));
+            tvTotalGastos.setText(MoneyUtils.format(total, moneda));
+            tvPresupuesto.setText(MoneyUtils.format(presupuesto, moneda));
+            tvRestante.setText(MoneyUtils.format(restante, moneda));
 
             animarTotal(total);
 
@@ -496,6 +498,7 @@ public class MainActivity extends AppCompatActivity {
         // Observer para últimos gastos
         gastoViewModel.getRecentGastos().observe(this, recentGastos -> {
             if (ultimosGastosAdapter != null) {
+                ultimosGastosAdapter.setMoneda(moneda);
                 ultimosGastosAdapter.setGastos(recentGastos);
             }
         });
@@ -570,6 +573,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Observa la moneda seleccionada por el usuario.
+     */
+    private void observarMoneda() {
+        userRepository.getMonedaLiveData().observe(this, currency -> {
+            moneda = currency != null ? currency : "EUR";
+            refreshAdaptersWithCurrency();
+        });
+    }
+
+    /**
+     * Refresca adapters y TextViews con la moneda actual.
+     */
+    private void refreshAdaptersWithCurrency() {
+        if (ultimosGastosAdapter != null) {
+            ultimosGastosAdapter.setMoneda(moneda);
+        }
+        // Re-renderizar los textos formateados
+        actualizarPresupuestoRestante();
+    }
+
+    /**
      * Listeners de menú.
      */
     private void configurarMenu() {
@@ -639,7 +663,7 @@ public class MainActivity extends AppCompatActivity {
 
         animator.addUpdateListener(animation -> {
             float valor = (float) animation.getAnimatedValue();
-            tvTotalGastos.setText(MoneyUtils.format(valor));
+            tvTotalGastos.setText(MoneyUtils.format(valor, moneda));
         });
 
         animator.start();
