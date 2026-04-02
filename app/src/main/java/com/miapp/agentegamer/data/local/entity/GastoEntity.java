@@ -6,13 +6,12 @@ import androidx.room.PrimaryKey;
 
 import java.util.Calendar;
 
-@Entity(tableName = "gastos", indices = {@Index(value = {"mes", "anio"}), @Index(value = {"userId"})})
+@Entity(tableName = "gastos", indices = {@Index(value = {"mes", "anio"})})
 public class GastoEntity {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String userId;
     private String nombreJuego;
     private double precio;
     private long fecha;  // Guardada en milisegundos
@@ -21,8 +20,7 @@ public class GastoEntity {
     private String imagenUrl;
 
     // Constructor
-    public GastoEntity(String userId, String nombreJuego, double precio, long fecha, String imagenUrl) {
-        this.userId = userId;
+    public GastoEntity(String nombreJuego, double precio, long fecha, String imagenUrl) {
         this.nombreJuego = nombreJuego;
         this.precio = precio;
         this.fecha = fecha;
@@ -39,10 +37,6 @@ public class GastoEntity {
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
-
-    public String getUserId() { return userId; }
-
-    public void setUserId(String userId) { this.userId = userId; }
 
     public String getNombreJuego() { return nombreJuego; }
 

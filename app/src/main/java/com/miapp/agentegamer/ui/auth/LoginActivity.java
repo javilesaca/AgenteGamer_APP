@@ -13,12 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.miapp.agentegamer.R;
-import com.miapp.agentegamer.data.repository.UserRepositoryImpl;
-import com.miapp.agentegamer.domain.repository.UserRepository;
 import dagger.hilt.android.AndroidEntryPoint;
 import com.miapp.agentegamer.ui.main.MainActivity;
-
-import javax.inject.Inject;
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
@@ -28,9 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnRegister;
     private boolean isLoading = false;
-
-    @Inject
-    UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(result -> {
                     if (isFinishing()) return;
-                    if (userRepository instanceof UserRepositoryImpl) {
-                        ((UserRepositoryImpl) userRepository).resetForNewUser();
-                    }
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
                 })

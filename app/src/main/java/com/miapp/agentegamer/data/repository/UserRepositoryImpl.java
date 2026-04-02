@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.miapp.agentegamer.data.model.UsuarioEntity;
 import com.miapp.agentegamer.domain.repository.UserRepository;
 
@@ -23,8 +22,6 @@ public class UserRepositoryImpl implements UserRepository {
     private final FirebaseFirestore db;
     private final MutableLiveData<Double> presupuestoLiveData = new MutableLiveData<>();
     private MutableLiveData<String> monedaLiveData = new MutableLiveData<>("");
-    private ListenerRegistration presupuestoListener;
-    private ListenerRegistration monedaListener;
 
     @Inject
     public UserRepositoryImpl(FirebaseAuth auth, FirebaseFirestore db) {
@@ -126,22 +123,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void resetForNewUser() {
-        // Remove old snapshot listeners
-        if (presupuestoListener != null) {
-            presupuestoListener.remove();
-            presupuestoListener = null;
-        }
-        if (monedaListener != null) {
-            monedaListener.remove();
-            monedaListener = null;
-        }
-        // Reset LiveData values
-        presupuestoLiveData.setValue(null);
-        monedaLiveData.setValue(null);
-    }
-
-    @Override
     public LiveData<Double> getPresupuestoLiveData() {
 
         FirebaseUser user = auth.getCurrentUser();
@@ -150,12 +131,7 @@ public class UserRepositoryImpl implements UserRepository {
             return presupuestoLiveData;
         }
 
-        // Remove previous listener if exists
-        if (presupuestoListener != null) {
-            presupuestoListener.remove();
-        }
-
-        presupuestoListener = db.collection("users").document(user.getUid())
+        db.collection("users").document(user.getUid())
                 .addSnapshotListener((doc, error) -> {
 
                     if (error !=null || doc == null || !doc.exists()) {
@@ -185,12 +161,7 @@ public class UserRepositoryImpl implements UserRepository {
             return monedaLiveData;
         }
 
-        // Remove previous listener if exists
-        if (monedaListener != null) {
-            monedaListener.remove();
-        }
-
-        monedaListener = db.collection("users").document(user.getUid())
+        db.collection("users").document(user.getUid())
                 .addSnapshotListener((snapshot, error) -> {
                     if (error != null || snapshot == null || !snapshot.exists()) {
                         monedaLiveData.setValue("EUR");

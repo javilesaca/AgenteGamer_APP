@@ -11,7 +11,6 @@ public interface UserRepository {
     LiveData<String> getMonedaLiveData();
     void actualizarNombre(String nombre, OnActualizarNombreCallback callback);
     void actualizarMoneda(String moneda, OnMonedaCallback callback);
-    void resetForNewUser();
 
     interface OnUsuarioCallback {
         void onSuccess(UsuarioEntity usuario);

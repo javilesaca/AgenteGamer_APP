@@ -632,10 +632,6 @@ public class MainActivity extends AppCompatActivity {
      * Forma recomendada: logout explícito por acción del usuario
      */
     private void cerrarSesion() {
-        // No borramos Room: el userId scoping en los queries asegura que
-        // cada usuario solo ve sus propios datos al volver a entrar.
-        // Así el usuario recupera su historial de sesiones anteriores.
-
         FirebaseAuth.getInstance().signOut();
 
         Intent intent = new Intent(this, LoginActivity.class);

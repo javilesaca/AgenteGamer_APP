@@ -99,7 +99,6 @@ public class LanzamientosViewModel extends AndroidViewModel {
 
                     // Crear entidad con todos los campos
                     LanzamientoEntity lanzamiento = new LanzamientoEntity(
-                            null,
                             juego.getId(),
                             juego.getName(),
                             fechaMs,

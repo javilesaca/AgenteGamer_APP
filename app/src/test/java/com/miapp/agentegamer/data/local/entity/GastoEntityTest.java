@@ -20,7 +20,7 @@ public class GastoEntityTest {
         long timestamp = cal.getTimeInMillis();
 
         // Act
-        GastoEntity gasto = new GastoEntity(null, "Test Game", 59.99, timestamp, null);
+        GastoEntity gasto = new GastoEntity("Test Game", 59.99, timestamp, null);
 
         // Assert
         assertEquals(1, gasto.getMes());  // January = 0 in Calendar, so +1 = 1
@@ -36,7 +36,7 @@ public class GastoEntityTest {
         long timestamp = cal.getTimeInMillis();
 
         // Act
-        GastoEntity gasto = new GastoEntity(null, "Test Game", 59.99, timestamp, null);
+        GastoEntity gasto = new GastoEntity("Test Game", 59.99, timestamp, null);
 
         // Assert
         assertEquals(12, gasto.getMes());  // December = 11 in Calendar, so +1 = 12
@@ -51,7 +51,7 @@ public class GastoEntityTest {
         cal1.set(Calendar.MILLISECOND, 0);
         long timestamp1 = cal1.getTimeInMillis();
 
-        GastoEntity gasto = new GastoEntity(null, "Test Game", 59.99, timestamp1, null);
+        GastoEntity gasto = new GastoEntity("Test Game", 59.99, timestamp1, null);
         assertEquals(1, gasto.getMes());
         assertEquals(2024, gasto.getAnio());
 
@@ -77,7 +77,7 @@ public class GastoEntityTest {
         cal.set(Calendar.MILLISECOND, 0);
         long timestamp = cal.getTimeInMillis();
 
-        GastoEntity gasto = new GastoEntity(null, "My Game", 49.99, timestamp, null);
+        GastoEntity gasto = new GastoEntity("My Game", 49.99, timestamp, null);
 
         // Act
         Calendar cal2 = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -100,7 +100,7 @@ public class GastoEntityTest {
         cal1.set(Calendar.MILLISECOND, 999);
         long timestamp1 = cal1.getTimeInMillis();
 
-        GastoEntity gasto = new GastoEntity(null, "Game", 10.0, timestamp1, null);
+        GastoEntity gasto = new GastoEntity("Game", 10.0, timestamp1, null);
         assertEquals(12, gasto.getMes());
         assertEquals(2024, gasto.getAnio());
 
@@ -125,7 +125,7 @@ public class GastoEntityTest {
         cal.set(Calendar.MILLISECOND, 0);
         long timestamp = cal.getTimeInMillis();
 
-        GastoEntity gasto = new GastoEntity(null, "Game Title", 29.99, timestamp, null);
+        GastoEntity gasto = new GastoEntity("Game Title", 29.99, timestamp, null);
 
         // Assert initial values
         assertEquals("Game Title", gasto.getNombreJuego());
@@ -151,7 +151,7 @@ public class GastoEntityTest {
         cal.set(Calendar.MILLISECOND, 0);
         long timestamp = cal.getTimeInMillis();
 
-        GastoEntity gasto = new GastoEntity(null, "Game", 10.0, timestamp, null);
+        GastoEntity gasto = new GastoEntity("Game", 10.0, timestamp, null);
 
         // Act
         gasto.setMes(7);

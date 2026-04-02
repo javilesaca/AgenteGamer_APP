@@ -14,8 +14,8 @@ import java.util.List;
 @Dao
 public interface LanzamientoDao {
 
-    @Query("SELECT * FROM lanzamientos WHERE userId = :userId AND fechaLanzamiento >= :hoy ORDER BY fechaLanzamiento ASC")
-    LiveData<List<LanzamientoEntity>> getProximosLanzamientos(String userId, long hoy);
+    @Query("SELECT * FROM lanzamientos WHERE fechaLanzamiento >= :hoy ORDER BY fechaLanzamiento ASC")
+    LiveData<List<LanzamientoEntity>> getProximosLanzamientos(long hoy);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertar(LanzamientoEntity lanzamiento);
@@ -23,6 +23,6 @@ public interface LanzamientoDao {
     @Update
     void actualizar(LanzamientoEntity lanzamiento);
 
-    @Query("DELETE FROM lanzamientos WHERE userId = :userId")
-    void borrarTodos(String userId);
+    @Query("DELETE FROM lanzamientos")
+    void borrarTodos();
 }

@@ -55,7 +55,7 @@ public class GastoRepositoryImplTest {
     public void obtenerGastos_returnsDaoLiveData() {
         // Arrange
         MutableLiveData<List<GastoEntity>> expectedLiveData = new MutableLiveData<>();
-        when(mockDao.getAllGastos(anyString())).thenReturn(expectedLiveData);
+        when(mockDao.getAllGastos()).thenReturn(expectedLiveData);
 
         // Act
         LiveData<List<GastoEntity>> result = repository.obtenerGastos();
@@ -63,7 +63,7 @@ public class GastoRepositoryImplTest {
         // Assert
         assertSame("El repository debe devolver exactamente el LiveData del DAO",
                 expectedLiveData, result);
-        verify(mockDao).getAllGastos(anyString());
+        verify(mockDao).getAllGastos();
     }
 
     @Test
@@ -124,14 +124,14 @@ public class GastoRepositoryImplTest {
         // Assert
         verify(mockExecutor).execute(runnableCaptor.capture());
         runnableCaptor.getValue().run();
-        verify(mockDao).deleteAll(anyString());
+        verify(mockDao).deleteAll();
     }
 
     @Test
     public void getGastoMesActual_returnsDaoLiveDataForCurrentMonth() {
         // Arrange
         MutableLiveData<Double> expectedLiveData = new MutableLiveData<>(150.0);
-        when(mockDao.getGastoTotalMes(anyString(), anyInt(), anyInt())).thenReturn(expectedLiveData);
+        when(mockDao.getGastoTotalMes(anyInt(), anyInt())).thenReturn(expectedLiveData);
 
         // Act
         LiveData<Double> result = repository.getGastoMesActual();
@@ -139,7 +139,7 @@ public class GastoRepositoryImplTest {
         // Assert
         assertSame("El repository debe devolver el LiveData del DAO para el mes actual",
                 expectedLiveData, result);
-        verify(mockDao).getGastoTotalMes(anyString(), anyInt(), anyInt());
+        verify(mockDao).getGastoTotalMes(anyInt(), anyInt());
         // No podemos verificar los valores exactos de mes/año porque dependen de PeriodoFinancieroUtils
     }
 
@@ -147,7 +147,7 @@ public class GastoRepositoryImplTest {
     public void getTotalGastadoMesSync_executesCallbackWithTotal() {
         // Arrange
         double expectedTotal = 200.50;
-        when(mockDao.getTotalGastadoMes(anyString(), anyInt(), anyInt())).thenReturn(expectedTotal);
+        when(mockDao.getTotalGastadoMes(anyInt(), anyInt())).thenReturn(expectedTotal);
         
         GastoRepository.OnTotalGastadoCallback mockCallback = mock(GastoRepository.OnTotalGastadoCallback.class);
         ArgumentCaptor<Runnable> runnableCaptor = ArgumentCaptor.forClass(Runnable.class);
@@ -168,7 +168,7 @@ public class GastoRepositoryImplTest {
     @Test
     public void getTotalGastadoMesSync_callsDaoWithCorrectParameters() {
         // Arrange
-        when(mockDao.getTotalGastadoMes(anyString(), anyInt(), anyInt())).thenReturn(0.0);
+        when(mockDao.getTotalGastadoMes(anyInt(), anyInt())).thenReturn(0.0);
         GastoRepository.OnTotalGastadoCallback mockCallback = mock(GastoRepository.OnTotalGastadoCallback.class);
         ArgumentCaptor<Runnable> runnableCaptor = ArgumentCaptor.forClass(Runnable.class);
 
@@ -181,7 +181,7 @@ public class GastoRepositoryImplTest {
         // Verificar que se llama al DAO (no podemos verificar los parámetros exactos
         // porque dependen de PeriodoFinancieroUtils)
         runnableCaptor.getValue().run();
-        verify(mockDao).getTotalGastadoMes(anyString(), anyInt(), anyInt());
+        verify(mockDao).getTotalGastadoMes(anyInt(), anyInt());
     }
 
     /**
@@ -191,6 +191,6 @@ public class GastoRepositoryImplTest {
     private GastoEntity createTestGastoEntity(String nombre, double precio) {
         // Usar timestamp fijo para tests consistentes
         long testTimestamp = 1672531200000L; // 1 de enero de 2023
-        return new GastoEntity(null, nombre, precio, testTimestamp, null);
+        return new GastoEntity(nombre, precio, testTimestamp, null);
     }
 }
