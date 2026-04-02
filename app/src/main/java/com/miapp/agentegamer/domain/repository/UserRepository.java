@@ -8,6 +8,7 @@ public interface UserRepository {
     void obtenerPresupuesto(OnPresupuestoCallback callback);
     void actualizarPresupuesto(double presupuesto, OnPresupuestoCallback callback);
     LiveData<Double> getPresupuestoLiveData();
+    LiveData<String> getMonedaLiveData();
     void actualizarNombre(String nombre, OnActualizarNombreCallback callback);
     void actualizarMoneda(String moneda, OnMonedaCallback callback);
 

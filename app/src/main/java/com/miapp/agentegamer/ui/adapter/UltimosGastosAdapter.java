@@ -25,6 +25,7 @@ public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdap
 
     private List<GastoEntity> gastos = new ArrayList<>();
     private OnGastoClickListener listener;
+    private String moneda;
 
     public interface OnGastoClickListener {
         void onGastoClick(GastoEntity gasto);
@@ -36,6 +37,11 @@ public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdap
 
     public void setGastos(List<GastoEntity> gastos) {
         this.gastos = gastos != null ? gastos : new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
         notifyDataSetChanged();
     }
 
@@ -75,7 +81,7 @@ public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdap
 
         void bind(GastoEntity gasto) {
             tvNombreJuego.setText(gasto.getNombreJuego());
-            tvPrecio.setText(MoneyUtils.format(gasto.getPrecio()));
+            tvPrecio.setText(MoneyUtils.format(gasto.getPrecio(), moneda));
             tvFechaRelativa.setText(getFechaRelativa(gasto.getFecha()));
             ImageLoader.load(ivGameImage, gasto.getImagenUrl());
 

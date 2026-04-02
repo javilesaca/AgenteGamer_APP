@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.miapp.agentegamer.R;
+import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 
@@ -28,10 +29,11 @@ public class DialogDetalleJuegoFragment extends DialogFragment {
     private WishlistEntity juego;
     private WishlistViewModel wishlistViewModel;
 
-    public static DialogDetalleJuegoFragment newInstance(WishlistEntity juego) {
+    public static DialogDetalleJuegoFragment newInstance(WishlistEntity juego, String moneda) {
         DialogDetalleJuegoFragment fragment = new DialogDetalleJuegoFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_JUEGO, juego);
+        args.putString("moneda", moneda);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +49,8 @@ public class DialogDetalleJuegoFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        String moneda = getArguments() != null ? getArguments().getString("moneda", "EUR") : "EUR";
+
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_detalle_juego, null);
 
         ImageView img = view.findViewById(R.id.imgJuego);
@@ -59,7 +63,7 @@ public class DialogDetalleJuegoFragment extends DialogFragment {
         Spinner spinner = view.findViewById(R.id.spinnerPlataforma);
 
         nombre.setText(juego.getNombre());
-        precio.setText("Precio estimado: " + juego.getPrecioEstimado() + " €");
+        precio.setText("Precio estimado: " + MoneyUtils.format(juego.getPrecioEstimado(), moneda));
 
         Glide.with(requireContext()).load(juego.getImagenUrl()).into(img);
 
@@ -78,7 +82,7 @@ public class DialogDetalleJuegoFragment extends DialogFragment {
         });
 
         btnComprar.setOnClickListener(v -> {
-            DialogConfirmarCompraFragment.newInstance(juego, juego.getPrecioEstimado()).show(getParentFragmentManager(), "confirmarCompra");
+            DialogConfirmarCompraFragment.newInstance(juego, juego.getPrecioEstimado(), moneda).show(getParentFragmentManager(), "confirmarCompra");
             dismiss();
         });
 

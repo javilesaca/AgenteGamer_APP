@@ -78,6 +78,7 @@ public class AjustesActivity extends AppCompatActivity {
 
         wishlistViewModel.getWishList().observe(this, lista -> {
             wishlistActual = lista;
+            recalcularImpacto();
         });
         btnGuardar = findViewById(R.id.btnGuardarPresupuesto);
         btnCancelar = findViewById(R.id.btnCancelarPresupuesto);
@@ -94,6 +95,8 @@ public class AjustesActivity extends AppCompatActivity {
             String moneda = "EUR";
             if (checkedId == R.id.rbDolar) {
                 moneda = "USD";
+            } else if (checkedId == R.id.rbLibra) {
+                moneda = "GBP";
             }
             String monedaFinal = moneda;
             updateSettingsUseCase.updateMoneda(moneda, new UserRepository.OnMonedaCallback() {
@@ -124,6 +127,8 @@ public class AjustesActivity extends AppCompatActivity {
                 String moneda = usuario.getMoneda();
                 if ("USD".equalsIgnoreCase(moneda)) {
                     rgMoneda.check(R.id.rbDolar);
+                } else if ("GBP".equalsIgnoreCase(moneda)) {
+                    rgMoneda.check(R.id.rbLibra);
                 } else {
                     rgMoneda.check(R.id.rbEuro);
                 }
@@ -142,6 +147,8 @@ public class AjustesActivity extends AppCompatActivity {
             @Override
             public void onSuccess(double presupuesto) {
                 etPresupuesto.setText(String.valueOf(presupuesto));
+                // Re-evaluar impacto una vez que el presupuesto está disponible
+                recalcularImpacto();
             }
 
             @Override
@@ -197,10 +204,10 @@ public class AjustesActivity extends AppCompatActivity {
                 String evaluacion =
                         sistema.evaluarCompra(precio, gastoSimulado);
 
-                if (evaluacion.equals("RECOMENDADO")) {
+                if (evaluacion.contains("recomendada")) {
                     recomendados++;
                 }
-                else if (evaluacion.equals("AJUSTADO")) {
+                else if (evaluacion.contains("ajustada")) {
                     ajustados++;
                 }
                 else {

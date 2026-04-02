@@ -21,6 +21,7 @@ public class ListaWishlistActivity extends AppCompatActivity {
     private WishlistViewModel viewModel;
     private WishlistAdapter adapter;
     private TextView tvTotalCosto;
+    private String moneda = "EUR";
 
 
     @Override
@@ -29,6 +30,10 @@ public class ListaWishlistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_wishlist);
 
         viewModel = new ViewModelProvider(this).get(WishlistViewModel.class);
+
+        viewModel.getMonedaLiveData().observe(this, currency -> {
+            moneda = currency != null ? currency : "EUR";
+        });
 
         tvTotalCosto = findViewById(R.id.tvTotalCosto);
 
@@ -39,7 +44,7 @@ public class ListaWishlistActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(juego -> {
-            DialogDetalleJuegoFragment.newInstance(juego).show(getSupportFragmentManager(), "detalleJuego");
+            DialogDetalleJuegoFragment.newInstance(juego, moneda).show(getSupportFragmentManager(), "detalleJuego");
         });
 
         adapter.setOnEliminarClickListener(juego -> {
@@ -48,14 +53,14 @@ public class ListaWishlistActivity extends AppCompatActivity {
 
         // ViewModel from ViewModelProvider
         viewModel.getWishList().observe(this, lista -> {
-            adapter.setLista(lista);
+            adapter.setLista(lista, moneda);
 
             // Calculate and display total estimated cost
             double total = 0;
             for (WishlistItemUI item : lista) {
                 total += item.getJuego().getPrecioEstimado();
             }
-            tvTotalCosto.setText(MoneyUtils.format(total));
+            tvTotalCosto.setText(MoneyUtils.format(total, moneda));
         });
     }
 

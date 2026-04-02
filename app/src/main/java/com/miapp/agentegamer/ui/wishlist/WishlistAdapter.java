@@ -32,6 +32,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         this.listener = listener;
     }
     private List<WishlistItemUI> lista = new ArrayList<>();
+    private String moneda;
 
     // DiffUtil callback for efficient updates
     private static final DiffUtil.ItemCallback<WishlistItemUI> DIFF_CALLBACK = new DiffUtil.ItemCallback<WishlistItemUI>() {
@@ -65,7 +66,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         WishlistEntity juego = itemUI.getJuego();
 
         holder.nombre.setText(juego.getNombre());
-        holder.precioValue.setText(MoneyUtils.format(juego.getPrecioEstimado()));
+        holder.precioValue.setText(MoneyUtils.format(juego.getPrecioEstimado(), moneda));
         holder.recomendacion.setText(itemUI.getEvaluacion());
 
         Glide.with(holder.itemView.getContext())
@@ -91,7 +92,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         return lista.size();
     }
 
-    public void setLista(List<WishlistItemUI> nuevalista) {
+    public void setLista(List<WishlistItemUI> nuevalista, String moneda) {
+        this.moneda = moneda;
         // Make a defensive copy
         List<WishlistItemUI> copiaSegura = new ArrayList<>(nuevalista);
         // Calculate diff

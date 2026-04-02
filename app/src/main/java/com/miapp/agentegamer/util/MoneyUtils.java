@@ -3,10 +3,20 @@ package com.miapp.agentegamer.util;
 import java.util.Currency;
 import java.util.Locale;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MoneyUtils {
 
     private static final Locale LOCALE_ES = new Locale("es", "ES");
+
+    // Tasas de cambio fijas desde EUR (base)
+    private static final Map<String, Double> EXCHANGE_RATES = new HashMap<>();
+    static {
+        EXCHANGE_RATES.put("EUR", 1.0);
+        EXCHANGE_RATES.put("USD", 1.08);
+        EXCHANGE_RATES.put("GBP", 0.86);
+    }
 
     /**
      * Formatea una cantidad de dinero en euros (compatibilidad hacia atrás)
@@ -26,6 +36,9 @@ public class MoneyUtils {
      *   format(250, "USD") -> 250,00 US$
      */
     public static String format(double cantidad, String currencyCode) {
+        // Convertir desde EUR a la moneda destino
+        double cantidadConvertida = convertirDesdeEUR(cantidad, currencyCode);
+        
         NumberFormat formato = NumberFormat.getCurrencyInstance(LOCALE_ES);
         if (currencyCode != null && !currencyCode.isEmpty()) {
             try {
@@ -34,6 +47,18 @@ public class MoneyUtils {
                 // Código de moneda no reconocido, mantener EUR por defecto
             }
         }
-        return formato.format(cantidad);
+        return formato.format(cantidadConvertida);
+    }
+
+    /**
+     * Convierte un monto desde EUR a la moneda destino.
+     * Si la moneda no tiene tasa definida, retorna el monto sin convertir.
+     */
+    public static double convertirDesdeEUR(double montoEUR, String monedaDestino) {
+        if (monedaDestino == null || monedaDestino.isEmpty()) {
+            return montoEUR;
+        }
+        Double tasa = EXCHANGE_RATES.get(monedaDestino.toUpperCase());
+        return tasa != null ? montoEUR * tasa : montoEUR;
     }
 }
