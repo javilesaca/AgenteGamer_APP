@@ -67,6 +67,7 @@ public class ListaJuegosActivity extends AppCompatActivity {
 
         adapter.setOnJuegoClickListener((juego, precioEstimado) -> {
             WishlistEntity entity = new WishlistEntity(
+                    null,
                     juego.getId(),
                     juego.getName(),
                     juego.getReleaseDate(),

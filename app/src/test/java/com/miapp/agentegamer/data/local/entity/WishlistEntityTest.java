@@ -16,6 +16,7 @@ public class WishlistEntityTest {
         // Act - Using the correct parameter order: plataforma before precioEstimado
         // (gameId, nombre, fechaLanzamiento, imagenUrl, plataforma, precioEstimado)
         WishlistEntity entity = new WishlistEntity(
+            null,                    // userId
             123,                    // gameId
             "The Legend of Zelda",  // nombre
             "2024-05-12",           // fechaLanzamiento
@@ -41,12 +42,13 @@ public class WishlistEntityTest {
         
         // Using distinct values to detect swap
         WishlistEntity entity = new WishlistEntity(
+            null,       // userId
             1,          // gameId
             "Game",     // nombre
             "2024-01-01",  // fechaLanzamiento
             "url",      // imagenUrl
-            "PS5",      // plataforma - should be 59.99
-            59.99       // precioEstimado - should be "PS5"
+            "PS5",      // plataforma
+            59.99       // precioEstimado
         );
 
         // Verify plataforma is "PS5" (not 59.99)
@@ -60,7 +62,7 @@ public class WishlistEntityTest {
     public void testConstructor_withZeroPrecio() {
         // Arrange & Act
         WishlistEntity entity = new WishlistEntity(
-            1, "Free Game", "2024-01-01", "url", "PC", 0.0
+            null, 1, "Free Game", "2024-01-01", "url", "PC", 0.0
         );
 
         // Assert
@@ -72,7 +74,7 @@ public class WishlistEntityTest {
     public void testConstructor_withEmptyStrings() {
         // Arrange & Act
         WishlistEntity entity = new WishlistEntity(
-            1, "", "", "", "", 0.0
+            null, 1, "", "", "", "", 0.0
         );
 
         // Assert
@@ -87,7 +89,7 @@ public class WishlistEntityTest {
     public void testSetPlataforma() {
         // Arrange
         WishlistEntity entity = new WishlistEntity(
-            1, "Game", "2024-01-01", "url", "PS4", 29.99
+            null, 1, "Game", "2024-01-01", "url", "PS4", 29.99
         );
 
         // Act
@@ -101,7 +103,7 @@ public class WishlistEntityTest {
     public void testGetPlataforma() {
         // Arrange
         WishlistEntity entity = new WishlistEntity(
-            42, "My Game", "2024-06-15", "image.jpg", "Xbox Series X", 49.99
+            null, 42, "My Game", "2024-06-15", "image.jpg", "Xbox Series X", 49.99
         );
 
         // Act & Assert
@@ -112,7 +114,7 @@ public class WishlistEntityTest {
     public void testGameId_remainsConsistent() {
         // Arrange
         WishlistEntity entity = new WishlistEntity(
-            999, "Game", "2024-01-01", "url", "PC", 19.99
+            null, 999, "Game", "2024-01-01", "url", "PC", 19.99
         );
 
         // Assert
@@ -124,7 +126,7 @@ public class WishlistEntityTest {
         // WishlistEntity implements Serializable
         // This test verifies basic instantiation
         WishlistEntity entity = new WishlistEntity(
-            1, "Test", "2024-01-01", "url", "PC", 10.0
+            null, 1, "Test", "2024-01-01", "url", "PC", 10.0
         );
         
         assertNotNull(entity);

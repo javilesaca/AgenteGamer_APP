@@ -86,7 +86,7 @@ public class GastoViewModelTest {
         // Arrange
         SistemaFinanciero sistema = new SistemaFinanciero(200.0);
         List<GastoEntity> gastos = new ArrayList<>();
-        GastoEntity gasto = new GastoEntity("Zelda", 49.99, System.currentTimeMillis(), null);
+        GastoEntity gasto = new GastoEntity(null, "Zelda", 49.99, System.currentTimeMillis(), null);
         gasto.setId(1);
         gastos.add(gasto);
 
@@ -121,7 +121,7 @@ public class GastoViewModelTest {
     @Test
     public void insertar_callsRepositoryInsertarGasto() {
         // Arrange
-        GastoEntity gasto = new GastoEntity("Mario", 59.99, System.currentTimeMillis(), null);
+        GastoEntity gasto = new GastoEntity(null, "Mario", 59.99, System.currentTimeMillis(), null);
 
         // Act
         viewModel.insertar(gasto);
@@ -133,7 +133,7 @@ public class GastoViewModelTest {
     @Test
     public void actualizar_callsRepositoryActualizarGasto() {
         // Arrange
-        GastoEntity gasto = new GastoEntity("Halo", 69.99, System.currentTimeMillis(), null);
+        GastoEntity gasto = new GastoEntity(null, "Halo", 69.99, System.currentTimeMillis(), null);
 
         // Act
         viewModel.actualizar(gasto);
@@ -145,7 +145,7 @@ public class GastoViewModelTest {
     @Test
     public void borrar_callsRepositoryBorrarGasto() {
         // Arrange
-        GastoEntity gasto = new GastoEntity("FIFA", 49.99, System.currentTimeMillis(), null);
+        GastoEntity gasto = new GastoEntity(null, "FIFA", 49.99, System.currentTimeMillis(), null);
 
         // Act
         viewModel.borrar(gasto);

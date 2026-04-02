@@ -61,6 +61,7 @@ public class DialogEditarPrecioFragment extends DialogFragment {
                     double nuevoPrecio = Double.parseDouble(input.getText().toString());
 
                     WishlistEntity actualizado = new WishlistEntity(
+                            null,
                             juego.getGameId(),
                             juego.getNombre(),
                             juego.getFechaLanzamiento(),
