@@ -3,10 +3,11 @@ package com.miapp.agentegamer.ui.games;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.ui.viewmodel.GamesViewModel;
@@ -60,15 +62,16 @@ public class ListaJuegosActivity extends AppCompatActivity {
             moneda = currency != null ? currency : "EUR";
             adapter.setMoneda(moneda);
         });
-        SearchView searchView = findViewById(R.id.searchView);
+        TextInputEditText searchView = findViewById(R.id.searchView);
 
         // Cargar juegos recién lanzados al abrir la pantalla
         viewModel.cargarJuegosRecientes();
 
         adapter.setOnJuegoClickListener((juego, precioEstimado) -> {
             WishlistEntity entity = new WishlistEntity(
+                    null,
                     juego.getId(),
-                    juego.getName(),
+                    juego.getNombre(),
                     juego.getReleaseDate(),
                     juego.getImageUrl(),
                     juego.getPlataformasTexto(),
@@ -76,6 +79,55 @@ public class ListaJuegosActivity extends AppCompatActivity {
             );
             wishlistViewModel.insertar(entity);
             Toast.makeText(this, getString(R.string.added_to_wishlist, precioEstimado), Toast.LENGTH_SHORT).show();
+        });
+
+        viewModel.getJuegos().observe(this, juegos -> {
+
+            progressBar.setVisibility(View.GONE);
+
+            if (juegos == null || juegos.isEmpty()) {
+                recyclerView.setVisibility(View.GONE);
+                emptyLayout.setVisibility(View.VISIBLE);
+            } else {
+                emptyLayout.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                adapter.setLista(juegos);
+            }
+
+            cargando = false;
+        });
+
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+
+                searchRunnable = () -> {
+                    String newText = s.toString().trim();
+                    if (newText.length() < 3) {
+                        return;
+                    }
+
+                    queryActual = newText;
+                    cargando = true;
+
+                    progressBar.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    emptyLayout.setVisibility(View.GONE);
+
+                    viewModel.buscarJuegosPaginados(newText, true);
+                };
+
+                handler.postDelayed(searchRunnable, DEBOUNCE_DELAY);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
         viewModel.getJuegos().observe(this, juegos -> {
