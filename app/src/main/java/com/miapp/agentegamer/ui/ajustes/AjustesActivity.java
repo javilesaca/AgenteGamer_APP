@@ -78,6 +78,7 @@ public class AjustesActivity extends AppCompatActivity {
 
         wishlistViewModel.getWishList().observe(this, lista -> {
             wishlistActual = lista;
+            recalcularImpacto();
         });
         btnGuardar = findViewById(R.id.btnGuardarPresupuesto);
         btnCancelar = findViewById(R.id.btnCancelarPresupuesto);
@@ -146,6 +147,8 @@ public class AjustesActivity extends AppCompatActivity {
             @Override
             public void onSuccess(double presupuesto) {
                 etPresupuesto.setText(String.valueOf(presupuesto));
+                // Re-evaluar impacto una vez que el presupuesto está disponible
+                recalcularImpacto();
             }
 
             @Override

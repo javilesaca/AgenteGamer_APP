@@ -589,6 +589,10 @@ public class MainActivity extends AppCompatActivity {
         if (ultimosGastosAdapter != null) {
             ultimosGastosAdapter.setMoneda(moneda);
         }
+        // Actualizar presupuesto inmediatamente (sin delay async)
+        if (sistemaFinanciero != null) {
+            tvPresupuesto.setText(MoneyUtils.format(sistemaFinanciero.getPresupuestoMensual(), moneda));
+        }
         // Re-renderizar los textos formateados
         actualizarPresupuestoRestante();
     }

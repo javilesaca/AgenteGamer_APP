@@ -116,12 +116,16 @@ public class WishlistViewModel extends AndroidViewModel {
             Double gastoActual
     ) {
 
-        if (lista == null || presupuesto == null || gastoActual == null) {
+        if (lista == null) {
             wishlistEvaluada.setValue(new ArrayList<>());
             return;
         }
 
-        SistemaFinanciero sistema = new SistemaFinanciero(presupuesto);
+        // Defaults si alguna fuente aún no emitió
+        double presup = presupuesto != null ? presupuesto : 150.0;
+        double gasto = gastoActual != null ? gastoActual : 0.0;
+
+        SistemaFinanciero sistema = new SistemaFinanciero(presup);
 
         List<WishlistItemUI> listaUI = new ArrayList<>();
 
@@ -129,7 +133,7 @@ public class WishlistViewModel extends AndroidViewModel {
 
             String evaluacion = sistema.evaluarCompra(
                     juego.getPrecioEstimado(),
-                    gastoActual
+                    gasto
             );
 
             listaUI.add(new WishlistItemUI(juego, evaluacion));

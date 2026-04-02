@@ -42,6 +42,7 @@ public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdap
 
     public void setMoneda(String moneda) {
         this.moneda = moneda;
+        notifyDataSetChanged();
     }
 
     @NonNull
