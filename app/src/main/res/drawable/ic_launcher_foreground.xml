@@ -29,17 +29,13 @@
         android:fillColor="#00A86B"
         android:pathData="M30,45h4v4h-4z"/>
     
-    <!-- Right Buttons (circles) -->
-    <circle
+    <!-- Right Buttons (circles as paths for API 23 compatibility) -->
+    <path
         android:fillColor="#00A86B"
-        android:cx="74"
-        android:cy="44"
-        android:r="2.5"/>
-    <circle
+        android:pathData="M71.5,44a2.5,2.5 0 1,1 5,0a2.5,2.5 0 1,1 -5,0"/>
+    <path
         android:fillColor="#00A86B"
-        android:cx="78"
-        android:cy="50"
-        android:r="2.5"/>
+        android:pathData="M75.5,50a2.5,2.5 0 1,1 5,0a2.5,2.5 0 1,1 -5,0"/>
     
     <!-- Center Dollar Sign -->
     <path
