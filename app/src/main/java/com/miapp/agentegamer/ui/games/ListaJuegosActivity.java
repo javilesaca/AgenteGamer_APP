@@ -17,12 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.miapp.agentegamer.AgenteGamerApplication;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
+import com.miapp.agentegamer.data.remote.model.GameDto;
 import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.ui.viewmodel.GamesViewModel;
 import dagger.hilt.android.AndroidEntryPoint;
 import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
+
+import java.util.List;
 
 @AndroidEntryPoint
 public class ListaJuegosActivity extends BaseNavActivity {
@@ -66,8 +70,20 @@ public class ListaJuegosActivity extends BaseNavActivity {
         });
         TextInputEditText searchView = findViewById(R.id.searchView);
 
-        // Cargar juegos recién lanzados al abrir la pantalla
-        viewModel.cargarJuegosRecientes();
+        // Try to use preloaded games from splash screen
+        AgenteGamerApplication app = (AgenteGamerApplication) getApplication();
+        List<GameDto> preloadedGames = app.getPreloadedGames();
+
+        if (preloadedGames != null && !preloadedGames.isEmpty()) {
+            // Use preloaded data - no need to make API call
+            adapter.setLista(preloadedGames);
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+        } else {
+            // Load games normally via ViewModel
+            viewModel.cargarJuegosRecientes();
+        }
 
         adapter.setOnJuegoClickListener((juego, precioEstimado) -> {
             WishlistEntity entity = new WishlistEntity(

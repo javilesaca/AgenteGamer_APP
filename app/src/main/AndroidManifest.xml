@@ -27,10 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--Activity de login -->
+        <!-- Login Activity -->
         <activity
             android:name=".ui.auth.LoginActivity"
-            android:exported="false"/>
+            android:exported="false"
+            android:theme="@style/Theme.AgenteGamer"/>
         <activity
             android:name=".ui.auth.RegisterActivity"
             android:exported="false"/>
