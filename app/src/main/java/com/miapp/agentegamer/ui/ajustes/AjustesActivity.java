@@ -153,6 +153,26 @@ public class AjustesActivity extends BaseNavActivity {
     }
 
     /**
+     * Carga el presupuesto actual del usuario desde Firestore y lo muestra
+     * en el campo de texto para su edición.
+     */
+    private void cargarPresupuestoActual() {
+        userRepo.obtenerUsuario(new UserRepository.OnUsuarioCallback() {
+            @Override
+            public void onSuccess(UsuarioEntity usuario) {
+                if (isFinishing()) return;
+                etPresupuesto.setText(String.valueOf(usuario.getPresupuesto()));
+            }
+
+            @Override
+            public void onError() {
+                if (isFinishing()) return;
+                // No hacer nada si no se puede obtener el usuario
+            }
+        });
+    }
+
+    /**
      * Carga la moneda actual del usuario desde Firestore y actualiza
      * el RadioGroup para mostrar la selección actual.
      */
