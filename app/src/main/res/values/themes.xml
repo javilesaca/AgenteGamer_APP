@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ================= Splash Screen Theme ================= -->
+
+    <style name="Theme.AgenteGamer.Splash" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
+    </style>
+
     <!-- ================= Theme ================= -->
 
     <style name="Theme.AgenteGamer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
