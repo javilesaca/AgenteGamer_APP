@@ -43,7 +43,7 @@ public class GastoRepositoryImplTest {
     @Before
     public void setUp() {
         closeable = MockitoAnnotations.openMocks(this);
-        repository = new GastoRepositoryImpl(mockDao, mockExecutor);
+        repository = new GastoRepositoryImpl(mockDao, mockExecutor, "test-user-id");
     }
 
     @After

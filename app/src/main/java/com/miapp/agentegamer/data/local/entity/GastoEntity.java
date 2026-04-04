@@ -28,7 +28,7 @@ public class GastoEntity {
         this.fecha = fecha;
         this.imagenUrl = imagenUrl;
 
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
         cal.setTimeInMillis(fecha);
 
         this.mes = cal.get(Calendar.MONTH) +1;
@@ -56,7 +56,7 @@ public class GastoEntity {
 
     public void setFecha(long fecha) {
         this.fecha = fecha;
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
         cal.setTimeInMillis(fecha);
         this.mes = cal.get(Calendar.MONTH) + 1;
         this.anio = cal.get(Calendar.YEAR);

@@ -43,6 +43,7 @@ public class AgenteGamerApplication extends Application implements Configuration
         this.preloadedGames = games;
     }
 
+    @SuppressWarnings("unchecked")
     public void preloadGames() {
         executor.execute(() -> {
             try {
