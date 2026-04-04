@@ -49,17 +49,16 @@ public class AgenteGamerApplication extends Application implements Configuration
                 GamesRepository repository = new GamesRepository(BuildConfig.RAWG_API_KEY);
                 androidx.lifecycle.LiveData<List<GameDto>> liveData = repository.getRecentlyReleasedGames();
                 
-                // Create observer to capture result and then remove itself
-                Observer<List<GameDto>> observer = games -> {
-                    // This callback runs on main thread due to Retrofit callback being on main
+                final Observer<List<GameDto>>[] observerRef = new Observer[1];
+                
+                observerRef[0] = games -> {
                     if (games != null && !games.isEmpty()) {
                         setPreloadedGames(games);
                     }
-                    // Remove observer after receiving data to prevent memory leaks
-                    liveData.removeObserver(observer);
+                    liveData.removeObserver(observerRef[0]);
                 };
                 
-                liveData.observeForever(observer);
+                liveData.observeForever(observerRef[0]);
             } catch (Exception e) {
                 // Silently fail - games will load normally on the screen
             }
