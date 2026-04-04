@@ -64,6 +64,7 @@ android {
 dependencies {
     // Core
     implementation("androidx.core:core:1.17.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.appcompat:appcompat:1.7.1")
 
     // UI
