@@ -49,6 +49,15 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
 
     // Listener para clics en elementos
     private OnItemClickListener listener;
+
+    /**
+     * Establece el listener para clics en elementos de la wishlist.
+     * 
+     * @param listener Listener a establecer
+     */
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
     
     // Lista de elementos de la wishlist con evaluación financiera
     private List<WishlistItemUI> lista = new ArrayList<>();
