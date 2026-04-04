@@ -269,5 +269,4 @@ public class AjustesActivity extends BaseNavActivity {
         } catch (Exception ignored) {}
     }
 
-}}
 }
