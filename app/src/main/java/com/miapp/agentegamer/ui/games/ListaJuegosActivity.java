@@ -28,22 +28,60 @@ import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 
 import java.util.List;
 
+/**
+ * ListaJuegosActivity
+ * -------------------
+ * Pantalla principal de exploración del catálogo de juegos.
+ * Muestra juegos en un grid con búsqueda en tiempo real y paginación infinita.
+ * 
+ * Características:
+ * - Grid de 2 columnas con portadas de juegos
+ * - Barra de búsqueda con debounce (500ms) para evitar llamadas excesivas
+ * - Paginación infinita al hacer scroll
+ * - Precarga de juegos desde SplashActivity para mejor rendimiento
+ * - Al hacer clic en un juego, se agrega a la wishlist con precio estimado
+ * - Navegación inferior para acceder a otras secciones
+ * 
+ * @see JuegosAdapter
+ * @see GamesViewModel
+ * @see WishlistViewModel
+ */
 @AndroidEntryPoint
 public class ListaJuegosActivity extends BaseNavActivity {
 
+    // ViewModel para gestionar datos de juegos desde la API
     private GamesViewModel viewModel;
+    // RecyclerView para mostrar el grid de juegos
     private RecyclerView recyclerView;
+    // Adapter para el RecyclerView
     private JuegosAdapter adapter;
+    // ViewModel para gestionar la wishlist
     private WishlistViewModel wishlistViewModel;
+    // Consulta actual de búsqueda
     private String queryActual="";
+    // Moneda actual del usuario
     private String moneda = "EUR";
+    // Flag para evitar múltiples cargas simultáneas
     private boolean cargando = false;
+    // Layout mostrado cuando no hay resultados
     private View emptyLayout;
+    // ProgressBar mostrado durante la carga
     private ProgressBar progressBar;
+    // Handler para ejecutar código en el hilo principal
     private final Handler handler = new Handler(Looper.getMainLooper());
+    // Runnable para el debounce de búsqueda
     private Runnable searchRunnable;
+    // Delay de debounce en milisegundos
     private static final long DEBOUNCE_DELAY = 500; //ms
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Inicializa las vistas, configura el RecyclerView, establece la navegación inferior,
+     * carga datos pre-cargados o desde la API, configura la búsqueda con debounce
+     * y la paginación infinita.
+     * 
+     * @param savedInstanceState Estado guardado de la actividad (puede ser null)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +210,10 @@ public class ListaJuegosActivity extends BaseNavActivity {
 
     }
 
+    /**
+     * Libera recursos cuando la actividad se destruye.
+     * Cancela cualquier búsqueda pendientemente para evitar memory leaks.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

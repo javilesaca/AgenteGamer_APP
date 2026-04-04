@@ -20,18 +20,46 @@ import com.miapp.agentegamer.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
+/**
+ * LoginActivity
+ * -------------
+ * Pantalla de autenticación de usuarios mediante Firebase Auth.
+ * Permite a los usuarios existentes iniciar sesión con email y contraseña.
+ * Si el usuario no tiene cuenta, puede navegar a RegisterActivity.
+ * 
+ * Flujo:
+ * 1. Usuario ingresa email y contraseña
+ * 2. Validación de campos obligatorios
+ * 3. Autenticación con Firebase Auth
+ * 4. Si es exitoso, navega a MainActivity
+ * 5. Si falla, muestra mensaje de error según el tipo de excepción
+ * 
+ * @see RegisterActivity
+ * @see MainActivity
+ */
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
+    // Autenticador de Firebase
     private FirebaseAuth auth;
+    // Campos de entrada
     private EditText etEmail, etPassword;
+    // Botones de acción
     private Button btnLogin;
     private Button btnRegister;
+    // Flag para evitar múltiples llamadas simultáneas
     private boolean isLoading = false;
 
     @Inject
     UserRepository userRepository;
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Inicializa las vistas, configura los listeners de botones
+     * y obtiene la instancia de FirebaseAuth.
+     * 
+     * @param savedInstanceState Estado guardado de la actividad (puede ser null)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +78,17 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
 
+    /**
+     * Realiza el proceso de inicio de sesión con Firebase Auth.
+     * Valida que los campos no estén vacíos, muestra estado de carga
+     * y maneja los resultados de la autenticación.
+     * 
+     * Si la autenticación es exitosa, navega a MainActivity.
+     * Si falla, muestra un mensaje de error apropiado según el tipo de excepción:
+     * - FirebaseNetworkException: error de conexión
+     * - FirebaseAuthInvalidUserException / FirebaseAuthInvalidCredentialsException: credenciales incorrectas
+     * - Otras excepciones: error genérico
+     */
     private void login() {
         if (isLoading) return;
 
@@ -88,6 +127,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Actualiza el estado de carga de la interfaz de usuario.
+     * Deshabilita el botón de login y cambia su texto para indicar
+     * el estado de carga durante el proceso de autenticación.
+     * 
+     * @param loading true para mostrar estado de carga, false para habilitar el botón
+     */
     private void setLoading(boolean loading) {
         isLoading = loading;
         btnLogin.setEnabled(!loading);

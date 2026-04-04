@@ -24,20 +24,51 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * ListaGastosActivity
+ * -------------------
+ * Pantalla que muestra el historial de gastos del usuario.
+ * Lista todos los gastos de juegos en un RecyclerView con posibilidad
+ * de agregar nuevos gastos mediante un FloatingActionButton.
+ * 
+ * Características:
+ * - Muestra lista de gastos con imagen, nombre, precio y fecha
+ * - Calcula y muestra el total de gastos del período
+ * - Permite agregar gastos de prueba (solo visible para admin)
+ * - Navegación inferior para acceder a otras secciones
+ * 
+ * @see GastoAdapter
+ * @see BaseNavActivity
+ */
 @AndroidEntryPoint
 public class ListaGastosActivity extends BaseNavActivity {
 
+    // ViewModel para gestionar datos de gastos
     private GastoViewModel gastoViewModel;
+    // RecyclerView para mostrar la lista de gastos
     private RecyclerView recyclerView;
+    // Adapter para el RecyclerView
     private GastoAdapter adapter;
+    // FloatingActionButton para agregar gastos (solo admin)
     private FloatingActionButton fabAgregar;
+    // Layout mostrado cuando no hay gastos
     private LinearLayout layoutEmpty;
+    // TextView para mostrar el total de gastos
     private TextView tvTotal;
+    // Moneda actual del usuario
     private String userCurrency = "EUR";
 
     @Inject
     UserRepository userRepository;
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Inicializa el ViewModel, configura el RecyclerView con su adapter,
+     * establece la navegación inferior, carga la moneda del usuario
+     * y configura los observers para actualizar la UI con los datos de gastos.
+     * 
+     * @param savedInstanceState Estado guardado de la actividad (puede ser null)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

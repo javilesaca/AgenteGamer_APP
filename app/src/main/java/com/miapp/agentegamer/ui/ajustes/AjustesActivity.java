@@ -27,12 +27,33 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * AjustesActivity
+ * ---------------
+ * Pantalla de configuración del usuario.
+ * Permite modificar el presupuesto mensual y la moneda preferida.
+ * 
+ * Características:
+ * - Editor de presupuesto mensual con validación
+ * - Selector de moneda (EUR, USD, GBP) con actualización en tiempo real
+ * - Cálculo de impacto en tiempo real basado en la wishlist actual
+ * - Muestra recomendaciones (compras recomendadas, ajustadas, no recomendadas)
+ * - Guarda los cambios en Firestore
+ * - Navegación inferior para acceder a otras secciones
+ * 
+ * @see UpdateSettingsUseCase
+ * @see UserRepository
+ * @see SistemaFinanciero
+ */
 @AndroidEntryPoint
 public class AjustesActivity extends BaseNavActivity {
 
+    // Campo de texto para el presupuesto
     private EditText etPresupuesto;
+    // Botones de acción
     private Button btnGuardar;
     private Button btnCancelar;
+    // Grupo de radio buttons para seleccionar moneda
     private RadioGroup rgMoneda;
 
     @Inject
@@ -41,12 +62,23 @@ public class AjustesActivity extends BaseNavActivity {
     @Inject
     UpdateSettingsUseCase updateSettingsUseCase;
 
+    // ViewModel para acceder a la wishlist y calcular impacto
     private WishlistViewModel wishlistViewModel;
+    // Lista actual de la wishlist para calcular impacto
     private List<WishlistItemUI> wishlistActual;
+    // TextViews para mostrar el impacto calculado
     private TextView tvImpactoRecomendado;
     private TextView tvImpactoNoRecomendado;
     private TextView tvImpactoAjustado;
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Inicializa las vistas, carga los valores actuales (presupuesto y moneda),
+     * configura los listeners de cambio de texto y botones, y observa la wishlist
+     * para calcular el impacto en tiempo real.
+     * 
+     * @param savedInstanceState Estado guardado de la actividad (puede ser null)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +152,10 @@ public class AjustesActivity extends BaseNavActivity {
         setupBottomNavigation(R.id.nav_home);
     }
 
+    /**
+     * Carga la moneda actual del usuario desde Firestore y actualiza
+     * el RadioGroup para mostrar la selección actual.
+     */
     private void cargarMonedaActual() {
         userRepo.obtenerUsuario(new UserRepository.OnUsuarioCallback() {
             @Override
@@ -132,34 +168,14 @@ public class AjustesActivity extends BaseNavActivity {
                     rgMoneda.check(R.id.rbLibra);
                 } else {
                     rgMoneda.check(R.id.rbEuro);
-                }
-            }
-
-            @Override
-            public void onError() {
-                // EUR por defecto si hay error
-                rgMoneda.check(R.id.rbEuro);
-            }
-        });
+        }
     }
 
-    private void cargarPresupuestoActual() {
-        userRepo.obtenerPresupuesto(new UserRepository.OnPresupuestoCallback() {
-            @Override
-            public void onSuccess(double presupuesto) {
-                etPresupuesto.setText(String.valueOf(presupuesto));
-                // Re-evaluar impacto una vez que el presupuesto está disponible
-                recalcularImpacto();
-            }
-
-            @Override
-            public void onError() {
-                Toast.makeText(AjustesActivity.this, R.string.error_cargar_presupuesto, Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-    }
-
+    /**
+     * Guarda el nuevo presupuesto en Firestore.
+     * Valida que el valor sea numérico, llama al UseCase para actualizar
+     * y muestra un Toast con el resultado.
+     */
     private void guardarPresupuesto() {
         try {
             double nuevoPresupuesto = Double.parseDouble(etPresupuesto.getText().toString());

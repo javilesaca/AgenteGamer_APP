@@ -21,10 +21,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * GastoAdapter
+ * ------------
+ * Adapter de RecyclerView para mostrar una lista de gastos de videojuegos.
+ * Utiliza DiffUtil para actualizaciones eficientes de la lista.
+ * 
+ * Cada elemento muestra: imagen de portada, nombre del juego, precio y fecha.
+ * El precio se formatea según la moneda del usuario.
+ * 
+ * @see androidx.recyclerview.widget.RecyclerView.Adapter
+ * @see GastoEntity
+ * @see MoneyUtils
+ */
 public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHolder> {
 
+    // Lista de gastos que se muestra en el RecyclerView
     private List<GastoEntity> lista = new ArrayList<>();
+    // Moneda actual para formatear precios
     private String moneda;
+    // Formateador de fechas en español
     private static final SimpleDateFormat DATE_FORMAT =
             new SimpleDateFormat("d 'de' MMMM yyyy", new Locale("es", "ES"));
 
@@ -44,14 +60,30 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         }
     };
 
+    /**
+     * Constructor vacío del adapter.
+     */
     public GastoAdapter() {
         // Empty constructor
     }
 
+    /**
+     * Constructor del adapter con moneda.
+     * 
+     * @param moneda Código de moneda (EUR, USD, GBP)
+     */
     public GastoAdapter(String moneda) {
         this.moneda = moneda;
     }
 
+    /**
+     * Crea un nuevo ViewHolder para el RecyclerView.
+     * Infla el layout del item de gasto.
+     * 
+     * @param parent Vista padre del ViewHolder
+     * @param viewType Tipo de vista (no utilizado en este caso)
+     * @return Nuevo GastoViewHolder con la vista inflada
+     */
     @NonNull
     @Override
     public GastoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,6 +92,13 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         return new GastoViewHolder(vista);
     }
 
+    /**
+     * Asocia los datos de un gasto a su ViewHolder.
+     * Asigna el nombre, precio formateado, fecha e imagen al ViewHolder.
+     * 
+     * @param holder ViewHolder que contendrá los datos
+     * @param position Posición del elemento en la lista
+     */
     @Override
     public void onBindViewHolder(@NonNull GastoViewHolder holder, int position) {
         if (position < 0 || position >= lista.size()) {
@@ -75,11 +114,23 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         ImageLoader.load(holder.ivCover, g.getImagenUrl());
     }
 
+    /**
+     * Retorna el número de elementos en la lista de gastos.
+     * 
+     * @return Cantidad de gastos en la lista
+     */
     @Override
     public int getItemCount() {
         return lista.size();
     }
 
+    /**
+     * Actualiza la lista de gastos del adapter.
+     * Utiliza DiffUtil para actualizar solo los elementos que cambian.
+     * 
+     * @param nuevaLista Nueva lista de gastos a mostrar
+     * @param moneda Código de moneda para formatear precios
+     */
     public void setLista(List<GastoEntity> nuevaLista, String moneda) {
         this.moneda = moneda;
         // Make a defensive copy
@@ -126,6 +177,10 @@ public class GastoAdapter extends RecyclerView.Adapter<GastoAdapter.GastoViewHol
         }
     }
 
+    /**
+     * ViewHolder para los elementos de gasto en el RecyclerView.
+     * Contiene referencias a los elementos de la vista: imagen, nombre, fecha y precio.
+     */
     static class GastoViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivCover;

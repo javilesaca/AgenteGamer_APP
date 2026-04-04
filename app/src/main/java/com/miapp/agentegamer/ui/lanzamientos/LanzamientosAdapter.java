@@ -21,8 +21,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * LanzamientosAdapter
+ * -------------------
+ * Adapter de RecyclerView para mostrar próximos lanzamientos de videojuegos.
+ * Utiliza DiffUtil para actualizaciones eficientes de la lista.
+ * 
+ * Cada elemento muestra: imagen de portada, nombre, fecha de lanzamiento,
+ * días restantes (badge), rating (si está disponible) y plataformas.
+ * 
+ * @see LanzamientoEntity
+ * @see FechaUtils
+ * @see DiffUtil
+ */
 public class LanzamientosAdapter extends RecyclerView.Adapter<LanzamientosAdapter.ViewHolder> {
 
+    // Lista de lanzamientos que se muestra
     private List<LanzamientoEntity> lista = new ArrayList<>();
 
     // DiffUtil callback for efficient updates
@@ -41,6 +55,14 @@ public class LanzamientosAdapter extends RecyclerView.Adapter<LanzamientosAdapte
         }
     };
 
+    /**
+     * Crea un nuevo ViewHolder para el RecyclerView.
+     * Infla el layout del item de lanzamiento.
+     * 
+     * @param parent Vista padre del ViewHolder
+     * @param viewType Tipo de vista
+     * @return Nuevo ViewHolder con la vista inflada
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,17 +70,35 @@ public class LanzamientosAdapter extends RecyclerView.Adapter<LanzamientosAdapte
         return new ViewHolder(v);
     }
 
+    /**
+     * Asocia los datos de un lanzamiento a su ViewHolder.
+     * Asigna imagen, nombre, fecha formateada, días restantes, rating y plataformas.
+     * 
+     * @param h ViewHolder que contendrá los datos
+     * @param pos Posición del elemento en la lista
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
         LanzamientoEntity l = lista.get(pos);
         h.bind(l);
     }
 
+    /**
+     * Retorna el número de elementos en la lista de lanzamientos.
+     * 
+     * @return Cantidad de lanzamientos en la lista
+     */
     @Override
     public int getItemCount() {
         return lista.size();
     }
 
+    /**
+     * Actualiza la lista de lanzamientos del adapter.
+     * Utiliza DiffUtil para actualizar solo los elementos que cambian.
+     * 
+     * @param nueva Nueva lista de lanzamientos a mostrar
+     */
     public void setLista(List<LanzamientoEntity> nueva) {
         List<LanzamientoEntity> copiaSegura = new ArrayList<>(nueva);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new LanzamientosDiffCallback(this.lista, copiaSegura));

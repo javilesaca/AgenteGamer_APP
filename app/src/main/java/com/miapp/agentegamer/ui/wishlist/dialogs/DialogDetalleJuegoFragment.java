@@ -22,6 +22,26 @@ import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 
+/**
+ * DialogDetalleJuegoFragment
+ * --------------------------
+ * DialogFragment que muestra los detalles de un juego de la wishlist.
+ * Permite al usuario editar la plataforma, precio, comprar el juego o cancel.
+ * 
+ * Características:
+ * - Muestra imagen, nombre y precio estimado del juego
+ * - Spinner para seleccionar la plataforma
+ * - Botón para editar el precio
+ * - Botón para confirmar la compra
+ * - Botón para cerrar el diálogo
+ * - Actualiza automáticamente la wishlist al cambiar la plataforma
+ * 
+ * @see DialogFragment
+ * @see WishlistEntity
+ * @see WishlistViewModel
+ * @see DialogEditarPrecioFragment
+ * @see DialogConfirmarCompraFragment
+ */
 public class DialogDetalleJuegoFragment extends DialogFragment {
 
     private static final String ARG_JUEGO = "juego";

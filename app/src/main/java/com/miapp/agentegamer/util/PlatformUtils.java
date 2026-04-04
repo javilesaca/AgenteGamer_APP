@@ -7,18 +7,40 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Utility class for platform handling.
- * Extracted from GamesViewModel to avoid creating ViewModel instances in adapters.
+ * PlatformUtils
+ * -------------
+ * Utilidad para el manejo de plataformas de videojuegos.
+ * Proporciona métodos estáticos para obtener familias de plataformas
+ * e iconos correspondientes.
+ * 
+ * Características:
+ * - Consolida plataformas similares en familias (PS4+PS5 = playstation)
+ * - Provee iconos drawable para cada familia de plataforma
+ * - Extraída de GamesViewModel para evitar crear instancias de ViewModel en adapters
+ * 
+ * Familias soportadas:
+ * - playstation (PS4, PS5, PS3, PS Vita, etc.)
+ * - xbox (Xbox One, Xbox Series X, Xbox 360, etc.)
+ * - nintendo (Switch, Wii U, 3DS, etc.)
+ * - pc (Windows, Linux, Mac)
+ * 
+ * @see GameDto
+ * @see android.widget.ImageView
  */
 public final class PlatformUtils {
 
+    // Constructor privado para evitar instanciación (clase de utilería)
     private PlatformUtils() {
         // Utility class - no instantiation
     }
 
     /**
-     * Get unique platform families from a game.
-     * Consolidates similar platforms (e.g., PS4, PS5 -> playstation)
+     * Obtiene las familias únicas de plataformas de un juego.
+     * Consolida plataformas similares en familias para evitar iconos duplicados.
+     * Por ejemplo: PS4, PS5 -> playstation (un solo icono).
+     * 
+     * @param juego Juego del que obtener las familias de plataformas
+     * @return Conjunto de familias de plataformas únicas (sin duplicados)
      */
     public static Set<String> getPlatformFamilies(GameDto juego) {
         Set<String> familias = new HashSet<>();
@@ -49,7 +71,10 @@ public final class PlatformUtils {
     }
 
     /**
-     * Get the drawable resource ID for a platform family icon.
+     * Obtiene el ID del recurso drawable del icono de una familia de plataformas.
+     * 
+     * @param family Familia de plataforma (playstation, xbox, nintendo, pc)
+     * @return ID del recurso drawable del icono, o 0 si no se reconoce la familia
      */
     public static int getFamilyIcon(String family) {
         if (family == null) return 0;

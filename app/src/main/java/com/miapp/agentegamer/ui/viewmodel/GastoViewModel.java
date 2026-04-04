@@ -28,13 +28,35 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * GastoViewModel
+ * --------------
+ * ViewModel que gestiona el estado y los datos relacionados con los gastos
+ * del usuario. Utiliza el patrón MVVM para separar la lógica de negocio de la UI.
+ * 
+ * Funcionalidades:
+ * - Gestiona la lista de gastos desde el repositorio
+ * - Calcula el estado financiero (verde/amarillo/rojo) basado en el presupuesto
+ * - Genera recomendaciones personalizadas según los gastos actuales
+ * - Provee datos para el dashboard: gastos mensuales, tendencia, últimos gastos
+ * - Operaciones CRUD para insertar, actualizar y borrar gastos
+ * 
+ * @see GastoRepository
+ * @see SistemaFinanciero
+ * @see EstadoFinancieroUI
+ */
 @HiltViewModel
 public class GastoViewModel extends AndroidViewModel {
 
+    // Repositorio de gastos para acceder a los datos
     private final GastoRepository repository;
+    // LiveData de la lista de gastos desde Room
     private final LiveData<List<GastoEntity>> listaGastos;
+    // Sistema financiero con lógica de presupuestos
     protected SistemaFinanciero sistemaFinanciero;
+    // LiveData del estado financiero UI
     private final MutableLiveData<EstadoFinancieroUI> estadoUI = new MutableLiveData<>();
+    // Observer para detectar cambios en la lista de gastos
     private final Observer<List<GastoEntity>> gastosObserver;
     
     // Nuevos LiveData para Dashboard
@@ -72,6 +94,13 @@ public class GastoViewModel extends AndroidViewModel {
     //=========================
     // INYECCIÓN DEL AGENTE (FIREBASE)
     //=========================
+    
+    /**
+     * Establece el sistema financiero (presupuesto) del usuario.
+     * Esto permite recalcular el estado financiero y cargar datos del dashboard.
+     * 
+     * @param sistema SistemaFinanciero con el presupuesto mensual configurado
+     */
     public void setSistemaFinanciero(SistemaFinanciero sistema) {
         this.sistemaFinanciero = sistema;
         recalcularEstado(listaGastos.getValue());

@@ -23,6 +23,29 @@ import java.util.concurrent.TimeoutException;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
 
+/**
+ * SistemaFinancieroWorker
+ * ----------------------
+ * Worker de WorkManager que ejecuta tareas periódicas relacionadas con
+ * el sistema financiero del usuario en segundo plano.
+ * 
+ * Funcionalidades:
+ * - Valida cada juego en la wishlist contra el presupuesto actual
+ * - Si alguna compra no es recomendada, lanza una notificación de alerta
+ * - Verifica lanzamientos próximos (0-7 días) y notifica al usuario
+ * - Ejecuta de forma periódica sin intervención del usuario
+ * 
+ * El worker obtiene los datos de forma asíncrona:
+ * - Presupuesto del usuario desde Firestore
+ * - Gasto total del mes desde Room
+ * - Wishlist desde Room
+ * 
+ * @see androidx.work.Worker
+ * @see WishlistRepository
+ * @see GastoRepository
+ * @see UserRepository
+ * @see NotificationHelper
+ */
 @HiltWorker
 public class SistemaFinancieroWorker extends Worker {
 
