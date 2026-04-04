@@ -19,14 +19,24 @@ public class GastoRepositoryImpl implements GastoRepository {
 
     private final GastoDao gastoDao;
     private final ExecutorService executorService;
+    private final String testUserId;
 
     @Inject
     public GastoRepositoryImpl(GastoDao gastoDao, ExecutorService executorService) {
+        this(gastoDao, executorService, null);
+    }
+
+    // Constructor para tests unitarios (inyecta userId fijo)
+    public GastoRepositoryImpl(GastoDao gastoDao, ExecutorService executorService, String testUserId) {
         this.gastoDao = gastoDao;
         this.executorService = executorService;
+        this.testUserId = testUserId;
     }
 
     private String getCurrentUserId() {
+        if (testUserId != null) {
+            return testUserId;
+        }
         return FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : "";
