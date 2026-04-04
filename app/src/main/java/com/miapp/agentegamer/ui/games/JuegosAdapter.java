@@ -152,7 +152,6 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
                 holder.platforms.addView(icon);
             }
         }
-        }
     }
 
 
