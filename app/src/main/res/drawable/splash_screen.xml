@@ -6,8 +6,8 @@
 
     <!-- Logo centrado: icono de la app escalado -->
     <item
-        android:width="120dp"
-        android:height="120dp"
+        android:width="360dp"
+        android:height="360dp"
         android:drawable="@drawable/ic_launcher_foreground"
         android:gravity="center" />
 

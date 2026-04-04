@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">AgenteGamer</string>
+    <string name="tagline">Juega más, gasta mejor</string>
     <string name="game_image">Imagen del juego</string>
     <string name="open_drawer">Abrir menú de navegación</string>
     <string name="close_drawer">Cerrar menú de navegación</string>

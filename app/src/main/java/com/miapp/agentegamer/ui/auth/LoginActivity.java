@@ -7,13 +7,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.splashscreen.SplashScreen;
 
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.miapp.agentegamer.AgenteGamerApplication;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.repository.UserRepositoryImpl;
 import com.miapp.agentegamer.domain.repository.UserRepository;
@@ -36,21 +34,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
-
-        // Preload games data during splash screen
-        ((AgenteGamerApplication) getApplication()).preloadGames();
+        setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            return;
-        }
-
-        setContentView(R.layout.activity_login);
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
