@@ -168,7 +168,15 @@ public class AjustesActivity extends BaseNavActivity {
                     rgMoneda.check(R.id.rbLibra);
                 } else {
                     rgMoneda.check(R.id.rbEuro);
-        }
+                }
+            }
+
+            @Override
+            public void onError() {
+                if (isFinishing()) return;
+                // No hacer nada si no se puede obtener el usuario
+            }
+        });
     }
 
     /**
