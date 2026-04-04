@@ -83,7 +83,6 @@ public class GastoRepositoryImpl implements GastoRepository {
             int mes = PeriodoFinancieroUtils.getMesActual();
             int anio = PeriodoFinancieroUtils.getAnioActual();
             double total = gastoDao.getTotalGastadoMes(getCurrentUserId(), mes, anio);
-            android.util.Log.d("DEBUG_GASTO", "Mes: " + mes + " | Anio: " + anio + " | Total: " + total);
             callback.onSuccess(total);
         });
     }
