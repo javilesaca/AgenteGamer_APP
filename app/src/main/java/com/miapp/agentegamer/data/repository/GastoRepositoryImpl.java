@@ -43,6 +43,7 @@ public class GastoRepositoryImpl implements GastoRepository {
     
     /** Executor para ejecutar operaciones en hilos secundarios */
     private final ExecutorService executorService;
+    private final String testUserId;
 
     /**
      * Constructor con inyección de dependencias.
@@ -52,8 +53,14 @@ public class GastoRepositoryImpl implements GastoRepository {
      */
     @Inject
     public GastoRepositoryImpl(GastoDao gastoDao, ExecutorService executorService) {
+        this(gastoDao, executorService, null);
+    }
+
+    // Constructor para tests unitarios (inyecta userId fijo)
+    public GastoRepositoryImpl(GastoDao gastoDao, ExecutorService executorService, String testUserId) {
         this.gastoDao = gastoDao;
         this.executorService = executorService;
+        this.testUserId = testUserId;
     }
 
     /**
@@ -65,6 +72,9 @@ public class GastoRepositoryImpl implements GastoRepository {
      * @return UID del usuario actual, o "" si no hay sesión activa
      */
     private String getCurrentUserId() {
+        if (testUserId != null) {
+            return testUserId;
+        }
         return FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : "";
@@ -159,7 +169,6 @@ public class GastoRepositoryImpl implements GastoRepository {
             int mes = PeriodoFinancieroUtils.getMesActual();
             int anio = PeriodoFinancieroUtils.getAnioActual();
             double total = gastoDao.getTotalGastadoMes(getCurrentUserId(), mes, anio);
-            android.util.Log.d("DEBUG_GASTO", "Mes: " + mes + " | Anio: " + anio + " | Total: " + total);
             callback.onSuccess(total);
         });
     }

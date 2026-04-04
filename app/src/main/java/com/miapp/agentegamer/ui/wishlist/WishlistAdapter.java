@@ -55,40 +55,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
     // Moneda actual para formatear precios
     private String moneda;
 
-    // DiffUtil callback for efficient updates
-    private static final DiffUtil.ItemCallback<WishlistItemUI> DIFF_CALLBACK = new DiffUtil.ItemCallback<WishlistItemUI>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull WishlistItemUI oldItem, @NonNull WishlistItemUI newItem) {
-            // Compare by game ID
-            return oldItem.getJuego().getGameId() == newItem.getJuego().getGameId();
-        }
 
-        @Override
-        public boolean areContentsTheSame(@NonNull WishlistItemUI oldItem, @NonNull WishlistItemUI newItem) {
-            // Compare by content (nombre, precio, evaluacion)
-            return oldItem.getJuego().getNombre().equals(newItem.getJuego().getNombre()) &&
-                    Double.compare(oldItem.getJuego().getPrecioEstimado(), newItem.getJuego().getPrecioEstimado()) == 0 &&
-                    Objects.equals(oldItem.getEvaluacion(), newItem.getEvaluacion());
-        }
-    };
-
-    /**
-     * Establece el listener para clics en elementos.
-     * 
-     * @param listener Listener a establecer
-     */
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    /**
-     * Crea un nuevo ViewHolder para el RecyclerView.
-     * Infla el layout del item de wishlist.
-     * 
-     * @param parent Vista padre del ViewHolder
-     * @param viewType Tipo de vista
-     * @return Nuevo WishlistViewHolder con la vista inflada
-     */
     @NonNull
     @Override
     public WishlistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -203,17 +170,15 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
      * badge de precio accesible, botón de eliminar e imagen del juego.
      */
     static class WishlistViewHolder extends RecyclerView.ViewHolder{
-        TextView nombre, precioLabel, precioValue, recomendacion, affordableBadge;
+        TextView nombre, precioValue, recomendacion;
         ImageButton btnEliminar;
         ImageView imgJuego;
 
         public WishlistViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.tvNombreJuego);
-            precioLabel = itemView.findViewById(R.id.tvPrecioLabel);
             precioValue = itemView.findViewById(R.id.tvPrecioValue);
             recomendacion = itemView.findViewById(R.id.tvRecomendacion);
-            affordableBadge = itemView.findViewById(R.id.tvAffordableBadge);
             btnEliminar = itemView.findViewById(R.id.btnEliminar);
             imgJuego = itemView.findViewById(R.id.imgJuego);
 

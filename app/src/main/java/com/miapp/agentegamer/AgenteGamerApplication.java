@@ -105,6 +105,7 @@ public class AgenteGamerApplication extends Application implements Configuration
      * @see #getPreloadedGames()
      * @see #setPreloadedGames(List)
      */
+    @SuppressWarnings("unchecked")
     public void preloadGames() {
         executor.execute(() -> {
             try {

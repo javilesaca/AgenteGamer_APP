@@ -184,38 +184,6 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
         this.moneda = moneda;
     }
 
-    /**
-     * Obtiene el recurso drawable del icono de una plataforma específica.
-     * Método legado mantenido por compatibilidad (usar PlatformUtils preferiblemente).
-     * 
-     * @param slug Slug de la plataforma (pc, playstation5, xbox-one, etc.)
-     * @return ID del recurso drawable del icono, o 0 si no se encuentra
-     */
-    private int getPlatformIcon(String slug) {
-
-        switch (slug) {
-            case "pc":
-                return R.drawable.pcmag_idepwrpbfb_0;
-
-            case "playstation5":
-            case "playstation4":
-            case "playstation":
-                return R.drawable.playstation_logo_colour;
-
-            case "xbox-series-x":
-            case "xbox-one":
-            case "xbox":
-                return R.drawable.xbox;
-
-            case "nintendo-switch":
-            case "nintendo":
-                return R.drawable.nintendo_blue_logo;
-
-            default:
-                return 0;
-        }
-    }
-
 
     static class JuegoViewHolder extends RecyclerView.ViewHolder {
 
