@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import dagger.hilt.android.HiltAndroidApp;
+import com.miapp.agentegamer.BuildConfig;
 
 /**
  * Clase principal de aplicación que sirve como punto de entrada para AgenteGamer.

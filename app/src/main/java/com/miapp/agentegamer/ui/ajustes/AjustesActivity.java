@@ -161,7 +161,7 @@ public class AjustesActivity extends BaseNavActivity {
             @Override
             public void onSuccess(UsuarioEntity usuario) {
                 if (isFinishing()) return;
-                etPresupuesto.setText(String.valueOf(usuario.getPresupuesto()));
+                etPresupuesto.setText(String.valueOf(usuario.getPresupuestoMensual()));
             }
 
             @Override
@@ -269,4 +269,5 @@ public class AjustesActivity extends BaseNavActivity {
         } catch (Exception ignored) {}
     }
 
+}}
 }
