@@ -34,23 +34,6 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
     private List<WishlistItemUI> lista = new ArrayList<>();
     private String moneda;
 
-    // DiffUtil callback for efficient updates
-    private static final DiffUtil.ItemCallback<WishlistItemUI> DIFF_CALLBACK = new DiffUtil.ItemCallback<WishlistItemUI>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull WishlistItemUI oldItem, @NonNull WishlistItemUI newItem) {
-            // Compare by game ID
-            return oldItem.getJuego().getGameId() == newItem.getJuego().getGameId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull WishlistItemUI oldItem, @NonNull WishlistItemUI newItem) {
-            // Compare by content (nombre, precio, evaluacion)
-            return oldItem.getJuego().getNombre().equals(newItem.getJuego().getNombre()) &&
-                    Double.compare(oldItem.getJuego().getPrecioEstimado(), newItem.getJuego().getPrecioEstimado()) == 0 &&
-                    Objects.equals(oldItem.getEvaluacion(), newItem.getEvaluacion());
-        }
-    };
-
     @NonNull
     @Override
     public WishlistViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -141,17 +124,15 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
     }
 
     static class WishlistViewHolder extends RecyclerView.ViewHolder{
-        TextView nombre, precioLabel, precioValue, recomendacion, affordableBadge;
+        TextView nombre, precioValue, recomendacion;
         ImageButton btnEliminar;
         ImageView imgJuego;
 
         public WishlistViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.tvNombreJuego);
-            precioLabel = itemView.findViewById(R.id.tvPrecioLabel);
             precioValue = itemView.findViewById(R.id.tvPrecioValue);
             recomendacion = itemView.findViewById(R.id.tvRecomendacion);
-            affordableBadge = itemView.findViewById(R.id.tvAffordableBadge);
             btnEliminar = itemView.findViewById(R.id.btnEliminar);
             imgJuego = itemView.findViewById(R.id.imgJuego);
 

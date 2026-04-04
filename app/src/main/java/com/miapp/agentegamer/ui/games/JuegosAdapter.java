@@ -121,31 +121,6 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
         this.moneda = moneda;
     }
 
-    private int getPlatformIcon(String slug) {
-
-        switch (slug) {
-            case "pc":
-                return R.drawable.pcmag_idepwrpbfb_0;
-
-            case "playstation5":
-            case "playstation4":
-            case "playstation":
-                return R.drawable.playstation_logo_colour;
-
-            case "xbox-series-x":
-            case "xbox-one":
-            case "xbox":
-                return R.drawable.xbox;
-
-            case "nintendo-switch":
-            case "nintendo":
-                return R.drawable.nintendo_blue_logo;
-
-            default:
-                return 0;
-        }
-    }
-
 
     static class JuegoViewHolder extends RecyclerView.ViewHolder {
 
