@@ -10,7 +10,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.miapp.agentegamer.R;
@@ -18,6 +17,7 @@ import com.miapp.agentegamer.data.model.UsuarioEntity;
 import com.miapp.agentegamer.domain.model.SistemaFinanciero;
 import com.miapp.agentegamer.domain.repository.UserRepository;
 import com.miapp.agentegamer.domain.usecase.UpdateSettingsUseCase;
+import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.ui.wishlist.WishlistItemUI;
 import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 
@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class AjustesActivity extends AppCompatActivity {
+public class AjustesActivity extends BaseNavActivity {
 
     private EditText etPresupuesto;
     private Button btnGuardar;
@@ -117,6 +117,7 @@ public class AjustesActivity extends AppCompatActivity {
                 }
             });
         });
+        setupBottomNavigation(R.id.nav_home);
     }
 
     private void cargarMonedaActual() {

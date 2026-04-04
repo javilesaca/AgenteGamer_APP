@@ -1,229 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:padding="20dp">
+    android:background="@color/background">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Título de la pantalla -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ajustes"
-            android:textAppearance="@style/TextAppearance.AgenteGamer.Title"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Tarjeta de Presupuesto -->
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/surface"
-            app:strokeColor="@color/surface_variant"
-            app:strokeWidth="1dp"
-            app:cardElevation="0dp">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <LinearLayout
+            <!-- Título de la pantalla -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ajustes"
+                android:textAppearance="@style/TextAppearance.AgenteGamer.Title"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Tarjeta de Presupuesto -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/presupuesto_mensual"
-                    android:textAppearance="@style/TextAppearance.AgenteGamer.Highlight"
-                    android:layout_marginBottom="12dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/presupuesto_mensual"
-                    app:boxStrokeColor="@color/accent_green"
-                    app:boxBackgroundColor="@color/surface"
-                    app:hintTextColor="@color/text_secondary"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPresupuesto"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="@font/manrope_regular"
-                        android:textSize="16sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeColor="@color/surface_variant"
+                app:strokeWidth="1dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <Button
-                        android:id="@+id/btnCancelarPresupuesto"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/cancelar"
-                        android:backgroundTint="@color/surface_variant"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="@font/manrope_medium"
-                        android:layout_marginEnd="8dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        android:text="@string/presupuesto_mensual"
+                        android:textAppearance="@style/TextAppearance.AgenteGamer.Highlight"
+                        android:layout_marginBottom="12dp" />
 
-                    <Button
-                        android:id="@+id/btnGuardarPresupuesto"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/guardar"
-                        android:backgroundTint="@color/accent_green"
-                        android:textColor="@color/background"
-                        android:fontFamily="@font/manrope_bold"
-                        style="@style/Widget.MaterialComponents.Button" />
+                        android:hint="@string/presupuesto_mensual"
+                        app:boxStrokeColor="@color/accent_green"
+                        app:boxBackgroundColor="@color/surface"
+                        app:hintTextColor="@color/text_secondary"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusTopStart="12dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPresupuesto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/manrope_regular"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <Button
+                            android:id="@+id/btnCancelarPresupuesto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/cancelar"
+                            android:backgroundTint="@color/surface_variant"
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/manrope_medium"
+                            android:layout_marginEnd="8dp"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                        <Button
+                            android:id="@+id/btnGuardarPresupuesto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/guardar"
+                            android:backgroundTint="@color/accent_green"
+                            android:textColor="@color/background"
+                            android:fontFamily="@font/manrope_bold"
+                            style="@style/Widget.MaterialComponents.Button" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Tarjeta de Preferencias (Ejemplo de radio buttons) -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/surface"
-            app:strokeColor="@color/surface_variant"
-            app:strokeWidth="1dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
+            <!-- Tarjeta de Preferencias (Ejemplo de radio buttons) -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeColor="@color/surface_variant"
+                app:strokeWidth="1dp"
+                app:cardElevation="0dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/preferencias"
-                    android:textAppearance="@style/TextAppearance.AgenteGamer.Highlight"
-                    android:layout_marginBottom="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/moneda"
-                    android:textAppearance="@style/TextAppearance.AgenteGamer.Body"
-                    android:layout_marginBottom="8dp" />
-
-                <RadioGroup
-                    android:id="@+id/rgMoneda"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <RadioButton
-                        android:id="@+id/rbEuro"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/preferencias"
+                        android:textAppearance="@style/TextAppearance.AgenteGamer.Highlight"
+                        android:layout_marginBottom="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/moneda"
+                        android:textAppearance="@style/TextAppearance.AgenteGamer.Body"
+                        android:layout_marginBottom="8dp" />
+
+                    <RadioGroup
+                        android:id="@+id/rgMoneda"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/euro"
-                        android:buttonTint="@color/accent_green"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="@font/manrope_medium"
-                        android:checked="true" />
+                        android:orientation="vertical">
 
-                    <RadioButton
-                        android:id="@+id/rbDolar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dolar"
-                        android:buttonTint="@color/accent_green"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="@font/manrope_medium" />
+                        <RadioButton
+                            android:id="@+id/rbEuro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/euro"
+                            android:buttonTint="@color/accent_green"
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/manrope_medium"
+                            android:checked="true" />
 
-                    <RadioButton
-                        android:id="@+id/rbLibra"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/libra"
-                        android:buttonTint="@color/accent_green"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="@font/manrope_medium" />
+                        <RadioButton
+                            android:id="@+id/rbDolar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dolar"
+                            android:buttonTint="@color/accent_green"
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/manrope_medium" />
 
-                </RadioGroup>
+                        <RadioButton
+                            android:id="@+id/rbLibra"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/libra"
+                            android:buttonTint="@color/accent_green"
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="@font/manrope_medium" />
 
-            </LinearLayout>
+                    </RadioGroup>
 
-        </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-        <!-- Tarjeta de Impacto en wishlist -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/surface"
-            app:strokeColor="@color/surface_variant"
-            app:strokeWidth="1dp"
-            app:cardElevation="0dp">
+            </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
+            <!-- Tarjeta de Impacto en wishlist -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeColor="@color/surface_variant"
+                app:strokeWidth="1dp"
+                app:cardElevation="0dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/impacto_wishlist"
-                    android:textAppearance="@style/TextAppearance.AgenteGamer.Highlight"
-                    android:layout_marginBottom="16dp" />
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                <TextView
-                    android:id="@+id/tvImpactoRecomendado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/impacto_recomendado"
-                    android:textAppearance="@style/TextAppearance.AgenteGamer.Body"
-                    android:layout_marginBottom="8dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/impacto_wishlist"
+                        android:textAppearance="@style/TextAppearance.AgenteGamer.Highlight"
+                        android:layout_marginBottom="16dp" />
 
-                <TextView
-                    android:id="@+id/tvImpactoAjustado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/impacto_ajustado"
-                    android:textAppearance="@style/TextAppearance.AgenteGamer.Body"
-                    android:layout_marginBottom="8dp" />
+                    <TextView
+                        android:id="@+id/tvImpactoRecomendado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/impacto_recomendado"
+                        android:textAppearance="@style/TextAppearance.AgenteGamer.Body"
+                        android:layout_marginBottom="8dp" />
 
-                <TextView
-                    android:id="@+id/tvImpactoNoRecomendado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/impacto_no_recomendado"
-                    android:textAppearance="@style/TextAppearance.AgenteGamer.Body" />
+                    <TextView
+                        android:id="@+id/tvImpactoAjustado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/impacto_ajustado"
+                        android:textAppearance="@style/TextAppearance.AgenteGamer.Body"
+                        android:layout_marginBottom="8dp" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvImpactoNoRecomendado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/impacto_no_recomendado"
+                        android:textAppearance="@style/TextAppearance.AgenteGamer.Body" />
 
-        </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-    </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-</ScrollView>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        app:itemIconTint="@color/bottom_nav_colors"
+        app:itemTextColor="@color/bottom_nav_colors"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

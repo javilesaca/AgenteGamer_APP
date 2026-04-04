@@ -1,6 +1,5 @@
 package com.miapp.agentegamer.ui.gastos;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +16,7 @@ import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.GastoEntity;
 import com.miapp.agentegamer.data.model.UsuarioEntity;
 import com.miapp.agentegamer.domain.repository.UserRepository;
+import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.ui.viewmodel.GastoViewModel;
 import com.miapp.agentegamer.util.MoneyUtils;
 
@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ListaGastosActivity extends AppCompatActivity {
+public class ListaGastosActivity extends BaseNavActivity {
 
     private GastoViewModel gastoViewModel;
     private RecyclerView recyclerView;
@@ -53,6 +53,8 @@ public class ListaGastosActivity extends AppCompatActivity {
 
         adapter = new GastoAdapter();
         recyclerView.setAdapter(adapter);
+
+        setupBottomNavigation(R.id.nav_gastos);
 
         // Solo mostrar botón de gasto de prueba para administradores
         configurarVisibilidadBotonPrueba();
