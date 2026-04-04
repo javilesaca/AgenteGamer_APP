@@ -1,144 +1,149 @@
-# 🎮🤖 Agente Gamer  
-**Un asistente financiero inteligente para gestionar gastos y compras de videojuegos.**
+# 🎮 Agente Gamer
 
-Agente Gamer es una aplicación Android desarrollada en **Java** bajo arquitectura **MVVM**, cuyo objetivo es ayudar a jugadores a gestionar su presupuesto mensual, registrar gastos en videojuegos y recibir recomendaciones financieras mediante un “agente” inteligente.  
-El proyecto incluye persistencia local con **Room**, integración con APIs de videojuegos y notificaciones inteligentes.
+**Asistente financiero inteligente para gestionar gastos y compras de videojuegos.**
 
----
-
-## ✨ Características principales
-
-### 🟢 Fase 1 – Fundamentos (MVP)
-- Gestión completa de gastos (CRUD).
-- Persistencia local con **Room Database**.
-- Pantalla principal con lista de compras.
-- Arquitectura **MVVM** modular y escalable.
-
-### 🟡 Fase 2 – Agente financiero simple
-- Clase **AgenteFinanciero** con reglas básicas.
-- Recomendaciones según presupuesto disponible.
-- Dashboard con gráfico circular (MPAndroidChart).
-- Indicadores de gasto mensual.
-
-### 🟠 Fase 3 – Integración con APIs
-- Implementación de **Retrofit + JSON (Gson/Moshi)**.
-- Consulta a API RAWG.io / IGDB.
-- Registro de futuros lanzamientos.
-- Opción para añadir juegos a la Wishlist.
-
-### 🔵 Fase 4 – Wishlist inteligente + notificaciones
-- Cálculo de posibilidad de compra según presupuesto.
-- Comparación entre lanzamientos y gasto acumulado.
-- Notificaciones inteligentes con **WorkManager**:
-  - “Este juego sale en X días…”
-  - “Has gastado más del 80% del presupuesto.”
-
-### 🔴 Fase 5 – Extras opcionales (TFG)
-- Firebase Auth (login/multiusuario).
-- Firestore (sincronización en la nube).
-- Reglas predictivas de gasto (IA ligera).
-- UI final con Material Design / Jetpack Compose.
+Agente Gamer es una aplicación Android que ayuda a los jugadores a controlar su presupuesto mensual, registrar gastos en videojuegos y recibir recomendaciones financieras personalizadas. La app sincroniza datos en la nube con Firebase y ofrece una experiencia fluida con preloading de datos durante el arranque.
 
 ---
 
-## 🧱 Arquitectura del proyecto
+## ✨ Funcionalidades
 
-El proyecto sigue el patrón **MVVM** estándar:
+### Autenticación y Perfil
+- Login y registro con **Firebase Auth**
+- Perfil de usuario sincronizado en **Firestore**
+- Edición de nombre y gestión de presupuesto
+
+### Dashboard Principal
+- Resumen financiero: total gastado, presupuesto y restante
+- Gráfico de tendencia de gastos (LineChart mensual)
+- Gráfico circular de categorías (PieChart)
+- Recomendaciones del agente financiero
+- Lista de gastos recientes
+
+### Gestión de Gastos
+- CRUD completo de gastos con **Room**
+- Seguimiento mensual por categoría
+- Vista filtrable por fecha
+
+### Catálogo de Juegos
+- Integración con **RAWG API** para búsqueda de juegos
+- Grid de 2 columnas con paginación
+- Detalle de juego en diálogo emergente
+- Search con filtros
+
+### Wishlist
+- Añadir/eliminar juegos a lista de deseos
+- Cálculo de coste total
+- Seguimiento de compras
+
+### Lanzamientos
+- Juegos próximos con cuenta regresiva
+- Precios estimados
+- Información de plataforma y género
+
+### Configuración
+- Selector de moneda (EUR/USD/GBP)
+- Ajuste de presupuesto mensual
+
+---
+
+## 🧱 Arquitectura
+
+Patrón **Clean Architecture** con capas:
+
 ```text
 com.miapp.agentegamer/
-│
 ├── data/
-│ ├── model/ # Entidades Room
-│ ├── dao/ # Interfaces DAO (Room)
-│ ├── database/ # AppDatabase (Room)
-│ └── repository/ # Capa de repositorio (entre BD y ViewModels)
-│
+│   ├── local/          # Room entities, DAOs, database
+│   ├── remote/         # Retrofit API, DTOs
+│   ├── repository/     # Implementaciones de repositorio
+│   └── worker/         # WorkManager workers
+├── domain/
+│   ├── model/          # Modelos de dominio
+│   └── repository/     # Interfaces de repositorio
+├── di/                 # Módulos Hilt
 ├── ui/
-│ ├── main/ # Actividad principal / navegación
-│ ├── gastos/ # Pantallas para lista y gestión de gastos
-│ ├── lanzamientos/ # Pantallas con datos de las APIs de videojuegos
-│ └── wishlist/ # Pantallas de juegos guardados / favoritos
-│
-└── agent/
-└── AgenteFinanciero/ # Lógica del "agente" y sus reglas
+│   ├── splash/         # SplashActivity + preloading
+│   ├── auth/           # Login/Register
+│   ├── main/           # Dashboard
+│   ├── gastos/         # Gestión de gastos
+│   ├── games/          # Catálogo de juegos
+│   ├── wishlist/       # Lista de deseos
+│   ├── lanzamientos/   # Lanzamientos futuros
+│   ├── perfil/         # Perfil de usuario
+│   ├── ajustes/        # Configuración
+│   ├── adapter/        # Adaptadores RecyclerView
+│   ├── viewmodel/      # ViewModels + LiveData
+│   └── common/         # Utilities y clases base
+└── util/               # Helpers (MoneyUtils, etc.)
 ```
 
----
-
-## 🗃 Tecnologías utilizadas
-
-| Tecnología / Librería | Uso |
-|-----------------------|-----|
-| **Java** | Lenguaje principal |
-| **Android Studio** | Entorno de desarrollo |
-| **Room** | Base de datos local |
-| **LiveData / ViewModel** | MVVM y reactividad |
-| **RecyclerView** | Listado de gastos y lanzamientos |
-| **Retrofit** | Consumo de API externa |
-| **MPAndroidChart** | Gráficos financieros |
-| **WorkManager** | Notificaciones programadas |
-| **Firebase (opcional)** | Login + nube |
-| **Material Design** | UI final |
+**Patrón MVVM** con ViewModel + LiveData, Repository y Dagger Hilt para inyección de dependencias.
 
 ---
 
-## 🚀 Instalación y ejecución
+## 🛠 Tecnologías
 
-1. Clonar este repositorio:
-   ```bash
-   git clone https://github.com/javilesaca/AgenteGamer-App.git
-2. Abrir en Android Studio.
-
-3. Reconstruir proyecto:
-   ```bash 
-   Build → Rebuild Project
-
-
-4. Ejecutar en un emulador o dispositivo físico:
-   ```bash
-   Run → Run 'app'
-
----
-
-## 🧪 Tests y pruebas
-
-    - Pruebas manuales de UI.
-
-    -Verificación de inserción, borrado y actualización en Room.
-
-    -Testeo de las reglas del Agente Financiero.
-
-    -Validación de llamadas a la API.
+| Categoría | Tecnología |
+|-----------|------------|
+| **Lenguaje** | Java |
+| **Build** | Gradle (Kotlin DSL) |
+| **SDK** | minSdk 23, targetSdk 35 |
+| **DI** | Dagger Hilt |
+| **Auth** | Firebase Auth |
+| **DB Cloud** | Firestore |
+| **DB Local** | Room |
+| **Networking** | Retrofit + Gson |
+| **Gráficos** | MPAndroidChart (PieChart, LineChart) |
+| **Background** | WorkManager |
+| **UI** | Material Components, BottomNavigationView |
+| **Splash** | Splash Screen API con preloading |
 
 ---
 
-## 📝 Roadmap completo
+## 🚀 Configuración
 
- Fase 1 – CRUD de gastos + Room
+### Requisitos previos
+- Android Studio (última versión)
+- JDK 11+
+- Cuenta en [RAWG.io](https://rawg.io/apidocs) para obtener API key
 
- Fase 2 – Agente financiero + Dashboard
+### Variables de entorno
+Crea `gradle.properties` en la raíz del proyecto:
 
- Fase 3 – Integración con API de videojuegos
+```properties
+RAWG_API_KEY=tu_api_key_aqui
+```
 
- Fase 4 – Wishlist inteligente + notificaciones
+### Ejecución
+1. Clonar el repositorio
+2. Abrir en Android Studio
+3. Sincronizar gradle
+4. Build → Rebuild Project
+5. Run → Run 'app'
 
- Fase 5 – Extras (Firebase, IA, Compose…)
+### Firebase Setup
+1. Crear proyecto en [Firebase Console](https://console.firebase.google.com/)
+2. Añadir aplicación Android con package `com.miapp.agentegamer`
+3. Descargar `google-services.json` y colocar en `app/`
+4. Habilitar Authentication y Firestore
 
 ---
 
 ## 📷 Capturas de pantalla
 
+*Próximamente*
 
 ---
 
-## 📚 Licencia
+## 📝 Licencia
 
-Este proyecto puede usarse libremente para fines educativos.
+Proyecto educativo de uso libre.
 
 ---
 
 ## ✨ Autor
 
-[Javier Lesaca Medina]
-Ciclo Formativo de Grado Superior SAFA — Desarrollo de Aplicaciones Multiplataforma (DAM)
+Javier Lesaca Medina  
+Ciclo Formativo de Grado Superior SAFA — DAM  
 Proyecto Final — Agente Gamer
