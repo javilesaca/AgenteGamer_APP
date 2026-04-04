@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +20,7 @@ import com.miapp.agentegamer.AgenteGamerApplication;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.local.entity.WishlistEntity;
 import com.miapp.agentegamer.data.remote.model.GameDto;
+import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.ui.viewmodel.GamesViewModel;
 import dagger.hilt.android.AndroidEntryPoint;
 import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
@@ -28,7 +28,7 @@ import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 import java.util.List;
 
 @AndroidEntryPoint
-public class ListaJuegosActivity extends AppCompatActivity {
+public class ListaJuegosActivity extends BaseNavActivity {
 
     private GamesViewModel viewModel;
     private RecyclerView recyclerView;
@@ -56,6 +56,8 @@ public class ListaJuegosActivity extends AppCompatActivity {
         adapter = new JuegosAdapter();
         adapter.setMoneda(moneda);
         recyclerView.setAdapter(adapter);
+
+        setupBottomNavigation(R.id.nav_juegos);
 
         viewModel = new ViewModelProvider(this).get(GamesViewModel.class);
         wishlistViewModel = new ViewModelProvider(this).get(WishlistViewModel.class);

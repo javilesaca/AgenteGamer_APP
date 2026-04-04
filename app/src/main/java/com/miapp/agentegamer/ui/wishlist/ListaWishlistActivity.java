@@ -3,12 +3,12 @@ package com.miapp.agentegamer.ui.wishlist;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.miapp.agentegamer.R;
+import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.ui.wishlist.dialogs.DialogDetalleJuegoFragment;
 import com.miapp.agentegamer.ui.wishlist.dialogs.DialogEditarPrecioFragment;
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import com.miapp.agentegamer.ui.viewmodel.WishlistViewModel;
 
 @AndroidEntryPoint
-public class ListaWishlistActivity extends AppCompatActivity {
+public class ListaWishlistActivity extends BaseNavActivity {
 
     private WishlistViewModel viewModel;
     private WishlistAdapter adapter;
@@ -42,6 +42,8 @@ public class ListaWishlistActivity extends AppCompatActivity {
 
         adapter = new WishlistAdapter();
         recyclerView.setAdapter(adapter);
+
+        setupBottomNavigation(R.id.nav_wishlist);
 
         adapter.setOnItemClickListener(juego -> {
             DialogDetalleJuegoFragment.newInstance(juego, moneda).show(getSupportFragmentManager(), "detalleJuego");

@@ -12,11 +12,11 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.model.UsuarioEntity;
 import com.miapp.agentegamer.domain.repository.UserRepository;
+import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import javax.inject.Inject;
 
@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @AndroidEntryPoint
-public class PerfilActivity extends AppCompatActivity {
+public class PerfilActivity extends BaseNavActivity {
 
     private TextView tvEmail, tvPresupuesto, tvNombre, tvFechaCreacion, tvRol;
     private ImageButton btnEditNombre;
@@ -72,6 +72,7 @@ public class PerfilActivity extends AppCompatActivity {
         });
 
         cargarPerfil();
+        setupBottomNavigation(R.id.nav_home);
     }
 
     private void cargarPerfil() {

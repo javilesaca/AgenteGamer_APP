@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AgenteGamer">
-        <!--Activity launcher de splash -->
+        <!-- Splash screen - launcher -->
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
