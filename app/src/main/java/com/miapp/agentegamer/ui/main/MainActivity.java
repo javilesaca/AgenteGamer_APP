@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -50,6 +49,7 @@ import com.miapp.agentegamer.ui.lanzamientos.LanzamientosActivity;
 import com.miapp.agentegamer.ui.perfil.PerfilActivity;
 import com.miapp.agentegamer.ui.wishlist.ListaWishlistActivity;
 import com.miapp.agentegamer.ui.adapter.UltimosGastosAdapter;
+import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.util.FinancialTrendHelper;
 import com.miapp.agentegamer.ui.viewmodel.GastoViewModel;
@@ -69,7 +69,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  * y permite navegar al resto de funcionalidades.
  */
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseNavActivity {
 
     // UI
     protected TextView tvRecomendacion, tvTotalGastos, tvPresupuesto, tvRestante;
@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         configurarObservers();
         observarMoneda();
         configurarMenu();
+        setupBottomNavigation(R.id.nav_home);
 
         getOnBackPressedDispatcher().addCallback(
                 this,
