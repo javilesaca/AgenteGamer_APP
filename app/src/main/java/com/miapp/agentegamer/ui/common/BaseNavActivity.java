@@ -36,7 +36,6 @@ public abstract class BaseNavActivity extends AppCompatActivity {
             return;
         }
         
-        bottomNav.setMenu(R.menu.bottom_nav_menu);
         bottomNav.setSelectedItemId(selectedItemId);
         
         bottomNav.setOnItemSelectedListener(item -> {
