@@ -10,9 +10,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.miapp.agentegamer" />
-                  <option name="mobileSdkAppId" value="1:3216889952:android:2b1016b5c49ab086cfcb05" />
-                  <option name="projectId" value="agentegamer-b4061" />
-                  <option name="projectNumber" value="3216889952" />
+                  <option name="mobileSdkAppId" value="1:316530146082:android:1314bd35d332fc9370437b" />
+                  <option name="projectId" value="agentegamer-dev" />
+                  <option name="projectNumber" value="316530146082" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
