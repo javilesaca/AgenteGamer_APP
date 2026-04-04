@@ -26,7 +26,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -87,9 +86,6 @@ public class MainActivity extends BaseNavActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-
-    // Quick Actions
-    private MaterialCardView btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
 
     // MVVM
     private GastoViewModel gastoViewModel;
@@ -210,34 +206,9 @@ public class MainActivity extends BaseNavActivity {
         navigationView = findViewById(R.id.navigationView);
         toolbar = findViewById(R.id.toolbar);
 
-        // Quick Actions
-        btnAddGasto = findViewById(R.id.btnAddGasto);
-        btnWishlist = findViewById(R.id.btnWishlist);
-        btnJuegos = findViewById(R.id.btnJuegos);
-        btnAjustes = findViewById(R.id.btnAjustes);
-
-        configurarQuickActions();
         configurarDashboardComponents();
     }
 
-    private void configurarQuickActions() {
-        btnAddGasto.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ListaGastosActivity.class));
-        });
-
-        btnWishlist.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ListaWishlistActivity.class));
-        });
-
-        btnJuegos.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ListaJuegosActivity.class));
-        });
-
-        btnAjustes.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, AjustesActivity.class));
-        });
-    }
-    
     /**
      * Configura los nuevos componentes del Dashboard.
      */
