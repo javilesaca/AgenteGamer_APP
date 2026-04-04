@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ================= Splash Screen Theme ================= -->
+
+    <style name="Theme.AgenteGamer.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.AgenteGamer</item>
+    </style>
+
     <!-- ================= Theme ================= -->
 
     <style name="Theme.AgenteGamer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
