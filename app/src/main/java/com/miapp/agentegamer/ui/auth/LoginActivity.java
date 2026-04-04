@@ -13,6 +13,7 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.miapp.agentegamer.AgenteGamerApplication;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.repository.UserRepositoryImpl;
 import com.miapp.agentegamer.domain.repository.UserRepository;
@@ -37,6 +38,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+
+        // Preload games data during splash screen
+        ((AgenteGamerApplication) getApplication()).preloadGames();
+
         auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
