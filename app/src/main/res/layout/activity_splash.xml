@@ -13,7 +13,7 @@
         android:layout_width="360dp"
         android:layout_height="360dp"
         android:src="@drawable/ic_launcher_foreground"
-        android:tint="@color/accent_green"
+        app:tint="@color/accent_green"
         android:contentDescription="@string/app_name" />
 
     <!-- App Name -->
