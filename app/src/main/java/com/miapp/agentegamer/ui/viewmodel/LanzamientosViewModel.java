@@ -23,12 +23,33 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * LanzamientosViewModel
+ * ---------------------
+ * ViewModel que gestiona los datos de próximos lanzamientos de videojuegos.
+ * Utiliza el patrón MVVM y combina datos locales (Room) con datos remotos (API).
+ * 
+ * Funcionalidades:
+ * - Provee los próximos lanzamientos guardados en la base de datos local
+ * - Precarga lanzamientos de los próximos 15 días desde la API de RAWG
+ * - Filtra solo lanzamientos futuros reales (0-15 días)
+ * - Inserta los juegos en la base de datos local para acceso offline
+ * - Cancela llamadas anteriores si se inicia una nueva precarga
+ * 
+ * @see LanzamientoRepository
+ * @see GamesApiService
+ * @see LanzamientoEntity
+ */
 @HiltViewModel
 public class LanzamientosViewModel extends AndroidViewModel {
 
+    // Repositorio de lanzamientos para acceder a la base de datos local
     private final LanzamientoRepository repo;
+    // Servicio de API para obtener juegos de RAWG
     private final GamesApiService api;
+    // Clave de API de RAWG
     private final String apiKey;
+    // Llamada actual a la API (para poder cancelarla)
     private Call<GamesResponse> currentCall;
 
     @Inject

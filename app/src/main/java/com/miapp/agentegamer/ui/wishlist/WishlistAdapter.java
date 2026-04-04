@@ -20,19 +20,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * WishlistAdapter
+ * ---------------
+ * Adapter de RecyclerView para mostrar la lista de deseos del usuario.
+ * Utiliza DiffUtil para actualizaciones eficientes de la lista.
+ * 
+ * Cada elemento muestra: imagen del juego, nombre, precio estimado,
+ * evaluación financiera (recomendada/ajustada/no recomendada) y botón de eliminación.
+ * 
+ * @see WishlistItemUI
+ * @see WishlistEntity
+ * @see DiffUtil
+ */
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.WishlistViewHolder> {
 
+    /**
+     * Interfaz para manejar eventos de clic en un elemento de la wishlist.
+     */
     public interface OnItemClickListener {
+        /**
+         * Se llama cuando el usuario hace clic en un juego de la wishlist.
+         * 
+         * @param juego Entidad del juego clickeado
+         */
         void onItemClick(WishlistEntity juego);
     }
 
+    // Listener para clics en elementos
     private OnItemClickListener listener;
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
+    
+    // Lista de elementos de la wishlist con evaluación financiera
     private List<WishlistItemUI> lista = new ArrayList<>();
+    // Moneda actual para formatear precios
     private String moneda;
+
 
     @NonNull
     @Override
@@ -42,6 +64,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         return new WishlistViewHolder(view);
     }
 
+    /**
+     * Asocia los datos de un elemento de wishlist a su ViewHolder.
+     * Asigna nombre, precio formateado, evaluación, imagen y configura los listeners.
+     * 
+     * @param holder ViewHolder que contendrá los datos
+     * @param position Posición del elemento en la lista
+     */
     @Override
     public void onBindViewHolder(@NonNull WishlistViewHolder holder, int position) {
 
@@ -70,11 +99,23 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         });
     }
 
+    /**
+     * Retorna el número de elementos en la lista de wishlist.
+     * 
+     * @return Cantidad de elementos en la lista
+     */
     @Override
     public int getItemCount() {
         return lista.size();
     }
 
+    /**
+     * Actualiza la lista de elementos del adapter.
+     * Utiliza DiffUtil para actualizar solo los elementos que cambian.
+     * 
+     * @param nuevalista Nueva lista de elementos a mostrar
+     * @param moneda Código de moneda para formatear precios
+     */
     public void setLista(List<WishlistItemUI> nuevalista, String moneda) {
         this.moneda = moneda;
         // Make a defensive copy
@@ -123,6 +164,11 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         }
     }
 
+    /**
+     * ViewHolder para los elementos de la wishlist en el RecyclerView.
+     * Contiene referencias a: nombre, precio (label y valor), recomendación,
+     * badge de precio accesible, botón de eliminar e imagen del juego.
+     */
     static class WishlistViewHolder extends RecyclerView.ViewHolder{
         TextView nombre, precioValue, recomendacion;
         ImageButton btnEliminar;
@@ -139,11 +185,25 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.Wishli
         }
     }
 
+    /**
+     * Interfaz para manejar eventos de clic en el botón de eliminar.
+     */
     public interface OnEliminarClickListener {
+        /**
+         * Se llama cuando el usuario hace clic en el botón de eliminar de un juego.
+         * 
+         * @param juego Entidad del juego a eliminar
+         */
         void onEliminarClick(WishlistEntity juego);
     }
+    // Listener para el botón de eliminación
     private OnEliminarClickListener listenerEliminar;
 
+    /**
+     * Establece el listener para el botón de eliminar.
+     * 
+     * @param listener Listener a establecer
+     */
     public void setOnEliminarClickListener(OnEliminarClickListener listener) {
         this.listenerEliminar = listener;
     }

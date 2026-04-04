@@ -64,32 +64,58 @@ import dagger.hilt.android.AndroidEntryPoint;
  * Pantalla principal de la aplicación.
  * Muestra el estado financiero del usuario, gastos acumulados
  * y permite navegar al resto de funcionalidades.
+ * 
+ * Incluye:
+ * - Resumen financiero con gráfico circular de gastos
+ * - Tendencia de gastos en gráfico de línea
+ * - Recomendaciones personalizadas del agente
+ * - Acceso rápido a últimas compras
+ * - Navegación lateral (Drawer) y inferior (Bottom Nav)
+ * 
+ * @see ListaGastosActivity
+ * @see ListaJuegosActivity
+ * @see ListaWishlistActivity
+ * @see LanzamientosActivity
+ * @see PerfilActivity
+ * @see AjustesActivity
  */
 @AndroidEntryPoint
 public class MainActivity extends BaseNavActivity {
 
-    // UI
+    // UI - TextViews para mostrar información financiera
     protected TextView tvRecomendacion, tvTotalGastos, tvPresupuesto, tvRestante;
+    // Indicador visual de estado financiero (color)
     private View indicadorEstado;
+    // Gráfico circular de distribución de gastos
     private PieChart pieChart;
     
     // Nuevos componentes Dashboard
+    // Gráfico de línea para tendencias de gastos
     private LineChart lineChartTendencia;
+    // Texto de recomendación del agente IA
     private TextView tvRecomendacionAgente;
+    // Indicador de tendencia vs mes anterior
     private TextView tvIndicadorTendencia;
+    // RecyclerView horizontal de últimos gastos
     private RecyclerView recyclerUltimosGastos;
     private UltimosGastosAdapter ultimosGastosAdapter;
 
     //Drawer
+    // Layout del drawer navigation
     private DrawerLayout drawerLayout;
+    // NavigationView del menú lateral
     private NavigationView navigationView;
+    // Toolbar de la aplicación
     private Toolbar toolbar;
 
     // MVVM
+    // ViewModel para gestionar datos de gastos
     private GastoViewModel gastoViewModel;
 
     // Dominio
+    // Sistema financiero con lógica de presupuestos
     private SistemaFinanciero sistemaFinanciero;
+    // Moneda actual del usuario (EUR, USD, GBP)
     private String moneda = "EUR";
 
     @Inject

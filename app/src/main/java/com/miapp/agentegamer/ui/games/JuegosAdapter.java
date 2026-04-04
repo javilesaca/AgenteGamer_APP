@@ -22,20 +22,61 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * JuegosAdapter
+ * -------------
+ * Adapter de RecyclerView para mostrar una lista de juegos del catálogo.
+ * Muestra juegos en formato grid con imagen, nombre, rating y plataformas.
+ * 
+ * Características:
+ * - Muestra la portada del juego, nombre, rating y precio estimado
+ * - Iconos de plataformas agrupados por familia (PlayStation, Xbox, Nintendo, PC)
+ * - Aplicación de efecto táctil (TouchFeedback) en cada elemento
+ * - Listener para manejar clics en los juegos (agregar a wishlist)
+ * 
+ * @see GameDto
+ * @see OnJuegoClickListener
+ * @see TouchFeedback
+ */
 public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewHolder> {
 
+    // Lista de juegos que se muestra
     private List<GameDto> lista = new ArrayList<>();
+    // Listener para manejar clics en juegos
     private OnJuegoClickListener listener;
+    // Moneda actual para formatear precios
     private String moneda;
 
+    /**
+     * Interfaz para manejar eventos de clic en un juego.
+     */
     public interface OnJuegoClickListener {
+        /**
+         * Se llama cuando el usuario hace clic en un juego.
+         * 
+         * @param juego Juego seleccionado
+         * @param precioEstimado Precio estimado del juego
+         */
         void onJuegoClick(GameDto juego, double precioEstimado);
     }
 
+    /**
+     * Establece el listener para clics en juegos.
+     * 
+     * @param listener Listener a establecer
+     */
     public void setOnJuegoClickListener(OnJuegoClickListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Crea un nuevo ViewHolder para el RecyclerView.
+     * Infla el layout del item de juego.
+     * 
+     * @param parent Vista padre del ViewHolder
+     * @param viewType Tipo de vista
+     * @return Nuevo JuegoViewHolder con la vista inflada
+     */
     @NonNull
     @Override
     public JuegoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,6 +85,13 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
         return new JuegoViewHolder(vista);
     }
 
+    /**
+     * Asocia los datos de un juego a su ViewHolder.
+     * Asigna el nombre, imagen, rating, precio y genera los iconos de plataformas.
+     * 
+     * @param holder ViewHolder que contendrá los datos
+     * @param position Posición del elemento en la lista
+     */
     @Override
     public void onBindViewHolder(@NonNull JuegoViewHolder holder, int position) {
 
@@ -107,16 +155,31 @@ public class JuegosAdapter extends RecyclerView.Adapter<JuegosAdapter.JuegoViewH
     }
 
 
+    /**
+     * Retorna el número de elementos en la lista de juegos.
+     * 
+     * @return Cantidad de juegos en la lista
+     */
     @Override
     public int getItemCount() {
         return lista.size();
     }
 
+    /**
+     * Actualiza la lista de juegos del adapter y refresca el RecyclerView.
+     * 
+     * @param nuevaLista Nueva lista de juegos a mostrar
+     */
     public void setLista(List<GameDto> nuevaLista) {
         this.lista = nuevaLista;
         notifyDataSetChanged();
     }
 
+    /**
+     * Establece la moneda para formatear los precios de los juegos.
+     * 
+     * @param moneda Código de moneda (EUR, USD, GBP)
+     */
     public void setMoneda(String moneda) {
         this.moneda = moneda;
     }

@@ -19,32 +19,78 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Adapter para el RecyclerView horizontal de últimos gastos en el Dashboard.
+ * UltimosGastosAdapter
+ * --------------------
+ * Adapter de RecyclerView para mostrar los últimos gastos del usuario
+ * en un formato horizontal en el Dashboard de MainActivity.
+ * 
+ * Características:
+ * - Muestra los últimos gastos en un RecyclerView horizontal
+ * - Cada elemento muestra: imagen del juego, nombre, precio y fecha relativa
+ * - Formatea la fecha como tiempo relativo ("Hace 2 días", "Ayer", etc.)
+ * - Listener para manejar clics en los gastos
+ * 
+ * @see GastoEntity
+ * @see MoneyUtils
+ * @see ImageLoader
  */
 public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdapter.ViewHolder> {
 
+    // Lista de gastos a mostrar
     private List<GastoEntity> gastos = new ArrayList<>();
+    // Listener para clics en gastos
     private OnGastoClickListener listener;
+    // Moneda actual para formatear precios
     private String moneda;
 
+    /**
+     * Interfaz para manejar eventos de clic en un gasto.
+     */
     public interface OnGastoClickListener {
+        /**
+         * Se llama cuando el usuario hace clic en un gasto.
+         * 
+         * @param gasto Gasto clickeado
+         */
         void onGastoClick(GastoEntity gasto);
     }
 
+    /**
+     * Establece el listener para clics en gastos.
+     * 
+     * @param listener Listener a establecer
+     */
     public void setOnGastoClickListener(OnGastoClickListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Actualiza la lista de gastos del adapter.
+     * 
+     * @param gastos Nueva lista de gastos a mostrar
+     */
     public void setGastos(List<GastoEntity> gastos) {
         this.gastos = gastos != null ? gastos : new ArrayList<>();
         notifyDataSetChanged();
     }
 
+    /**
+     * Establece la moneda para formatear los precios.
+     * 
+     * @param moneda Código de moneda (EUR, USD, GBP)
+     */
     public void setMoneda(String moneda) {
         this.moneda = moneda;
         notifyDataSetChanged();
     }
 
+    /**
+     * Crea un nuevo ViewHolder para el RecyclerView.
+     * 
+     * @param parent Vista padre del ViewHolder
+     * @param viewType Tipo de vista
+     * @return Nuevo ViewHolder con la vista inflada
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,6 +110,10 @@ public class UltimosGastosAdapter extends RecyclerView.Adapter<UltimosGastosAdap
         return gastos.size();
     }
 
+    /**
+     * ViewHolder para los elementos de último gasto.
+     * Muestra imagen del juego, nombre, precio y fecha relativa.
+     */
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView ivGameImage;

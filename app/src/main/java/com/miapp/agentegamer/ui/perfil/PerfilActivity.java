@@ -24,16 +24,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * PerfilActivity
+ * --------------
+ * Pantalla que muestra la información del perfil del usuario.
+ * Muestra datos como email, nombre, presupuesto mensual, fecha de creación
+ * y rol del usuario. Permite editar el nombre mediante un ActivityResultLauncher.
+ * 
+ * Características:
+ * - Muestra información del usuario desde Firestore
+ * - Presupuesto reactivo en tiempo real (se actualiza si cambia en Ajustes)
+ * - Botón para editar el nombre que lanza EditProfileActivity
+ * - Indicador de carga mientras se actualiza el nombre
+ * - Navegación inferior para acceder a otras secciones
+ * 
+ * @see EditProfileActivity
+ * @see UserRepository
+ */
 @AndroidEntryPoint
 public class PerfilActivity extends BaseNavActivity {
 
+    // TextViews para mostrar información del usuario
     private TextView tvEmail, tvPresupuesto, tvNombre, tvFechaCreacion, tvRol;
+    // Botón para editar el nombre
     private ImageButton btnEditNombre;
+    // ProgressBar mostrado durante actualización del nombre
     private ProgressBar progressBarNombre;
     
     @Inject
     UserRepository userRepo;
 
+    // ActivityResultLauncher para recibir resultado de EditProfileActivity
     private final ActivityResultLauncher<Intent> editProfileLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -51,6 +72,13 @@ public class PerfilActivity extends BaseNavActivity {
                 }
             });
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Inicializa las vistas, configura el botón de edición de nombre,
+     * carga el perfil del usuario y establece la navegación inferior.
+     * 
+     * @param savedInstanceState Estado guardado de la actividad (puede ser null)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +103,12 @@ public class PerfilActivity extends BaseNavActivity {
         setupBottomNavigation(R.id.nav_home);
     }
 
+    /**
+     * Carga los datos del perfil del usuario desde Firestore.
+     * Actualiza los TextViews con la información del usuario (email, nombre,
+     * presupuesto, fecha de creación y rol). También observa cambios en el
+     * presupuesto para mantenerlo actualizado en tiempo real.
+     */
     private void cargarPerfil() {
         userRepo.obtenerUsuario(new UserRepository.OnUsuarioCallback() {
             @Override
@@ -107,6 +141,14 @@ public class PerfilActivity extends BaseNavActivity {
         });
     }
 
+    /**
+     * Actualiza el nombre del usuario en Firestore.
+     * Muestra un indicador de progreso mientras realiza la actualización.
+     * Si es exitoso, actualiza el TextView del nombre y muestra un Toast.
+     * Si falla, muestra un Toast con el mensaje de error.
+     * 
+     * @param nombre Nuevo nombre a establecer
+     */
     private void actualizarNombre(String nombre) {
         // Show progress bar
         progressBarNombre.setVisibility(View.VISIBLE);

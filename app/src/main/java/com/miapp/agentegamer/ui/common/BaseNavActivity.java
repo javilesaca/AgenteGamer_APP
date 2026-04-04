@@ -19,15 +19,29 @@ import com.miapp.agentegamer.ui.wishlist.ListaWishlistActivity;
 /**
  * BaseNavActivity
  * ---------------
- * Base class for activities that use bottom navigation.
- * Provides common setup for BottomNavigationView and activity navigation.
+ * Clase base abstracta para actividades que utilizan navegación inferior (Bottom Navigation).
+ * Proporciona configuración común para el BottomNavigationView y la navegación entre actividades.
+ * 
+ * Las clases derivadas solo necesitan llamar a setupBottomNavigation() en onCreate()
+ * con el ID del elemento de menú que debe estar seleccionado.
+ * 
+ * Navegación:
+ * - nav_home -> MainActivity
+ * - nav_gastos -> ListaGastosActivity
+ * - nav_juegos -> ListaJuegosActivity
+ * - nav_wishlist -> ListaWishlistActivity
+ * - nav_lanzamientos -> LanzamientosActivity
+ * 
+ * @see com.google.android.material.bottomnavigation.BottomNavigationView
  */
 public abstract class BaseNavActivity extends AppCompatActivity {
 
     /**
-     * Sets up the bottom navigation bar for this activity.
+     * Configura la barra de navegación inferior para esta actividad.
+     * Establece el elemento seleccionado, configura el listener para navegar
+     * a las actividades correspondientes y aplica las banderas de navegación apropiadas.
      * 
-     * @param selectedItemId The menu item ID to highlight as selected
+     * @param selectedItemId El ID del elemento de menú que debe estar seleccionado
      */
     protected void setupBottomNavigation(int selectedItemId) {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);

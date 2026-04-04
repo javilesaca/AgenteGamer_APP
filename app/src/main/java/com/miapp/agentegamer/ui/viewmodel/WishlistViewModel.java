@@ -25,14 +25,38 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * WishlistViewModel
+ * -----------------
+ * ViewModel que gestiona el estado y los datos de la lista de deseos (wishlist)
+ * del usuario. Utiliza el patrón MVVM y mediator para combinar múltiples fuentes de datos.
+ * 
+ * Funcionalidades:
+ * - Gestiona la lista de deseos desde el repositorio
+ * - Evalúa cada juego según el presupuesto actual y los gastos del mes
+ * - Provee la wishlist con evaluaciones financieras (recomendada/ajustada/no recomendada)
+ * - Permite comprar juegos (mover a gastos o lanzamientos)
+ * - Observa cambios en presupuesto y gastos para recalcular evaluaciones en tiempo real
+ * - Provee la moneda actual del usuario
+ * 
+ * @see WishlistRepository
+ * @see SistemaFinanciero
+ * @see WishlistItemUI
+ */
 @HiltViewModel
 public class WishlistViewModel extends AndroidViewModel {
 
+    // Repositorio de wishlist para acceder a los datos
     private final WishlistRepository repo;
+    // Repositorio de usuario para obtener presupuesto y moneda
     private final UserRepository userRepository;
+    // MediatorLiveData que combina wishlist con evaluaciones financieras
     private final MediatorLiveData<List<WishlistItemUI>> wishlistEvaluada = new MediatorLiveData<>();
+    // Repositorio de lanzamientos para guardar juegos comprados que son lanzamientos futuros
     private final LanzamientoRepository repoLanzamiento;
+    // Repositorio de gastos para crear gastos y obtener el gasto actual del mes
     private GastoRepository gastoRepo;
+    // Gasto actual del mes para calcular evaluaciones
     private double gastoActual = 0.0;
 
     @Inject
@@ -60,24 +84,63 @@ public class WishlistViewModel extends AndroidViewModel {
                 recalcularEvaluacion(wishListSource.getValue(), presupuestoSource.getValue(), gasto));
     }
 
+    /**
+     * Inserta un nuevo juego en la wishlist.
+     * 
+     * @param juego Entidad del juego a agregar a la wishlist
+     */
     public void insertar(WishlistEntity juego) {
         repo.insertar(juego);
     }
 
+    /**
+     * Elimina un juego de la wishlist.
+     * 
+     * @param juego Entidad del juego a eliminar
+     */
     public void borrar(WishlistEntity juego) { repo.borrar(juego);}
 
+    /**
+     * Retorna el LiveData del gasto del mes actual.
+     * 
+     * @return LiveData con el gasto total del mes
+     */
     public LiveData<Double> getGastoMes() {
         return gastoRepo.getGastoMesActual();
     }
 
+    /**
+     * Retorna el LiveData de la wishlist evaluada financieramente.
+     * Cada elemento incluye la evaluación (recomendada/ajustada/no recomendada).
+     * 
+     * @return LiveData con la lista de wishlist evaluada
+     */
     public LiveData<List<WishlistItemUI>> getWishList() { return wishlistEvaluada; }
 
+    /**
+     * Retorna el LiveData de la moneda actual del usuario.
+     * 
+     * @return LiveData con el código de moneda (EUR, USD, GBP)
+     */
     public LiveData<String> getMonedaLiveData() { return userRepository.getMonedaLiveData(); }
 
+    /**
+     * Actualiza un juego existente en la wishlist.
+     * 
+     * @param juego Entidad del juego a actualizar
+     */
     public void actualizar(WishlistEntity juego) {
         repo.actualizar(juego);
     }
 
+    /**
+     * Procesa la compra de un juego de la wishlist.
+     * Si el juego es un lanzamiento futuro, lo guarda en Lanzamientos.
+     * Si ya está lanzado, crea un Gasto y elimina el juego de la wishlist.
+     * 
+     * @param juego Entidad del juego a comprar
+     * @param precioFinal Precio final real de la compra
+     */
     public void comprarJuego(WishlistEntity juego, double precioFinal) {
 
         Date hoy = new Date();

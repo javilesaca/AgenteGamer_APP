@@ -23,18 +23,46 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+/**
+ * RegisterActivity
+ * ---------------
+ * Pantalla de registro de nuevos usuarios en la aplicación.
+ * Permite crear una cuenta nueva con email, contraseña, nombre
+ * y presupuesto mensual inicial.
+ * 
+ * Flujo:
+ * 1. Usuario completa el formulario de registro
+ * 2. Validación de campos obligatorios y formato de presupuesto
+ * 3. Creación de usuario en Firebase Auth
+ * 4. Guardado de datos adicionales en Firestore (nombre, presupuesto, rol)
+ * 5. Si es exitoso, navega a MainActivity
+ * 
+ * @see LoginActivity
+ * @see MainActivity
+ */
 @AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
 
+    // Autenticador de Firebase
     private FirebaseAuth auth;
+    // Instancia de Firestore para guardar datos del usuario
     private FirebaseFirestore db;
 
+    // Campos de entrada del formulario
     private EditText etEmail, etPassword, etNombre, etPresupuesto;
+    // Botón de registro
     private Button btnRegister;
 
     @Inject
     UserRepository userRepository;
 
+    /**
+     * Método que se ejecuta al crear la actividad.
+     * Inicializa las vistas, configura Firebase Auth y Firestore,
+     * y establece el listener del botón de registro.
+     * 
+     * @param savedInstanceState Estado guardado de la actividad (puede ser null)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +80,20 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> registrarUsuario());
     }
 
+    /**
+     * Procesa el registro de un nuevo usuario.
+     * Valida todos los campos del formulario, crea el usuario en Firebase Auth,
+     * y guarda los datos adicionales (nombre, presupuesto, rol) en Firestore.
+     * 
+     * Pasos del proceso:
+     * 1. Validar que todos los campos estén llenos
+     * 2. Parsear el presupuesto como número válido
+     * 3. Crear usuario en Firebase Auth
+     * 4. Guardar documento en Firestore con datos del usuario
+     * 5. Navegar a MainActivity si todo es exitoso
+     * 
+     * Muestra errores Toast según el tipo de fallo.
+     */
     private void registrarUsuario() {
 
         String email = etEmail.getText().toString().trim();
