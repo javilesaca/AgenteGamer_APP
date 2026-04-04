@@ -1,5 +1,7 @@
 package com.miapp.agentegamer.data.remote.api;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Cliente singleton de Retrofit para la API de RAWG (Rawg.io).
