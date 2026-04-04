@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,7 +26,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,6 +48,7 @@ import com.miapp.agentegamer.ui.lanzamientos.LanzamientosActivity;
 import com.miapp.agentegamer.ui.perfil.PerfilActivity;
 import com.miapp.agentegamer.ui.wishlist.ListaWishlistActivity;
 import com.miapp.agentegamer.ui.adapter.UltimosGastosAdapter;
+import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.util.FinancialTrendHelper;
 import com.miapp.agentegamer.ui.viewmodel.GastoViewModel;
@@ -69,7 +68,7 @@ import dagger.hilt.android.AndroidEntryPoint;
  * y permite navegar al resto de funcionalidades.
  */
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseNavActivity {
 
     // UI
     protected TextView tvRecomendacion, tvTotalGastos, tvPresupuesto, tvRestante;
@@ -87,9 +86,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-
-    // Quick Actions
-    private MaterialCardView btnAddGasto, btnWishlist, btnJuegos, btnAjustes;
 
     // MVVM
     private GastoViewModel gastoViewModel;
@@ -145,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         configurarObservers();
         observarMoneda();
         configurarMenu();
+        setupBottomNavigation(R.id.nav_home);
 
         getOnBackPressedDispatcher().addCallback(
                 this,
@@ -209,34 +206,9 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigationView);
         toolbar = findViewById(R.id.toolbar);
 
-        // Quick Actions
-        btnAddGasto = findViewById(R.id.btnAddGasto);
-        btnWishlist = findViewById(R.id.btnWishlist);
-        btnJuegos = findViewById(R.id.btnJuegos);
-        btnAjustes = findViewById(R.id.btnAjustes);
-
-        configurarQuickActions();
         configurarDashboardComponents();
     }
 
-    private void configurarQuickActions() {
-        btnAddGasto.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ListaGastosActivity.class));
-        });
-
-        btnWishlist.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ListaWishlistActivity.class));
-        });
-
-        btnJuegos.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ListaJuegosActivity.class));
-        });
-
-        btnAjustes.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, AjustesActivity.class));
-        });
-    }
-    
     /**
      * Configura los nuevos componentes del Dashboard.
      */
