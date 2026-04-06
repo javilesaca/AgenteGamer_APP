@@ -73,21 +73,13 @@ public class DialogEditarPrecioFragment extends DialogFragment {
                     input.setError("Ingresa un precio");
                     return;
                 }
-                try {
-                    double nuevoPrecio = Double.parseDouble(texto);
-                    if (nuevoPrecio < 0) {
-                        input.setError("El precio no puede ser negativo");
-                        return;
-                    }
-                    juego.setPrecioEstimado(nuevoPrecio);
-                    viewModel.actualizar(juego);
-                    if (listener != null) {
-                        listener.onPrecioEditado();
-                    }
-                    dismiss();
-                } catch (NumberFormatException e) {
-                    input.setError("Precio inválido");
+                double nuevoPrecio = Double.parseDouble(texto);
+                juego.setPrecioEstimado(nuevoPrecio);
+                viewModel.actualizar(juego);
+                if (listener != null) {
+                    listener.onPrecioEditado();
                 }
+                dismiss();
             });
         });
 
