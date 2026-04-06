@@ -158,6 +158,15 @@ public class WishlistEntity implements Serializable {
     }
 
     /**
+     * Establece el precio estimado del juego.
+     *
+     * @param precioEstimado Nuevo precio estimado
+     */
+    public void setPrecioEstimado(double precioEstimado) {
+        this.precioEstimado = precioEstimado;
+    }
+
+    /**
      * Obtiene la plataforma del juego.
      *
      * @return Nombre de la plataforma

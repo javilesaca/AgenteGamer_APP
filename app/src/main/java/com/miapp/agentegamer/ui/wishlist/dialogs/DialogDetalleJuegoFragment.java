@@ -48,6 +48,7 @@ public class DialogDetalleJuegoFragment extends DialogFragment {
 
     private WishlistEntity juego;
     private WishlistViewModel wishlistViewModel;
+    private boolean isInitialLoad = true;
 
     public static DialogDetalleJuegoFragment newInstance(WishlistEntity juego, String moneda) {
         DialogDetalleJuegoFragment fragment = new DialogDetalleJuegoFragment();
@@ -124,10 +125,12 @@ public class DialogDetalleJuegoFragment extends DialogFragment {
                 spinner.setSelection(position);
             }
         }
+        isInitialLoad = false;
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isInitialLoad) return;
                 String plataformaSeleccionada = parent.getItemAtPosition(position).toString();
                 juego.setPlataforma(plataformaSeleccionada);
                 wishlistViewModel.actualizar(juego);

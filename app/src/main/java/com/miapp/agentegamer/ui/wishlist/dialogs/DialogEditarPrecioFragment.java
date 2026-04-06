@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -56,35 +57,30 @@ public class DialogEditarPrecioFragment extends DialogFragment {
                 .setTitle("Editar precio")
                 .setMessage("Precio estimado para " + juego.getNombre())
                 .setView(input)
-                .setPositiveButton("Guardar", (d, which) -> {
-
-                    double nuevoPrecio = Double.parseDouble(input.getText().toString());
-
-                    WishlistEntity actualizado = new WishlistEntity(
-                            null,
-                            juego.getGameId(),
-                            juego.getNombre(),
-                            juego.getFechaLanzamiento(),
-                            juego.getImagenUrl(),
-                            juego.getPlataforma(),
-                            nuevoPrecio
-                    );
-
-                    viewModel.actualizar(actualizado);
-                    if (listener != null) {
-                        listener.onPrecioEditado();
-                    }
-
-                    dismiss();
-                })
+                .setPositiveButton("Guardar", null)
                 .setNegativeButton("Cancelar", null).create();
 
         dialog.setOnShowListener(d -> {
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary));
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary));
 
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary));
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary));
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                String texto = input.getText().toString().trim();
+                if (TextUtils.isEmpty(texto)) {
+                    input.setError("Ingresa un precio");
+                    return;
+                }
+                double nuevoPrecio = Double.parseDouble(texto);
+                juego.setPrecioEstimado(nuevoPrecio);
+                viewModel.actualizar(juego);
+                if (listener != null) {
+                    listener.onPrecioEditado();
+                }
+                dismiss();
+            });
         });
 
         return dialog;
