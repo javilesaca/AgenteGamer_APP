@@ -36,6 +36,8 @@ import com.miapp.agentegamer.ui.wishlist.ListaWishlistActivity;
  */
 public abstract class BaseNavActivity extends AppCompatActivity {
 
+    private int mSelectedItemId = -1;
+
     /**
      * Configura la barra de navegación inferior para esta actividad.
      * Establece el elemento seleccionado, configura el listener para navegar
@@ -44,6 +46,7 @@ public abstract class BaseNavActivity extends AppCompatActivity {
      * @param selectedItemId El ID del elemento de menú que debe estar seleccionado
      */
     protected void setupBottomNavigation(int selectedItemId) {
+        mSelectedItemId = selectedItemId;
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         
         if (bottomNav == null) {
@@ -65,6 +68,22 @@ public abstract class BaseNavActivity extends AppCompatActivity {
             
             return true;
         });
+    }
+
+    /**
+     * Resetea la selección del bottom nav cada vez que la actividad vuelve al frente.
+     * Esto corrige el bug donde al navegar entre actividades, el bottom nav mantenía
+     * seleccionado el ítem de la actividad anterior.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mSelectedItemId != -1) {
+            BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+            if (bottomNav != null && bottomNav.getSelectedItemId() != mSelectedItemId) {
+                bottomNav.setSelectedItemId(mSelectedItemId);
+            }
+        }
     }
 
     /**
