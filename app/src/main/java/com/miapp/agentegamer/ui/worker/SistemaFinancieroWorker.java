@@ -117,9 +117,10 @@ public class SistemaFinancieroWorker extends Worker {
             }
 
             for (WishlistEntity juego : wishlist) {
+                if (juego == null) continue;
                 String evaluacion = validatePurchaseUseCase.validate(juego, presupuesto, totalGastado);
 
-                if (!evaluacion.equals("✅ Compra recomendada")) {
+                if (!"✅ Compra recomendada".equals(evaluacion)) {
                     lanzarNotificacionNoComprar(juego);
                     break;
                 }
@@ -137,6 +138,7 @@ public class SistemaFinancieroWorker extends Worker {
 
     private void avisarLanzamientosProximos(List<WishlistEntity> wishlist) {
         for (WishlistEntity juego : wishlist) {
+            if (juego == null) continue;
             if (juego.getFechaLanzamiento() == null) continue;
 
             long dias = FechaUtils.diasHasta(juego.getFechaLanzamiento());

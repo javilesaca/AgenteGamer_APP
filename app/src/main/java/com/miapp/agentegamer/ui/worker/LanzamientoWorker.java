@@ -43,6 +43,7 @@ public class LanzamientoWorker extends Worker {
         }
 
         for (WishlistEntity juego: juegos) {
+            if (juego == null) continue;
             if(salePronto(juego)) {
                 lanzarNotificacion(juego);
             }
