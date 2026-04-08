@@ -1,6 +1,15 @@
 # 🎮 Agente Gamer
 
-**Asistente financiero inteligente para gestionar gastos y compras de videojuegos.**
+> Asistente financiero inteligente para gestionar gastos y compras de videojuegos.
+
+| | |
+|---|---|
+| **Licencia** | MIT |
+| **Versión** | 1.0 |
+| **Fecha** | Abril 2026 |
+| **Autor** | Javier Lesaca Medina |
+
+---
 
 Agente Gamer es una aplicación Android que ayuda a los jugadores a controlar su presupuesto mensual, registrar gastos en videojuegos y recibir recomendaciones financieras personalizadas. La app sincroniza datos en la nube con Firebase y ofrece una experiencia fluida con preloading de datos durante el arranque.
 
@@ -101,32 +110,46 @@ com.miapp.agentegamer/
 
 ---
 
-## 🚀 Configuración
+## 🔧 Configuración del entorno
 
 ### Requisitos previos
 - Android Studio (última versión)
-- JDK 11+
-- Cuenta en [RAWG.io](https://rawg.io/apidocs) para obtener API key
+- JDK 17+
+- Cuenta en [RAWG.io](https://rawg.io/apidocs) para obtener API key gratuita
 
-### Variables de entorno
-Crea `gradle.properties` en la raíz del proyecto:
+### Configuración de RAWG API
+La API de juegos requiere una API key gratuita:
+
+1. Registrate en [RAWG.io](https://rawg.io/apidocs)
+2. Copiá tu API key
+3. Creá el archivo `gradle.properties` en la raíz:
 
 ```properties
 RAWG_API_KEY=tu_api_key_aqui
 ```
 
-### Ejecución
-1. Clonar el repositorio
-2. Abrir en Android Studio
-3. Sincronizar gradle
-4. Build → Rebuild Project
-5. Run → Run 'app'
+### Configuración de Firebase (obligatorio)
+Sin Firebase la app no funcionará. Seguís estos pasos:
 
-### Firebase Setup
-1. Crear proyecto en [Firebase Console](https://console.firebase.google.com/)
-2. Añadir aplicación Android con package `com.miapp.agentegamer`
-3. Descargar `google-services.json` y colocar en `app/`
-4. Habilitar Authentication y Firestore
+1. Ir a [Firebase Console](https://console.firebase.google.com/)
+2. Crear proyecto nuevo
+3. Agregar app Android: **Package name**: `com.miapp.agentegamer`
+4. Descargar `google-services.json`
+5. Copiar el archivo a `app/google-services.json`
+6. Habilitar en Firebase Console:
+   - **Authentication** → Email/Password
+   - **Firestore** → Crear base de datos
+
+### Compilación
+```bash
+./gradlew assembleDebug
+# APK: app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Ejecución en Android Studio
+1. File → Open → Seleccionar carpeta del proyecto
+2. Sincronizar Gradle (Sync Now)
+3. Run → Run 'app'
 
 ---
 
@@ -151,14 +174,28 @@ RAWG_API_KEY=tu_api_key_aqui
 
 ---
 
-## 📝 Licencia
+## 📄 Licencia
 
-Proyecto educativo de uso libre.
+MIT License - Proyecto educativo de uso libre.
 
 ---
 
-## ✨ Autor
+## 📚 Documentación técnica
 
-Javier Lesaca Medina  
-Ciclo Formativo de Grado Superior SAFA — DAM  
-Proyecto Final — Agente Gamer
+Ver archivo completo: [doc/Documentacion_PROYECTO_AGENTEGAMER.pdf](doc/Documentacion_PROYECTO_AGENTEGAMER.pdf)
+
+---
+
+## 👨‍💻 Autor
+
+| | |
+|---|---|
+| **Nombre** | Javier Lesaca Medina |
+| **Ciclo** | Desarrollo de Aplicaciones Multiplataforma (DAM) |
+| **Centro** | SAFA - San Andrés |
+| **Año** | 2025-2026 |
+| **Proyecto** | Final de Grado Superior |
+
+---
+
+*Proyecto desarrollado como Trabajo Final de Ciclo Formativo de Grado Superior.*
