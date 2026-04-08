@@ -1,0 +1,53 @@
+\documentclass[11pt,spanish]{report}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{sectsty}
+\definecolor{headingblue}{HTML}{1D689D}
+\allsectionsfont{\color{headingblue}}
+\usepackage{hyperref}
+\usepackage{pdflscape}
+\usepackage{graphicx}
+\usepackage{rotating}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=headingblue,
+  urlcolor=headingblue,
+  citecolor=headingblue
+}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}
+\setmonofont{DejaVu Sans Mono}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{longtable}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{gray!10}
+}
+
+% Pandoc tightlist macro
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\title{$title$}
+\author{$author$}
+\date{$date$}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+$body$
+
+\end{document}

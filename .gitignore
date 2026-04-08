@@ -16,3 +16,4 @@ local.properties
 # Secrets
 gradle.properties
 .aider*
+*.class
