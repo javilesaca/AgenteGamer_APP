@@ -36,6 +36,11 @@ public class LanzamientoWorker extends Worker {
     public Result doWork() {
 
         List<WishlistEntity> juegos = repo.getWishlistSync();
+        
+        // Verificar null para evitar NPE
+        if (juegos == null) {
+            return Result.success();
+        }
 
         for (WishlistEntity juego: juegos) {
             if(salePronto(juego)) {

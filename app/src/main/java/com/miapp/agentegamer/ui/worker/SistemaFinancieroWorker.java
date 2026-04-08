@@ -74,6 +74,11 @@ public class SistemaFinancieroWorker extends Worker {
     public Result doWork() {
         try {
             List<WishlistEntity> wishlist = wishlistRepo.getWishlistSync();
+            
+            // Verificar null en wishlist para evitar NPE
+            if (wishlist == null) {
+                wishlist = new java.util.ArrayList<>();
+            }
 
             CompletableFuture<Double> presupuestoFuture = new CompletableFuture<>();
             CompletableFuture<Double> totalGastadoFuture = new CompletableFuture<>();
@@ -101,8 +106,14 @@ public class SistemaFinancieroWorker extends Worker {
             Double presupuesto = presupuestoFuture.get(30, TimeUnit.SECONDS);
             Double totalGastado = totalGastadoFuture.get(30, TimeUnit.SECONDS);
 
+            // Verificar null para presupuesto
             if (presupuesto == null) {
-                return Result.failure();
+                presupuesto = 0.0;
+            }
+            
+            // Verificar null para totalGastado
+            if (totalGastado == null) {
+                totalGastado = 0.0;
             }
 
             for (WishlistEntity juego : wishlist) {
