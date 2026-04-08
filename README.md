@@ -188,7 +188,7 @@ Ver documento completo: [Documentacion_PROYECTO_AGENTEGAMER.pdf](doc/Documentaci
 |---|---|
 | **Nombre** | Javier Lesaca Medina |
 | **Ciclo** | Desarrollo de Aplicaciones Multiplataforma (DAM) |
-| **Centro** | SAFA - San Andrés |
+| **Centro** | Escuelas Profesionales SAFA |
 | **Año** | 2025-2026 |
 | **Proyecto** | Final de Grado Superior |
 
