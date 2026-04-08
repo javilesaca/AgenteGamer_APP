@@ -132,7 +132,22 @@ RAWG_API_KEY=tu_api_key_aqui
 
 ## 📷 Capturas de pantalla
 
-*Próximamente*
+<div align="center">
+  <table>
+    <tr>
+      <td><img src="doc/img/splash.png" width="250"/></td>
+      <td><img src="doc/img/registro.png" width="250"/></td>
+    </tr>
+    <tr>
+      <td><img src="doc/img/dashboard.png" width="250"/></td>
+      <td><img src="doc/img/catalogo.png" width="250"/></td>
+    </tr>
+    <tr>
+      <td><img src="doc/img/whislist.png" width="250"/></td>
+      <td><img src="doc/img/perfil_uno.png" width="250"/></td>
+    </tr>
+  </table>
+</div>
 
 ---
 
