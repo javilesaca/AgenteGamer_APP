@@ -1,0 +1,43 @@
+rules_version = '2';
+
+// Reglas de Firestore para AgenteGamer_APP.
+//
+// Modelo de seguridad:
+// - Cada usuario solo lee y escribe su propio documento (users/{uid}).
+// - El campo "rol" NO lo escribe el cliente: en creación se rechaza si
+//   viene incluido, y en actualización debe permanecer inmutable. Los roles
+//   (p. ej. ADMIN) se asignan manualmente desde la consola de Firebase o
+//   con Custom Claims, nunca desde la app.
+// - "fechaCreacion" también es inmutable.
+// - Todo lo no contemplado se deniega por defecto.
+//
+// Despliegue:
+//   firebase deploy --only firestore:rules
+// (requiere firebase-tools y haber hecho `firebase init firestore` / login;
+//  este fichero es la fuente de verdad versionada de las reglas de consola)
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+      // Solo el dueño autenticado lee su documento.
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // Creación: el cliente no puede asignarse rol.
+      allow create: if request.auth != null && request.auth.uid == userId
+        && !("rol" in request.resource.data);
+
+      // Actualización: el rol y la fecha de creación no pueden cambiar.
+      allow update: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.rol == resource.data.rol
+        && request.resource.data.fechaCreacion == resource.data.fechaCreacion;
+
+      // Borrado deshabilitado desde el cliente.
+      allow delete: if false;
+    }
+
+    // Denegación por defecto para cualquier otra colección.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

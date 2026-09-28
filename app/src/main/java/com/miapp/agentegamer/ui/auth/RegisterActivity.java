@@ -135,7 +135,9 @@ public class RegisterActivity extends AppCompatActivity {
                     userData.put("nombre", nombre);
                     userData.put("presupuestoMensual", presupuesto);
                     userData.put("fechaCreacion", FieldValue.serverTimestamp());
-                    userData.put("rol", "USER");
+                    // Sin "rol": los roles se asignan fuera del cliente (consola o
+                    // Custom Claims). Las reglas firestore.rules rechazan creaciones
+                    // con rol e impiden modificarlo después.
 
                     db.collection("users")
                             .document(uid)
