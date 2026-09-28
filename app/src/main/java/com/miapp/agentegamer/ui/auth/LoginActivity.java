@@ -2,6 +2,7 @@ package com.miapp.agentegamer.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseTooManyRequestsException;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.repository.UserRepositoryImpl;
 import com.miapp.agentegamer.domain.repository.UserRepository;
@@ -80,13 +82,16 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Realiza el proceso de inicio de sesión con Firebase Auth.
-     * Valida que los campos no estén vacíos, muestra estado de carga
+     * Valida cada campo por separado, muestra estado de carga
      * y maneja los resultados de la autenticación.
-     * 
+     *
      * Si la autenticación es exitosa, navega a MainActivity.
-     * Si falla, muestra un mensaje de error apropiado según el tipo de excepción:
+     * Si falla, muestra un mensaje específico según la causa:
+     * - Campos vacíos o email con formato inválido (validación local)
      * - FirebaseNetworkException: error de conexión
-     * - FirebaseAuthInvalidUserException / FirebaseAuthInvalidCredentialsException: credenciales incorrectas
+     * - FirebaseTooManyRequestsException: demasiados intentos
+     * - FirebaseAuthInvalidUserException: cuenta inexistente o deshabilitada
+     * - FirebaseAuthInvalidCredentialsException: contraseña incorrecta o email inválido
      * - Otras excepciones: error genérico
      */
     private void login() {
@@ -95,8 +100,21 @@ public class LoginActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, R.string.error_empty_fields, Toast.LENGTH_SHORT).show();
+        if (email.isEmpty()) {
+            etEmail.setError(getString(R.string.error_login_empty_email));
+            Toast.makeText(this, R.string.error_login_empty_email, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError(getString(R.string.error_login_invalid_email));
+            Toast.makeText(this, R.string.error_login_invalid_email, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            etPassword.setError(getString(R.string.error_login_empty_password));
+            Toast.makeText(this, R.string.error_login_empty_password, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -114,17 +132,52 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     if (isFinishing()) return;
                     setLoading(false);
-                    int messageRes;
-                    if (e instanceof FirebaseNetworkException) {
-                        messageRes = R.string.error_login_network;
-                    } else if (e instanceof FirebaseAuthInvalidUserException
-                            || e instanceof FirebaseAuthInvalidCredentialsException) {
-                        messageRes = R.string.error_login_credentials;
-                    } else {
-                        messageRes = R.string.error_login_generic;
+                    int messageRes = resolveLoginError(e);
+                    if (messageRes == R.string.error_login_wrong_password) {
+                        etPassword.setError(getString(messageRes));
+                    } else if (messageRes == R.string.error_login_user_not_found
+                            || messageRes == R.string.error_login_invalid_email) {
+                        etEmail.setError(getString(messageRes));
                     }
-                    Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, messageRes, Toast.LENGTH_LONG).show();
                 });
+    }
+
+    /**
+     * Resuelve el mensaje de error a mostrar según la causa del fallo
+     * de inicio de sesión.
+     *
+     * @param e Excepción devuelta por Firebase Auth
+     * @return Recurso de string con el mensaje específico
+     */
+    private int resolveLoginError(Exception e) {
+        if (e instanceof FirebaseNetworkException) {
+            return R.string.error_login_network;
+        }
+        if (e instanceof FirebaseTooManyRequestsException) {
+            return R.string.error_login_too_many_attempts;
+        }
+        if (e instanceof FirebaseAuthInvalidUserException) {
+            String code = ((FirebaseAuthInvalidUserException) e).getErrorCode();
+            if (FirebaseAuthInvalidUserException.ERROR_USER_NOT_FOUND.equals(code)) {
+                return R.string.error_login_user_not_found;
+            }
+            if (FirebaseAuthInvalidUserException.ERROR_USER_DISABLED.equals(code)) {
+                return R.string.error_login_user_disabled;
+            }
+            return R.string.error_login_credentials;
+        }
+        if (e instanceof FirebaseAuthInvalidCredentialsException) {
+            String code = ((FirebaseAuthInvalidCredentialsException) e).getErrorCode();
+            if (FirebaseAuthInvalidCredentialsException.ERROR_WRONG_PASSWORD.equals(code)) {
+                return R.string.error_login_wrong_password;
+            }
+            if (FirebaseAuthInvalidCredentialsException.ERROR_INVALID_EMAIL.equals(code)) {
+                return R.string.error_login_invalid_email;
+            }
+            return R.string.error_login_credentials;
+        }
+        return R.string.error_login_generic;
     }
 
     /**
