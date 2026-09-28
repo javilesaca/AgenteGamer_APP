@@ -20,6 +20,7 @@ import com.miapp.agentegamer.data.local.entity.GastoEntity;
 import com.miapp.agentegamer.domain.repository.GastoRepository;
 import com.miapp.agentegamer.ui.model.EstadoFinancieroUI;
 import com.miapp.agentegamer.util.FinancialTrendHelper;
+import com.miapp.agentegamer.util.PeriodoFinancieroUtils;
 import com.miapp.agentegamer.util.FinancialTrendHelper.TrendResult;
 
 import java.util.ArrayList;
@@ -154,7 +155,19 @@ public class GastoViewModel extends AndroidViewModel {
 
         if (sistemaFinanciero == null || gastos == null) return;
 
-        List<Gasto> domainGastos = toDomainGastos(gastos);
+        // Solo el mes en curso: al cambiar de mes el estado vuelve al
+        // presupuesto mensual en lugar de arrastrar el histórico.
+        long[] rango = PeriodoFinancieroUtils.rangoMesActual();
+        List<GastoEntity> gastosDelMes = new ArrayList<>();
+        for (GastoEntity gasto : gastos) {
+            if (gasto != null
+                    && gasto.getFecha() >= rango[0]
+                    && gasto.getFecha() < rango[1]) {
+                gastosDelMes.add(gasto);
+            }
+        }
+
+        List<Gasto> domainGastos = toDomainGastos(gastosDelMes);
 
         double total = sistemaFinanciero.calcularTotalGastos(domainGastos);
         double porcentaje = sistemaFinanciero.calcularPorcentajeGastado(domainGastos);

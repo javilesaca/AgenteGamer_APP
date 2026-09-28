@@ -52,4 +52,26 @@ public class PeriodoFinancieroUtils {
 
         return cal.getTimeInMillis();
     }
+
+    /**
+     * Obtiene el rango del mes actual como [inicio, fin).
+     * <p>
+     * El inicio es las 00:00:00 del día 1 del mes en curso y el fin
+     * las 00:00:00 del día 1 del mes siguiente, ambos en la zona
+     * horaria del dispositivo. Sirve para filtrar gastos por
+     * {@code fecha} sin depender de columnas derivadas en UTC.
+     *
+     * @return Array de dos elementos: [inicioInclusivo, finExclusivo] en milisegundos
+     */
+    public static long[] rangoMesActual() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        long inicio = cal.getTimeInMillis();
+        cal.add(Calendar.MONTH, 1);
+        return new long[]{inicio, cal.getTimeInMillis()};
+    }
 }

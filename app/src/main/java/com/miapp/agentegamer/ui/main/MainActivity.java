@@ -49,6 +49,7 @@ import com.miapp.agentegamer.ui.adapter.UltimosGastosAdapter;
 import com.miapp.agentegamer.ui.common.BaseNavActivity;
 import com.miapp.agentegamer.util.MoneyUtils;
 import com.miapp.agentegamer.util.FinancialTrendHelper;
+import com.miapp.agentegamer.util.PeriodoFinancieroUtils;
 import com.miapp.agentegamer.ui.viewmodel.GastoViewModel;
 
 import java.util.ArrayList;
@@ -420,13 +421,20 @@ public class MainActivity extends BaseNavActivity {
                     .start();
         });
 
-        // Lista de gastos → total + gráfico
+        // Lista de gastos → total + gráfico (solo mes en curso para que el
+        // presupuesto se resetee al cambiar de mes).
         gastoViewModel.getListaGastos().observe(this, gastos -> {
 
             double total = 0;
             List<PieEntry> entradas = new ArrayList<>();
+            long[] rango = PeriodoFinancieroUtils.rangoMesActual();
 
             for (GastoEntity gasto : gastos) {
+                if (gasto == null
+                        || gasto.getFecha() < rango[0]
+                        || gasto.getFecha() >= rango[1]) {
+                    continue;
+                }
                 total += gasto.getPrecio();
                 entradas.add(
                         new PieEntry(
