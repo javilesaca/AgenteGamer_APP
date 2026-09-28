@@ -121,7 +121,8 @@ public class FinancialTrendHelper {
     public static String getMonthLabel(int month) {
         String[] months = {"Ene", "Feb", "Mar", "Abr", "May", "Jun",
                           "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
-        return months[month % 12];
+        int normalized = ((month % 12) + 12) % 12;
+        return months[normalized];
     }
 
     /**

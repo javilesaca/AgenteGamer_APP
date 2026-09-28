@@ -504,6 +504,11 @@ public class MainActivity extends BaseNavActivity {
      * Actualiza el LineChart con los datos de gastos mensuales.
      */
     private void actualizarLineChart(List<MonthlyExpense> expenses) {
+        if (expenses == null || expenses.isEmpty()) {
+            lineChartTendencia.clear();
+            lineChartTendencia.invalidate();
+            return;
+        }
         List<Entry> entries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
         
@@ -526,11 +531,17 @@ public class MainActivity extends BaseNavActivity {
         dataSet.setValueTextColor(getColor(R.color.text_primary));
         dataSet.setDrawValues(true);
         
-        // Configurar eje X con labels de meses
+        // Configurar eje X con labels de meses (1 etiqueta por punto, sin decimales
+        // que repetían el mes actual en todo el eje cuando había pocos datos).
+        lineChartTendencia.getXAxis().setGranularity(1f);
+        lineChartTendencia.getXAxis().setGranularityEnabled(true);
+        lineChartTendencia.getXAxis().setLabelCount(labels.size(), true);
+        lineChartTendencia.getXAxis().setAxisMinimum(-0.5f);
+        lineChartTendencia.getXAxis().setAxisMaximum(Math.max(0, labels.size() - 1) + 0.5f);
         lineChartTendencia.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int index = (int) value;
+                int index = Math.round(value);
                 if (index >= 0 && index < labels.size()) {
                     return labels.get(index);
                 }
