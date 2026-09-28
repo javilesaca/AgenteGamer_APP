@@ -40,6 +40,12 @@
     <string name="hint_nombre">Nombre</string>
     <string name="hint_presupuesto">Presupuesto mensual (€)</string>
     <string name="error_guardar_perfil">Error guardando perfil</string>
+    <string name="error_register_password_corta">Mínimo 6 caracteres</string>
+    <string name="error_register_password_mayuscula">Al menos una mayúscula</string>
+    <string name="error_register_password_signo">Al menos un signo (p. ej. ! @ #)</string>
+    <string name="error_register_password_requisitos">La contraseña debe tener mínimo 6 caracteres, una mayúscula y un signo</string>
+    <string name="error_register_password_faltan">Te falta</string>
+    <string name="error_register_email_exists">Ya existe una cuenta con ese email. Prueba a iniciar sesión</string>
     
     <!-- Gastos -->
     <string name="agregar_gasto">Agregar gasto</string>
