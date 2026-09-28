@@ -24,7 +24,9 @@ import com.miapp.agentegamer.util.FinancialTrendHelper.TrendResult;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -203,16 +205,33 @@ public class GastoViewModel extends AndroidViewModel {
             
             // Obtener totales de últimos 3 meses
             List<MonthlyTotal> rawTotals = repository.getMonthlyTotalsSync(3);
-            List<MonthlyExpense> expenses = new ArrayList<>();
-            
-            for (MonthlyTotal mt : rawTotals) {
-                // Parsear mes de formato "YYYY-MM"
-                String[] parts = mt.mes.split("-");
-                if (parts.length == 2) {
-                    int month = Integer.parseInt(parts[1]) - 1; // 0-indexed
-                    int year = Integer.parseInt(parts[0]);
-                    expenses.add(new MonthlyExpense(month, year, mt.total, presupuesto));
+            Map<String, Double> totalsByMonth = new HashMap<>();
+            if (rawTotals != null) {
+                for (MonthlyTotal mt : rawTotals) {
+                    if (mt != null && mt.mes != null) {
+                        totalsByMonth.put(mt.mes, mt.total);
+                    }
                 }
+            }
+
+            // Construir ventana continua de 3 meses (hace 2 meses -> mes actual).
+            // Sin esto, los meses sin gastos desaparecen y el chart puede
+            // repetir la etiqueta del mes actual en todo el eje X.
+            List<MonthlyExpense> expenses = new ArrayList<>();
+            Calendar window = Calendar.getInstance();
+            window.set(Calendar.DAY_OF_MONTH, 1);
+            window.set(Calendar.HOUR_OF_DAY, 0);
+            window.set(Calendar.MINUTE, 0);
+            window.set(Calendar.SECOND, 0);
+            window.set(Calendar.MILLISECOND, 0);
+            window.add(Calendar.MONTH, -2);
+            for (int i = 0; i < 3; i++) {
+                int monthZeroBased = window.get(Calendar.MONTH);
+                int year = window.get(Calendar.YEAR);
+                String key = String.format(java.util.Locale.US, "%04d-%02d", year, monthZeroBased + 1);
+                double total = totalsByMonth.containsKey(key) ? totalsByMonth.get(key) : 0.0;
+                expenses.add(new MonthlyExpense(monthZeroBased, year, total, presupuesto));
+                window.add(Calendar.MONTH, 1);
             }
             
             monthlyExpenses.postValue(expenses);
