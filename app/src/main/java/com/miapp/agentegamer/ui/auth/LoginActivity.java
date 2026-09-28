@@ -13,7 +13,7 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseTooManyRequestsException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.miapp.agentegamer.R;
 import com.miapp.agentegamer.data.repository.UserRepositoryImpl;
 import com.miapp.agentegamer.domain.repository.UserRepository;
@@ -159,20 +159,20 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (e instanceof FirebaseAuthInvalidUserException) {
             String code = ((FirebaseAuthInvalidUserException) e).getErrorCode();
-            if (FirebaseAuthInvalidUserException.ERROR_USER_NOT_FOUND.equals(code)) {
+            if ("ERROR_USER_NOT_FOUND".equals(code)) {
                 return R.string.error_login_user_not_found;
             }
-            if (FirebaseAuthInvalidUserException.ERROR_USER_DISABLED.equals(code)) {
+            if ("ERROR_USER_DISABLED".equals(code)) {
                 return R.string.error_login_user_disabled;
             }
             return R.string.error_login_credentials;
         }
         if (e instanceof FirebaseAuthInvalidCredentialsException) {
             String code = ((FirebaseAuthInvalidCredentialsException) e).getErrorCode();
-            if (FirebaseAuthInvalidCredentialsException.ERROR_WRONG_PASSWORD.equals(code)) {
+            if ("ERROR_WRONG_PASSWORD".equals(code)) {
                 return R.string.error_login_wrong_password;
             }
-            if (FirebaseAuthInvalidCredentialsException.ERROR_INVALID_EMAIL.equals(code)) {
+            if ("ERROR_INVALID_EMAIL".equals(code)) {
                 return R.string.error_login_invalid_email;
             }
             return R.string.error_login_credentials;
