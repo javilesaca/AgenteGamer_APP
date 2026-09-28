@@ -132,6 +132,10 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.presupuesto_invalido, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (presupuesto <= 0) {
+            Toast.makeText(this, R.string.presupuesto_invalido, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(result -> {
