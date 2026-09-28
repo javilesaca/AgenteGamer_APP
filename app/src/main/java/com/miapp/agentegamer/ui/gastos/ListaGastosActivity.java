@@ -142,6 +142,8 @@ public class ListaGastosActivity extends BaseNavActivity {
     /**
      * Oculta el botón de gasto de prueba para usuarios no-admin.
      * Solo los usuarios con rol "ADMIN" pueden ver el FAB de prueba.
+     * Nota: esto es solo UX; la autorización real la impone firestore.rules
+     * (el cliente no puede asignarse ni cambiarse el rol).
      */
     private void configurarVisibilidadBotonPrueba() {
         // Ocultar por defecto hasta confirmar el rol
