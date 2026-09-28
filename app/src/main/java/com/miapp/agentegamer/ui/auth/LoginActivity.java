@@ -133,11 +133,16 @@ public class LoginActivity extends AppCompatActivity {
                     if (isFinishing()) return;
                     setLoading(false);
                     int messageRes = resolveLoginError(e);
+                    // Marcado de campos unificado: errores de campo -> setError, resto solo Toast
                     if (messageRes == R.string.error_login_wrong_password) {
                         etPassword.setError(getString(messageRes));
                     } else if (messageRes == R.string.error_login_user_not_found
-                            || messageRes == R.string.error_login_invalid_email) {
+                            || messageRes == R.string.error_login_invalid_email
+                            || messageRes == R.string.error_login_credentials) {
                         etEmail.setError(getString(messageRes));
+                        if (messageRes == R.string.error_login_credentials) {
+                            etPassword.setError(getString(messageRes));
+                        }
                     }
                     Toast.makeText(this, messageRes, Toast.LENGTH_LONG).show();
                 });
@@ -157,27 +162,55 @@ public class LoginActivity extends AppCompatActivity {
         if (e instanceof FirebaseTooManyRequestsException) {
             return R.string.error_login_too_many_attempts;
         }
+        // reCAPTCHA / Play Integrity (clase según versión del SDK): sin import rígido
+        String simpleName = e.getClass().getSimpleName().toLowerCase();
+        String msg = e.getMessage() != null ? e.getMessage().toLowerCase() : "";
+        if (simpleName.contains("recaptcha") || msg.contains("recaptcha")) {
+            return R.string.error_login_recaptcha;
+        }
         if (e instanceof FirebaseAuthInvalidUserException) {
-            String code = ((FirebaseAuthInvalidUserException) e).getErrorCode();
-            if ("ERROR_USER_NOT_FOUND".equals(code)) {
+            String code = normalizeCode(((FirebaseAuthInvalidUserException) e).getErrorCode());
+            if (code.contains("USER_NOT_FOUND")) {
                 return R.string.error_login_user_not_found;
             }
-            if ("ERROR_USER_DISABLED".equals(code)) {
+            if (code.contains("USER_DISABLED")) {
                 return R.string.error_login_user_disabled;
+            }
+            if (code.contains("OPERATION_NOT_ALLOWED")) {
+                return R.string.error_login_operation_not_allowed;
             }
             return R.string.error_login_credentials;
         }
         if (e instanceof FirebaseAuthInvalidCredentialsException) {
-            String code = ((FirebaseAuthInvalidCredentialsException) e).getErrorCode();
-            if ("ERROR_WRONG_PASSWORD".equals(code)) {
+            String code = normalizeCode(((FirebaseAuthInvalidCredentialsException) e).getErrorCode());
+            if (code.contains("WRONG_PASSWORD")) {
                 return R.string.error_login_wrong_password;
             }
-            if ("ERROR_INVALID_EMAIL".equals(code)) {
+            if (code.contains("INVALID_EMAIL")) {
                 return R.string.error_login_invalid_email;
+            }
+            if (code.contains("OPERATION_NOT_ALLOWED")) {
+                return R.string.error_login_operation_not_allowed;
+            }
+            // Códigos nuevos anti-enumeración: credencial combinada inválida
+            if (code.contains("INVALID_CREDENTIAL") || code.contains("INVALID_LOGIN_CREDENTIALS")) {
+                return R.string.error_login_credentials;
             }
             return R.string.error_login_credentials;
         }
+        // Fallback por código en mensaje (algunas versiones lo exponen así)
+        String upperMsg = msg.toUpperCase();
+        if (upperMsg.contains("OPERATION_NOT_ALLOWED")) {
+            return R.string.error_login_operation_not_allowed;
+        }
+        if (upperMsg.contains("INVALID_LOGIN_CREDENTIALS") || upperMsg.contains("INVALID_CREDENTIAL")) {
+            return R.string.error_login_credentials;
+        }
         return R.string.error_login_generic;
+    }
+
+    private String normalizeCode(String code) {
+        return code != null ? code.toUpperCase() : "";
     }
 
     /**
