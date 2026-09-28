@@ -33,6 +33,8 @@
     <string name="error_login_user_disabled">Esta cuenta está deshabilitada. Contacta con soporte</string>
     <string name="error_login_wrong_password">Contraseña incorrecta. Inténtalo de nuevo</string>
     <string name="error_login_too_many_attempts">Demasiados intentos. Espera unos minutos e inténtalo de nuevo</string>
+    <string name="error_login_operation_not_allowed">Inicio con email y contraseña no habilitado. Contacta con soporte</string>
+    <string name="error_login_recaptcha">Verificación de seguridad requerida. Inténtalo de nuevo</string>
     <string name="error_login_generic">Error al iniciar sesión</string>
     <string name="loading">Cargando…</string>
 
