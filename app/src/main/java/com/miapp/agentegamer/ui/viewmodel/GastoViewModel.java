@@ -274,9 +274,4 @@ public class GastoViewModel extends AndroidViewModel {
         repository.borrarGasto(gasto);
     }
 
-    //Función solo para dev
-    public void borrarTodosLosGastos() {
-        repository.borrarTodosLosGastos();
-    }
-
 }

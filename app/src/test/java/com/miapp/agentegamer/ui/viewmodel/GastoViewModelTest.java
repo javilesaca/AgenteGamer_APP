@@ -154,15 +154,6 @@ public class GastoViewModelTest {
         verify(mockRepository).borrarGasto(gasto);
     }
 
-    @Test
-    public void borrarTodosLosGastos_callsRepositoryMethod() {
-        // Act
-        viewModel.borrarTodosLosGastos();
-
-        // Assert
-        verify(mockRepository).borrarTodosLosGastos();
-    }
-
     // ================================
     // EDGE CASES
     // ================================

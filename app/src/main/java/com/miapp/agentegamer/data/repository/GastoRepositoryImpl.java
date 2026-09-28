@@ -131,16 +131,6 @@ public class GastoRepositoryImpl implements GastoRepository {
     }
 
     /**
-     * Borra todos los gastos del usuario actual.
-     * <p>
-     * La operación se ejecuta de forma asíncrona en un hilo secundario.
-     */
-    @Override
-    public void borrarTodosLosGastos() {
-        executorService.execute(() -> gastoDao.deleteAll(getCurrentUserId()));
-    }
-
-    /**
      * Obtiene el total de gastos del mes actual.
      * <p>
      * Calcula la suma de todos los gastos del usuario en el mes y año actuales.

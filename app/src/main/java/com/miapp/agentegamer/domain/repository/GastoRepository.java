@@ -60,12 +60,6 @@ public interface GastoRepository {
     void borrarGasto(GastoEntity gasto);
     
     /**
-     * Elimina todos los gastos registrados.
-     * Utilizado principalmente al restablecer datos del usuario.
-     */
-    void borrarTodosLosGastos();
-    
-    /**
      * Obtiene el total de gastos del mes actual.
      * 
      * @return LiveData con el total gastado en el mes en curso
