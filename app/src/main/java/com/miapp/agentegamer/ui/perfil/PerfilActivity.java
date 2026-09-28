@@ -126,7 +126,7 @@ public class PerfilActivity extends BaseNavActivity {
                     tvFechaCreacion.setText("");
                 }
                 
-                tvRol.setText(usuario.getRol());
+                tvRol.setText(usuario.getRol() != null ? usuario.getRol() : "Usuario");
             }
 
             @Override
