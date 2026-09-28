@@ -371,17 +371,16 @@ public class MainActivity extends BaseNavActivity {
         // Usar LiveData para que se actualice automáticamente cuando cambie el presupuesto
         userRepository.getPresupuestoLiveData().observe(this, presupuesto -> {
             if (presupuesto != null) {
-                double valor = presupuesto <= 0 ? 100.0 : presupuesto;
-                sistemaFinanciero = new SistemaFinanciero(valor);
+                sistemaFinanciero = new SistemaFinanciero(presupuesto);
                 gastoViewModel.setSistemaFinanciero(sistemaFinanciero);
 
                 // Actualizar el TextView con el presupuesto
-                tvPresupuesto.setText(MoneyUtils.format(valor, moneda));
+                tvPresupuesto.setText(MoneyUtils.format(presupuesto, moneda));
 
                 // También actualizar restante cuando cambie el presupuesto
                 gastoRepo.getTotalGastadoMesSync(totalGastado -> {
                     runOnUiThread(() -> {
-                        double restante = valor - totalGastado;
+                        double restante = presupuesto - totalGastado;
                         tvTotalGastos.setText(MoneyUtils.format(totalGastado, moneda));
                         tvRestante.setText(MoneyUtils.format(restante, moneda));
                     });

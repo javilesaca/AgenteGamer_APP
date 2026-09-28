@@ -26,15 +26,6 @@
     <string name="error_empty_fields">Es necesario completar todos los campos</string>
     <string name="error_login_network">Error de red. Revisa tu conexión e inténtalo de nuevo</string>
     <string name="error_login_credentials">Email o contraseña incorrectos</string>
-    <string name="error_login_empty_email">Escribe tu email para iniciar sesión</string>
-    <string name="error_login_empty_password">Escribe tu contraseña para iniciar sesión</string>
-    <string name="error_login_invalid_email">Ese email no tiene un formato válido</string>
-    <string name="error_login_user_not_found">No existe ninguna cuenta con ese email</string>
-    <string name="error_login_user_disabled">Esta cuenta está deshabilitada. Contacta con soporte</string>
-    <string name="error_login_wrong_password">Contraseña incorrecta. Inténtalo de nuevo</string>
-    <string name="error_login_too_many_attempts">Demasiados intentos. Espera unos minutos e inténtalo de nuevo</string>
-    <string name="error_login_operation_not_allowed">Inicio con email y contraseña no habilitado. Contacta con soporte</string>
-    <string name="error_login_recaptcha">Verificación de seguridad requerida. Inténtalo de nuevo</string>
     <string name="error_login_generic">Error al iniciar sesión</string>
     <string name="loading">Cargando…</string>
 
@@ -42,12 +33,6 @@
     <string name="hint_nombre">Nombre</string>
     <string name="hint_presupuesto">Presupuesto mensual (€)</string>
     <string name="error_guardar_perfil">Error guardando perfil</string>
-    <string name="error_register_password_corta">Mínimo 6 caracteres</string>
-    <string name="error_register_password_mayuscula">Al menos una mayúscula</string>
-    <string name="error_register_password_signo">Al menos un signo (p. ej. ! @ #)</string>
-    <string name="error_register_password_requisitos">La contraseña debe tener mínimo 6 caracteres, una mayúscula y un signo</string>
-    <string name="error_register_password_faltan">Te falta</string>
-    <string name="error_register_email_exists">Ya existe una cuenta con ese email. Prueba a iniciar sesión</string>
     
     <!-- Gastos -->
     <string name="agregar_gasto">Agregar gasto</string>
