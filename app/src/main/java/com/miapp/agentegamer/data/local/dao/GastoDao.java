@@ -74,14 +74,6 @@ public interface GastoDao {
     /**
      * Elimina todos los gastos de un usuario.
      * <p>
-     * Operación de mantenimiento que borra todos los registros de gastos
-     * asociados al usuario especificado.
-     *
-     * @param userId Identificador único del usuario en Firebase
-     */
-    @Query("DELETE FROM gastos WHERE userId = :userId")
-    void deleteAll(String userId);
-
     /**
      * Obtiene el gasto total de un usuario para un mes y año específicos.
      * <p>

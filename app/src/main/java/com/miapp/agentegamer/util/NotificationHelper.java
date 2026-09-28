@@ -26,6 +26,7 @@ public class NotificationHelper {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(titulo)
                 .setContentText(mensaje)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setAutoCancel(true);
 
         manager.notify((int) System.currentTimeMillis(), builder.build());

@@ -114,20 +114,6 @@ public class GastoRepositoryImplTest {
     }
 
     @Test
-    public void borrarTodosLosGastos_executesDaoDeleteAllInBackground() {
-        // Arrange
-        ArgumentCaptor<Runnable> runnableCaptor = ArgumentCaptor.forClass(Runnable.class);
-
-        // Act
-        repository.borrarTodosLosGastos();
-
-        // Assert
-        verify(mockExecutor).execute(runnableCaptor.capture());
-        runnableCaptor.getValue().run();
-        verify(mockDao).deleteAll(anyString());
-    }
-
-    @Test
     public void getGastoMesActual_returnsDaoLiveDataForCurrentMonth() {
         // Arrange
         MutableLiveData<Double> expectedLiveData = new MutableLiveData<>(150.0);
