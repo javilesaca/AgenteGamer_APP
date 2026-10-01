@@ -154,7 +154,11 @@ public class GastoViewModel extends AndroidViewModel {
 
         if (sistemaFinanciero == null || gastos == null) return;
 
-        List<Gasto> domainGastos = toDomainGastos(gastos);
+        // El estado y las recomendaciones comparan contra el presupuesto MENSUAL,
+        // por lo que solo cuentan los gastos del mes actual (coherente con la
+        // tarjeta "Total gastado" del dashboard).
+        List<GastoEntity> gastosDelMes = filtrarMesActual(gastos);
+        List<Gasto> domainGastos = toDomainGastos(gastosDelMes);
 
         double total = sistemaFinanciero.calcularTotalGastos(domainGastos);
         double porcentaje = sistemaFinanciero.calcularPorcentajeGastado(domainGastos);
@@ -201,8 +205,8 @@ public class GastoViewModel extends AndroidViewModel {
         executorService.execute(() -> {
             double presupuesto = sistemaFinanciero.getPresupuestoMensual();
             
-            // Obtener totales de últimos 3 meses
-            List<MonthlyTotal> rawTotals = repository.getMonthlyTotalsSync(3);
+            // Obtener totales de últimos 10 meses (histórico legible para la tendencia)
+            List<MonthlyTotal> rawTotals = repository.getMonthlyTotalsSync(10);
             List<MonthlyExpense> expenses = new ArrayList<>();
             
             for (MonthlyTotal mt : rawTotals) {
@@ -241,14 +245,28 @@ public class GastoViewModel extends AndroidViewModel {
         }
         
         EstadoFinancieroUI estado = estadoUI.getValue();
-        double total = listaGastos.getValue() != null ? 
-            calcularTotal(listaGastos.getValue()) : 0;
+        double total = listaGastos.getValue() != null ?
+            calcularTotal(filtrarMesActual(listaGastos.getValue())) : 0;
         
         return FinancialTrendHelper.generateRecommendation(
             estado.getEstado(),
             sistemaFinanciero.getPresupuestoMensual(),
             total
         );
+    }
+
+    /** Devuelve solo los gastos del mes y año actuales (visible para tests). */
+    static List<GastoEntity> filtrarMesActual(List<GastoEntity> gastos) {
+        List<GastoEntity> resultado = new ArrayList<>();
+        if (gastos == null) return resultado;
+        int mes = com.miapp.agentegamer.util.PeriodoFinancieroUtils.getMesActual();
+        int anio = com.miapp.agentegamer.util.PeriodoFinancieroUtils.getAnioActual();
+        for (GastoEntity g : gastos) {
+            if (g != null && g.getMes() == mes && g.getAnio() == anio) {
+                resultado.add(g);
+            }
+        }
+        return resultado;
     }
 
     private double calcularTotal(List<GastoEntity> gastos) {
