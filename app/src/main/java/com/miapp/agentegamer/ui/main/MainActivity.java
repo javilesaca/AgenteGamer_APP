@@ -437,15 +437,15 @@ public class MainActivity extends BaseNavActivity {
                 );
             }
 
-            // Calcular restante directamente: presupuesto - total gastado
+            // NOTA: este observer solo alimenta el Pie (reparto histórico).
+            // tvTotalGastos/tvRestante los escribe actualizarPresupuestoRestante()
+            // con el total del MES actual para no mezclar periodos.
             double presupuesto = sistemaFinanciero != null ? sistemaFinanciero.getPresupuestoMensual() : 0;
-            double restante = presupuesto - total;
-            
-            tvTotalGastos.setText(MoneyUtils.format(total, moneda));
             tvPresupuesto.setText(MoneyUtils.format(presupuesto, moneda));
-            tvRestante.setText(MoneyUtils.format(restante, moneda));
 
-            animarTotal(total);
+            // Animar hacia el total del MES actual (el histórico solo va al Pie).
+            gastoRepo.getTotalGastadoMesSync(totalMes ->
+                    runOnUiThread(() -> animarTotal(totalMes)));
 
             PieDataSet dataSet = new PieDataSet(entradas, "");
             dataSet.setColors(
@@ -527,11 +527,15 @@ public class MainActivity extends BaseNavActivity {
         dataSet.setValueTextColor(getColor(R.color.text_primary));
         dataSet.setDrawValues(true);
         
-        // Configurar eje X con labels de meses
+        // Configurar eje X con labels de meses (un tick por mes, sin decimales
+        // para no repetir etiquetas por truncado de fraccionados).
+        lineChartTendencia.getXAxis().setGranularity(1f);
+        lineChartTendencia.getXAxis().setGranularityEnabled(true);
+        lineChartTendencia.getXAxis().setLabelCount(labels.size());
         lineChartTendencia.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int index = (int) value;
+                int index = Math.round(value);
                 if (index >= 0 && index < labels.size()) {
                     return labels.get(index);
                 }
